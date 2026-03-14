@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Bell, Globe2, LayoutDashboard, Search, HeartPulse } from "lucide-react";
+import { NotificationInboxPopover } from "@/components/ui/notification-inbox-popover";
 
 export function Navbar() {
     const pathname = usePathname();
@@ -46,10 +47,7 @@ export function Navbar() {
                 </div>
 
                 <div className="flex items-center gap-2 sm:gap-4">
-                    <Link href="/notifications" className="relative p-2.5 rounded-full text-muted-foreground hover:bg-muted hover:text-foreground transition-colors group">
-                        <Bell className="w-5 h-5 group-hover:animate-pulse" />
-                        <span className="absolute top-2.5 right-2 w-2.5 h-2.5 bg-secondary rounded-full border-[2px] border-background" />
-                    </Link>
+                    <NotificationInboxPopover />
                     <Link href="/donate" className="flex items-center justify-center h-11 px-5 sm:px-6 rounded-xl bg-primary text-primary-foreground font-bold text-sm shadow-sm hover:shadow-md hover:bg-primary/90 hover:-translate-y-0.5 transition-all gap-2">
                         <HeartPulse className="w-4 h-4" /> <span className="hidden sm:inline">Donate Now</span>
                     </Link>
