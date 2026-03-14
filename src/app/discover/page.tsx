@@ -83,8 +83,8 @@ export default function Discover() {
             <div className="container mx-auto px-4 lg:px-8 mt-20">
                 <div className="flex items-center justify-between mb-8 border-b border-border/50 pb-6">
                     <h2 className="text-3xl md:text-4xl font-bold font-sans">Live Crisis Feed</h2>
-                    <span className="bg-secondary/10 text-secondary px-4 py-2 rounded-full text-sm font-bold flex items-center gap-2 border border-secondary/20">
-                        <span className="w-2.5 h-2.5 bg-secondary rounded-full animate-pulse shadow-[0_0_8px_rgba(251,100,21,0.6)]" /> Live Updates
+                    <span className="bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-bold flex items-center gap-2 border border-primary/20">
+                        <span className="w-2.5 h-2.5 bg-primary rounded-full animate-pulse shadow-[0_0_8px_rgba(225,28,35,0.6)]" /> Live Updates
                     </span>
                 </div>
 

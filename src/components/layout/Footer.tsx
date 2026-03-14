@@ -1,4 +1,3 @@
-import { Heart } from "lucide-react";
 
 export function Footer() {
     return (
@@ -14,7 +13,7 @@ export function Footer() {
                     AI-powered humanitarian discovery connecting people to real-world impact seamlessly.
                 </p>
                 <div className="flex items-center gap-2 text-sm text-foreground/70 font-bold mt-4 bg-muted/50 px-6 py-3 rounded-full border border-border/50">
-                    Built with <Heart className="w-4 h-4 text-destructive fill-destructive mx-1 animate-bounce" /> for HackCanada
+                    Built with ᥫ᭡ for HackCanada
                 </div>
             </div>
         </footer>

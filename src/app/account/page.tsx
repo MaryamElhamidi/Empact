@@ -13,15 +13,15 @@ export default function Account() {
     return (
         <div className="flex flex-col min-h-[calc(100vh-5rem)] bg-muted/20 pb-24">
             <div className="bg-primary text-primary-foreground pt-16 pb-28 md:pb-36 relative overflow-hidden">
-                <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-background to-transparent opacity-90 mix-blend-multiply" />
-                <div className="absolute right-0 top-0 w-[30rem] h-[30rem] bg-white/5 rounded-full blur-[100px] translate-x-1/2 -translate-y-1/2" />
+                <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-background to-transparent opacity-90" />
+                <div className="absolute right-0 top-0 w-[30rem] h-[30rem] bg-secondary/10 rounded-full blur-[100px] translate-x-1/2 -translate-y-1/2" />
                 <div className="container mx-auto px-4 lg:px-8 relative z-10 flex flex-col md:flex-row items-center md:items-start gap-6 md:gap-8 text-center md:text-left">
                     <div className="w-32 h-32 md:w-36 md:h-36 rounded-[2.5rem] bg-white/10 flex items-center justify-center text-white border border-white/20 shadow-2xl backdrop-blur-md">
                         <User className="w-16 h-16 md:w-20 md:h-20 opacity-80" />
                     </div>
                     <div className="md:mt-4">
                         <h1 className="text-4xl md:text-5xl lg:text-6xl font-sans font-bold mb-3 tracking-tight">Elena Rostova</h1>
-                        <p className="text-primary-foreground/70 font-medium text-lg flex items-center justify-center md:justify-start gap-2 bg-black/20 px-4 py-2 rounded-full w-fit mx-auto md:mx-0">
+                        <p className="text-primary-foreground/90 font-medium text-lg flex items-center justify-center md:justify-start gap-2 bg-secondary/50 px-4 py-2 rounded-full w-fit mx-auto md:mx-0">
                             <Mail className="w-4 h-4" /> elena.r@example.com
                         </p>
                     </div>
