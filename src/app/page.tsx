@@ -30,7 +30,7 @@ export default function Home() {
                 <svg className="absolute w-full h-3 md:h-4 -bottom-1 md:-bottom-2 left-0 text-secondary opacity-80" viewBox="0 0 200 9" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"><path d="M2.00033 7.00002C45.2891 2.37568 126.969 -2.57143 198 6.99999" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" /></svg>
               </span>
             </h1>
-            <p className="text-lg sm:text-xl md:text-2xl text-muted-foreground font-medium mb-10 max-w-2xl mx-auto leading-relaxed md:leading-normal">
+            <p className="text-xl sm:text-2xl md:text-3xl font-bold mb-10 max-w-2xl mx-auto leading-relaxed md:leading-normal text-foreground drop-shadow-sm bg-white/40 md:bg-transparent rounded-2xl px-4 py-2">
               AI-powered humanitarian discovery connecting people to real-world impact seamlessly.
             </p>
             <Link href="/discover" className="inline-block">
