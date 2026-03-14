@@ -43,9 +43,9 @@ export default function Home() {
       </section>
 
       <section className="w-full bg-primary text-primary-foreground py-24 sm:py-32 relative overflow-hidden">
-        <div className="absolute inset-0 bg-black opacity-30 mix-blend-multiply" />
+        <div className="absolute inset-0 bg-secondary opacity-90 mix-blend-overlay" />
         <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-background to-transparent opacity-10" />
-        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80&w=2670&auto=format&fit=crop')] opacity-15 bg-cover bg-center mix-blend-overlay" />
+        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80&w=2670&auto=format&fit=crop')] opacity-10 bg-cover bg-center" />
         <div className="container mx-auto px-4 relative z-10">
           <div className="text-center mb-16 md:mb-24">
             <h2 className="text-sm font-bold tracking-widest uppercase text-secondary mb-4 drop-shadow-md">• Global Impact To Date •</h2>

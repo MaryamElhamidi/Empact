@@ -2,7 +2,6 @@ import { CreditCard, Plus, Settings2 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-
 export function WalletCard() {
     return (
         <Card className="rounded-[2rem] border-border bg-card shadow-sm overflow-hidden">

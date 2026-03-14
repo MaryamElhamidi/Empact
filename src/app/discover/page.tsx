@@ -53,11 +53,11 @@ export default function Discover() {
     return (
         <div className="flex flex-col min-h-screen bg-background pb-24">
             <div className="bg-primary text-primary-foreground pt-20 pb-28 lg:pb-32 relative overflow-hidden">
-                <div className="absolute inset-0 bg-black opacity-20" />
-                <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1526976663112-0059bf0cf736?q=80&w=2670&auto=format&fit=crop')] opacity-15 bg-cover bg-center mix-blend-overlay" />
+                <div className="absolute inset-0 bg-secondary opacity-50 mix-blend-multiply" />
+                <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1526976663112-0059bf0cf736?q=80&w=2670&auto=format&fit=crop')] opacity-10 bg-cover bg-center" />
                 <div className="container mx-auto px-4 relative z-10 lg:pl-8">
                     <h1 className="text-4xl md:text-5xl lg:text-6xl font-sans font-bold mb-6 tracking-tight">Discover Impact</h1>
-                    <p className="text-lg md:text-xl text-primary-foreground/80 max-w-2xl leading-relaxed font-medium">Find verified humanitarian opportunities curated by AI based on urgency and your past support.</p>
+                    <p className="text-lg md:text-xl text-primary-foreground max-w-2xl leading-relaxed font-medium">Find verified humanitarian opportunities curated by AI based on urgency and your past support.</p>
                 </div>
             </div>
 

@@ -12,7 +12,7 @@ export function Globe({ className }: { className?: string }) {
         if (!canvasRef.current) return;
 
         // Convert hex to rgb format (0-1)
-        // Deep Blue: #0F172A -> 15/255, 23/255, 42/255 -> 0.058, 0.09, 0.164
+        // White: #FFFFFF -> 1, 1, 1
         // Orange: #FB6415 -> 251/255, 100/255, 21/255 -> 0.984, 0.392, 0.082
         const globe = createGlobe(canvasRef.current, {
             devicePixelRatio: 2,
@@ -24,7 +24,7 @@ export function Globe({ className }: { className?: string }) {
             diffuse: 1.2,
             mapSamples: 16000,
             mapBrightness: 6,
-            baseColor: [0.058, 0.09, 0.164],
+            baseColor: [1, 1, 1],
             markerColor: [0.984, 0.392, 0.082],
             glowColor: [0.9, 0.9, 0.9], // soft bright glow
             markers: [
