@@ -5,7 +5,7 @@ export type UrgencyLevel = "CRITICAL" | "HIGH" | "MODERATE";
 
 export function UrgencyBadge({ level, className }: { level: UrgencyLevel; className?: string }) {
     const styles = {
-        CRITICAL: "bg-destructive text-destructive-foreground animate-pulse shadow-[0_0_10px_rgba(239,68,68,0.5)]",
+        CRITICAL: "bg-primary text-primary-foreground animate-pulse shadow-[0_0_10px_rgba(225,28,35,0.5)]",
         HIGH: "bg-secondary text-secondary-foreground",
         MODERATE: "bg-accent text-accent-foreground",
     };
