@@ -1,15 +1,19 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import localFont from "next/font/local";
+import { Navbar } from "@/components/layout/Navbar";
+import { Footer } from "@/components/layout/Footer";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
+const comico = localFont({
+  src: "./fonts/Comico-Regular.woff2",
+  variable: "--font-comico",
+  display: "swap",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+const cabinetGrotesk = localFont({
+  src: "./fonts/CabinetGrotesk-Variable.woff2",
+  variable: "--font-cabinet",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -25,9 +29,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${cabinetGrotesk.variable} ${comico.variable} antialiased font-sans flex flex-col min-h-screen selection:bg-primary/20`}
       >
-        {children}
+        <Navbar />
+        <main className="flex-grow flex flex-col w-full relative z-0">
+          {children}
+        </main>
+        <Footer />
       </body>
     </html>
   );
