@@ -19,7 +19,7 @@ export function Navbar() {
             <div className="container mx-auto px-4 lg:px-8 h-20 flex items-center justify-between">
                 <Link href="/" className="flex items-center gap-2 group">
                     <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center text-primary-foreground shadow-sm transition-transform group-hover:scale-105">
-                        <span className="font-logo text-3xl font-bold leading-none mt-1">𖦏</span>
+                        <span className="text-3xl font-bold leading-none mt-1">𖠋</span>
                     </div>
                     <span className="font-logo text-2xl font-bold tracking-wide mt-1">EmPact</span>
                 </Link>
