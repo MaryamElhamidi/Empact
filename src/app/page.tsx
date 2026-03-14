@@ -42,30 +42,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="w-full bg-primary text-primary-foreground py-24 sm:py-32 relative overflow-hidden">
-        <div className="absolute inset-0 bg-secondary opacity-90 mix-blend-overlay" />
-        <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-background to-transparent opacity-10" />
-        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80&w=2670&auto=format&fit=crop')] opacity-10 bg-cover bg-center" />
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="text-center mb-16 md:mb-24">
-            <h2 className="text-sm font-bold tracking-widest uppercase text-secondary mb-4 drop-shadow-md">• Global Impact To Date •</h2>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12 max-w-6xl mx-auto">
-            <div className="flex flex-col items-center justify-center p-10 rounded-[2.5rem] bg-white/5 border border-white/10 backdrop-blur-md shadow-2xl transition-transform hover:-translate-y-2 duration-500">
-              <div className="text-6xl lg:text-7xl font-sans font-bold mb-4 tracking-tighter">$1,204,331</div>
-              <div className="text-white/70 font-bold text-lg uppercase tracking-wider">Total Donated</div>
-            </div>
-            <div className="flex flex-col items-center justify-center p-10 rounded-[2.5rem] bg-white/5 border border-white/10 backdrop-blur-md shadow-2xl transition-transform hover:-translate-y-2 duration-500 delay-100">
-              <div className="text-6xl lg:text-7xl font-sans font-bold mb-4 tracking-tighter">42,102</div>
-              <div className="text-white/70 font-bold text-lg uppercase tracking-wider">People Helped</div>
-            </div>
-            <div className="flex flex-col items-center justify-center p-10 rounded-[2.5rem] bg-white/5 border border-white/10 backdrop-blur-md shadow-2xl transition-transform hover:-translate-y-2 duration-500 delay-200">
-              <div className="text-6xl lg:text-7xl font-sans font-bold mb-4 tracking-tighter">27</div>
-              <div className="text-white/70 font-bold text-lg uppercase tracking-wider">Countries Supported</div>
-            </div>
-          </div>
-        </div>
-      </section>
+
 
       <section className="w-full py-24 sm:py-32 bg-muted/20">
         <div className="container mx-auto px-4 max-w-7xl">
