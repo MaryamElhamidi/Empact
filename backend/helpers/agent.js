@@ -562,24 +562,173 @@ async function openVisibleCheckout(url) {
 //   console.log("Done")
 // }
 
-async function donate(email, url, amount) {
-  const donate_url = await agent_donate(url);
-  await agent_fill_multistep(
-    email, 
-    donate_url,
-    amount
-  );
+async function donate(email, url, donation_amount) {
+
+  const options = new chrome.Options();
+
+  const driver = await new Builder()
+    .forBrowser("chrome")
+    .setChromeOptions(options)
+    .build();
+
+  try {
+    console.log("Opening donation page:", url);
+    await driver.get(url);
+    await driver.wait(until.elementLocated(By.css("body")), 10000);
+    await driver.sleep(2000); // wait for dynamic JS content
+
+    // Find all <a> elements
+    const links = await driver.findElements(By.css("a"));
+
+    for (let link of links) {
+      try {
+        const href = await link.getAttribute("href");
+        const text = (await link.getText()).toLowerCase() || "";
+        const cls = (await link.getAttribute("class")) || "";
+
+        // Heuristic: href contains /donate OR text/class contains "donate"
+        if (
+          (href && href.includes("/donate")) ||
+          text.includes("donate") ||
+          cls.toLowerCase().includes("donate")
+        ) {
+          // Make absolute URL
+          const donationUrl = new URL(href, url).href;
+          console.log("Found donation URL:", donationUrl);
+          
+          const dbUser = await users.getUserByEmail(email);
+            if (!dbUser) {
+              await driver.quit();
+              throw new Error("User not found: " + email);
+            }
+            const user = mapDbUserToFormUser(dbUser);
+
+            let amountSelected = false;
+
+            try {
+
+              console.log("Navigating to:", donationUrl);
+
+              await driver.get(donationUrl);
+              await driver.wait(until.elementLocated(By.css("body")), 10000);
+
+              for (let step = 0; step < 12; step++) {
+
+                console.log("Agent step", step);
+
+                await driver.wait(async () => {
+                  const ready = await driver.executeScript(
+                    "return document.readyState === 'complete'"
+                  );
+                  return ready;
+                }, 500).catch(()=>{});
+
+                const elements = await scanPage(driver);
+
+                // --------- Amount selection (only once) ---------
+                if (!amountSelected) {
+
+                  const amountBtn = detectAmountButton(elements, donation_amount);
+
+                  if (amountBtn) {
+                    try {
+                      await amountBtn.click();
+                      amountSelected = true;
+                      console.log("Amount button selected");
+                    } catch {}
+                  }
+
+                  if (!amountSelected) {
+
+                    const amountInput = detectAmountInput(elements);
+
+                    if (amountInput) {
+                      try {
+                        await amountInput.clear();
+                        await amountInput.sendKeys(donation_amount.toString());
+                        amountSelected = true;
+                        console.log("Typed donation amount");
+                      } catch {}
+                    }
+
+                  }
+
+                }
+                // -----------------------------------------------
+
+                await fillUserFields(driver, user);
+
+                const nextBtn = detectNextButton(elements);
+
+                if (nextBtn) {
+
+                  try {
+
+                    console.log("Clicking next");
+
+                    const prev = await driver.findElement(By.css("body"));
+
+                    await nextBtn.click();
+
+                    await driver.wait(until.stalenessOf(prev), 5000).catch(()=>{});
+
+                    continue;
+
+                  } catch {}
+
+                }
+
+                const payBtn = detectPaymentButton(elements);
+
+                if (payBtn) {
+
+                  console.log("Reached payment page");
+
+                  await driver.executeScript(
+                    "arguments[0].scrollIntoView({behavior:'smooth'})",
+                    payBtn
+                  );
+
+                  break;
+                }
+
+              }
+
+              console.log("Automation finished. Ready for payment.");
+
+              return driver;
+
+            } catch (err) {
+
+              console.error("agent_fill_multistep failed:", err);
+              await driver.quit();
+              return null;
+
+            }
+        }
+      } catch {}
+    }
+
+    console.log("No donation link detected.");
+    return null;
+
+  } catch (err) {
+    console.error("Agent donation failed:", err);
+    return null;
+  } finally {
+    await driver.quit();
+  }
 
 }
 
 async function test() {
-
-  await agent_fill_multistep(
-    "carolzjwang@gmail.com",
-    "https://secure.unicef.ca/page/31858/donate/1",
-    15
-  );
+  donate("carolzjwang@gmail.com", "https://www.unicef.ca/en", 15);
+  // await agent_fill_multistep(
+  //   "carolzjwang@gmail.com",
+  //   "https://secure.unicef.ca/page/31858/donate/1",
+  //   15
+  // );
 
 }
 
-//test();
+test();
