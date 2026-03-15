@@ -1,14 +1,404 @@
 {
   "charities": [
     {
-      "charity_id": "charity_001",
-      "name": "Example Relief Organization",
-      "website": "https://example.org",
-      "donation_url": "https://example.org/donate",
-      "regions": ["global"],
-      "focus_values": ["children", "education", "healthcare"],
-      "description": "Provides humanitarian relief for vulnerable children and families.",
-      "verified": true
+    "charity_id":"charity_001",
+    "name":"International Rescue Committee",
+    "website":"https://www.rescue.org",
+    "donation_url":"https://help.rescue.org/donate",
+    "regions":["Afghanistan","Nigeria","Pakistan","Lebanon","Jordan","Syrian Arab Republic","Ukraine"],
+    "focus_values":["refugees","healthcare","education","conflict_relief","disaster_relief"],
+    "description":"Provides emergency relief and sustained support to refugees and crisis‑affected populations worldwide.",
+    "verified":true
+    },
+    {
+    "charity_id":"charity_002",
+    "name":"Médecins Sans Frontières (Doctors Without Borders)",
+    "website":"https://www.msf.org",
+    "donation_url":"https://www.msf.org/donate",
+    "regions":["Sudan","Ethiopia","Democratic Republic of the Congo","Somalia","Syrian Arab Republic","Afghanistan"],
+    "focus_values":["medical_aid","healthcare","conflict_relief","disaster_relief"],
+    "description":"Delivers emergency medical care in conflict zones, epidemics, and disaster areas globally.",
+    "verified":true
+    },
+    {
+    "charity_id":"charity_003",
+    "name":"UNICEF",
+    "website":"https://www.unicef.org",
+    "donation_url":"https://www.unicef.org/donate",
+    "regions":["Afghanistan","Nigeria","Ethiopia","Philippines","Pakistan","Colombia"],
+    "focus_values":["children","education","healthcare","water_access","food_security"],
+    "description":"United Nations agency providing humanitarian and developmental aid to children worldwide.",
+    "verified":true
+    },
+    {
+    "charity_id":"charity_004",
+    "name":"World Food Programme (WFP)",
+    "website":"https://www.wfp.org",
+    "donation_url":"https://www.wfp.org/donate",
+    "regions":["Sudan","Ethiopia","South Sudan","Somalia","Syrian Arab Republic","Afghanistan"],
+    "focus_values":["food_security","disaster_relief","poverty"],
+    "description":"Provides food assistance in emergencies and works to improve nutrition and food security.",
+    "verified":true
+    },
+    {
+    "charity_id":"charity_005",
+    "name":"CARE International",
+    "website":"https://www.care-international.org",
+    "donation_url":"https://www.care-international.org/donate",
+    "regions":["Kenya","Nigeria","Mozambique","Pakistan","Ethiopia"],
+    "focus_values":["poverty","women_support","healthcare","education"],
+    "description":"Fights global poverty and provides disaster relief with a focus on women and girls.",
+    "verified":true
+    },
+    {
+    "charity_id":"charity_006",
+    "name":"Oxfam International",
+    "website":"https://www.oxfam.org",
+    "donation_url":"https://www.oxfam.org/en/donate",
+    "regions":["Kenya","Nigeria","Pakistan","Sri Lanka","Colombia"],
+    "focus_values":["poverty","water_access","disaster_relief","climate"],
+    "description":"Works to alleviate poverty, injustice, and inequality globally.",
+    "verified":true
+    },
+    {
+    "charity_id":"charity_007",
+    "name":"Save the Children",
+    "website":"https://www.savethechildren.net",
+    "donation_url":"https://www.savethechildren.net/donate",
+    "regions":["Afghanistan","Ethiopia","Nigeria","Philippines","Ukraine"],
+    "focus_values":["children","education","healthcare","food_security"],
+    "description":"Protects and supports children in crisis regions with health, education, and emergency services.",
+    "verified":true
+    },
+    {
+    "charity_id":"charity_008",
+    "name":"Action For Humanity",
+    "website":"https://www.actionforhumanity.org",
+    "donation_url":"https://actionforhumanity.org/donate/",
+    "regions":["Syrian Arab Republic","occupied Palestinian territory","Lebanon","Jordan","Türkiye","Pakistan","Ukraine"],
+    "focus_values":["disaster_relief","healthcare","education","food_security","water_access"],
+    "description":"Delivers humanitarian assistance in conflict and disaster zones including Syria and Palestine. :contentReference[oaicite:0]{index=0}",
+    "verified":true
+    },
+    {
+    "charity_id":"charity_009",
+    "name":"Norwegian Refugee Council",
+    "website":"https://www.nrc.no",
+    "donation_url":"https://donate.nrc.no/en",
+    "regions":["Sudan","Somalia","Ukraine","Lebanon"],
+    "focus_values":["refugees","housing","education","conflict_relief"],
+    "description":"Supports displaced and conflict‑affected people with shelter, education and aid.",
+    "verified":true
+    },
+    {
+    "charity_id":"charity_010",
+    "name":"Islamic Relief Worldwide",
+    "website":"https://www.islamic-relief.org",
+    "donation_url":"https://www.islamic-relief.org/donate/",
+    "regions":["Pakistan","Afghanistan","Somalia","Sudan","Syrian Arab Republic","Lebanon"],
+    "focus_values":["food_security","disaster_relief","refugees","water_access"],
+    "description":"Faith‑based humanitarian organisation providing emergency and development aid. :contentReference[oaicite:1]{index=1}",
+    "verified":true
+    },
+    {
+    "charity_id":"charity_011",
+    "name":"Plan International",
+    "website":"https://www.plan-international.org",
+    "donation_url":"https://www.plan-international.org/donate",
+    "regions":["Philippines","Pakistan","Colombia","Nigeria","Lao People's Democratic Republic"],
+    "focus_values":["children","education","women_support"],
+    "description":"Promotes children’s rights and gender equality in underserved communities.",
+    "verified":true
+    },
+    {
+    "charity_id":"charity_012",
+    "name":"Catholic Relief Services",
+    "website":"https://www.crs.org",
+    "donation_url":"https://www.crs.org/give",
+    "regions":["Ethiopia","Kenya","Nigeria","Afghanistan","Pakistan","Sudan"],
+    "focus_values":["food_security","healthcare","poverty","water_access","disaster_relief"],
+    "description":"International humanitarian agency delivering emergency relief and development programs worldwide. :contentReference[oaicite:2]{index=2}",
+    "verified":true
+    },
+    {
+    "charity_id":"charity_013",
+    "name":"Habitat for Humanity International",
+    "website":"https://www.habitat.org",
+    "donation_url":"https://www.habitat.org/donate",
+    "regions":["Nigeria","Pakistan","Kenya","Philippines","Ecuador"],
+    "focus_values":["housing","poverty","women_support"],
+    "description":"Partners with communities to build affordable housing and strengthen resilience.",
+    "verified":true
+    },
+    {
+    "charity_id":"charity_014",
+    "name":"GlobalGiving",
+    "website":"https://www.globalgiving.org",
+    "donation_url":"https://www.globalgiving.org/donate/",
+    "regions":["Afghanistan","Kenya","Nigeria","Ecuador","Sri Lanka","World"], 
+    "focus_values":["education","healthcare","food_security","water_access","disaster_relief"],
+    "description":"Crowdfunding platform connecting donors with grassroots projects worldwide. :contentReference[oaicite:3]{index=3}",
+    "verified":true
+    },
+    {
+    "charity_id":"charity_015",
+    "name":"Human Appeal",
+    "website":"https://humanappeal.org",
+    "donation_url":"https://humanappeal.org/donate",
+    "regions":["occupied Palestinian territory","Sudan","Ethiopia","Pakistan","Lebanon","Somalia"],
+    "focus_values":["food_security","refugees","disaster_relief","healthcare"],
+    "description":"Provides food aid, emergency support and development programs in vulnerable regions. :contentReference[oaicite:4]{index=4}",
+    "verified":true
+    },
+    {
+    "charity_id":"charity_016",
+    "name":"UNHCR, The UN Refugee Agency",
+    "website":"https://www.unhcr.org",
+    "donation_url":"https://donate.unhcr.org",
+    "regions":["Syrian Arab Republic","occupied Palestinian territory","Afghanistan","Sudan","Nigeria"],
+    "focus_values":["refugees","education","housing","healthcare"],
+    "description":"United Nations refugee agency protecting and supporting displaced people worldwide. :contentReference[oaicite:5]{index=5}",
+    "verified":true
+    },
+    {
+    "charity_id":"charity_017",
+    "name":"Saylani Welfare International Trust",
+    "website":"https://www.saylaniwelfare.com",
+    "donation_url":"https://www.saylaniwelfare.com/donate",
+    "regions":["Pakistan"],
+    "focus_values":["food_security","poverty","healthcare","housing"],
+    "description":"NGO in Pakistan providing food distribution and social services to underserved communities. :contentReference[oaicite:6]{index=6}",
+    "verified":true
+    },
+    {
+    "charity_id":"charity_018",
+    "name":"Mary's Meals",
+    "website":"https://www.marysmeals.org",
+    "donation_url":"https://www.marysmeals.org/donate",
+    "regions":["Nigeria","Ethiopia","Pakistan","Kenya","Ecuador"],
+    "focus_values":["education","food_security","poverty"],
+    "description":"Provides school feeding programs to support education and nutrition in developing communities. :contentReference[oaicite:7]{index=7}",
+    "verified":true
+    },
+    {
+    "charity_id":"charity_019",
+    "name":"War Child",
+    "website":"https://www.warchild.org",
+    "donation_url":"https://www.warchild.org/donate",
+    "regions":["Syrian Arab Republic","Lebanon","Chad","Sudan","Colombia"],
+    "focus_values":["children","education","conflict_relief","healthcare"],
+    "description":"Supports children affected by war through protection, education and psychosocial services. :contentReference[oaicite:8]{index=8}",
+    "verified":true
+    },
+    {
+    "charity_id":"charity_020",
+    "name":"Shelter Now International",
+    "website":"https://www.shelternow.org",
+    "donation_url":"https://www.shelternow.org/donate/",
+    "regions":["Afghanistan","Pakistan"],
+    "focus_values":["housing","refugees","disaster_relief"],
+    "description":"Rebuilds homes and infrastructure for displaced communities in Afghanistan and Pakistan.",
+    "verified":true
+    },
+    {
+    "charity_id":"charity_021",
+    "name":"Danish Committee for Aid to Afghan Refugees",
+    "website":"https://www.dcaafghanistan.org",
+    "donation_url":"https://www.dcaafghanistan.org/donate",
+    "regions":["Afghanistan"],
+    "focus_values":["water_access","poverty","refugees"],
+    "description":"Supports Afghan refugees and rural communities through development and water projects.",
+    "verified":true
+    },
+    {
+    "charity_id":"charity_022",
+    "name":"Kenya Red Cross Society",
+    "website":"https://www.redcross.or.ke",
+    "donation_url":"https://www.redcross.or.ke/donate/",
+    "regions":["Kenya"],
+    "focus_values":["disaster_relief","healthcare","food_security"],
+    "description":"Provides emergency relief, health services, and disaster response in Kenya.",
+    "verified":true
+    },
+    {
+    "charity_id":"charity_023",
+    "name":"Nigeria Red Cross Society",
+    "website":"https://redcrossnigeria.org",
+    "donation_url":"https://redcrossnigeria.org/donate/",
+    "regions":["Nigeria"],
+    "focus_values":["disaster_relief","healthcare","water_access"],
+    "description":"Supports communities affected by disasters and conflict in Nigeria.",
+    "verified":true
+    },
+    {
+    "charity_id":"charity_024",
+    "name":"Pakistan Red Crescent Society",
+    "website":"https://prcs.org.pk",
+    "donation_url":"https://prcs.org.pk/donate/",
+    "regions":["Pakistan"],
+    "focus_values":["disaster_relief","healthcare","food_security"],
+    "description":"Provides humanitarian assistance and disaster response across Pakistan.",
+    "verified":true
+    },
+    {
+    "charity_id":"charity_025",
+    "name":"Lebanese Red Cross",
+    "website":"https://www.redcross.org.lb",
+    "donation_url":"https://www.redcross.org.lb/Donate",
+    "regions":["Lebanon"],
+    "focus_values":["medical_aid","disaster_relief","healthcare"],
+    "description":"Delivers emergency medical services and disaster response throughout Lebanon.",
+    "verified":true
+    },
+    {
+    "charity_id":"charity_026",
+    "name":"Philippine Red Cross",
+    "website":"https://redcross.org.ph",
+    "donation_url":"https://redcross.org.ph/donate/",
+    "regions":["Philippines"],
+    "focus_values":["disaster_relief","healthcare","food_security"],
+    "description":"Provides disaster response and medical assistance in the Philippines.",
+    "verified":true
+    },
+    {
+    "charity_id":"charity_027",
+    "name":"Colombian Red Cross",
+    "website":"https://www.cruzrojacolombiana.org",
+    "donation_url":"https://cruzrojacolombiana.org/donaciones/",
+    "regions":["Colombia"],
+    "focus_values":["disaster_relief","healthcare","conflict_relief"],
+    "description":"Provides humanitarian assistance and disaster relief in Colombia.",
+    "verified":true
+    },
+    {
+    "charity_id":"charity_028",
+    "name":"Somalia Humanitarian Fund",
+    "website":"https://www.unocha.org/somalia",
+    "donation_url":"https://crisisrelief.un.org/somalia",
+    "regions":["Somalia"],
+    "focus_values":["food_security","disaster_relief","healthcare"],
+    "description":"Supports humanitarian response and food assistance programs in Somalia.",
+    "verified":true
+    },
+    {
+    "charity_id":"charity_029",
+    "name":"Mercy Hands for Humanitarian Aid",
+    "website":"https://www.mercyhands.org",
+    "donation_url":"https://www.mercyhands.org/donate/",
+    "regions":["Pakistan","Nigeria","Sudan"],
+    "focus_values":["food_security","healthcare","education","women_support"],
+    "description":"Delivers disaster relief, health, and educational support to vulnerable populations.",
+    "verified":true
+    },
+    {
+    "charity_id":"charity_030",
+    "name":"Hand in Hand for Aid and Development",
+    "website":"https://www.hiha.org.uk",
+    "donation_url":"https://www.hiha.org.uk/donate",
+    "regions":["Afghanistan","Pakistan","Seychelles","Kenya"],
+    "focus_values":["education","poverty","women_support","food_security"],
+    "description":"Supports development and empowerment programs in crisis-affected communities.",
+    "verified":true
+    },
+    {
+    "charity_id":"charity_031",
+    "name":"Zakat Foundation of America",
+    "website":"https://www.zakat.org",
+    "donation_url":"https://www.zakat.org/donate/",
+    "regions":["Pakistan","Nigeria","Philippines","Sri Lanka","Ethiopia"],
+    "focus_values":["food_security","poverty","education","healthcare"],
+    "description":"Provides humanitarian assistance, disaster relief, and education programs for underserved communities.",
+    "verified":true
+    },
+    {
+    "charity_id":"charity_032",
+    "name":"Muslim Hands",
+    "website":"https://muslimhands.org.uk",
+    "donation_url":"https://muslimhands.org.uk/donate",
+    "regions":["Pakistan","Afghanistan","Nigeria","Philippines","Sudan"],
+    "focus_values":["food_security","healthcare","education","women_support","disaster_relief"],
+    "description":"Delivers global humanitarian aid including disaster relief and long-term development.",
+    "verified":true
+    },
+    {
+    "charity_id":"charity_033",
+    "name":"Action Against Hunger",
+    "website":"https://www.actionagainsthunger.org",
+    "donation_url":"https://www.actionagainsthunger.org/donate",
+    "regions":["Afghanistan","Ethiopia","Nigeria","Sudan","Pakistan"],
+    "focus_values":["food_security","healthcare","water_access"],
+    "description":"Focuses on fighting hunger and malnutrition in crisis zones worldwide.",
+    "verified":true
+    },
+    {
+    "charity_id":"charity_034",
+    "name":"Concern Worldwide",
+    "website":"https://www.concern.net",
+    "donation_url":"https://www.concern.net/donate",
+    "regions":["Ethiopia","Nigeria","Mozambique","Kenya","Afghanistan","Pakistan"],
+    "focus_values":["healthcare","education","food_security","poverty"],
+    "description":"International humanitarian organization addressing poverty and hunger in crisis-affected countries.",
+    "verified":true
+    },
+    {
+    "charity_id":"charity_035",
+    "name":"ADRA (Adventist Development and Relief Agency)",
+    "website":"https://adra.org",
+    "donation_url":"https://adra.org/donate",
+    "regions":["Philippines","Nigeria","Kenya","Mozambique","Sudan","Afghanistan"],
+    "focus_values":["education","healthcare","food_security","disaster_relief"],
+    "description":"Delivers community development, disaster relief, and humanitarian programs worldwide.",
+    "verified":true
+    },
+    {
+    "charity_id":"charity_036",
+    "name":"ACTED",
+    "website":"https://www.acted.org",
+    "donation_url":"https://www.acted.org/en/donate",
+    "regions":["Afghanistan","Sudan","Colombia","Nigeria","Philippines","Syrian Arab Republic"],
+    "focus_values":["food_security","disaster_relief","water_access","education"],
+    "description":"Provides emergency relief and development support in conflict and disaster regions.",
+    "verified":true
+    },
+    {
+    "charity_id":"charity_037",
+    "name":"Relief International",
+    "website":"https://www.ri.org",
+    "donation_url":"https://www.ri.org/donate/",
+    "regions":["Afghanistan","Iraq","Nigeria","Philippines","Sudan"],
+    "focus_values":["healthcare","education","food_security","disaster_relief"],
+    "description":"Delivers emergency relief and long-term development programs in fragile regions.",
+    "verified":true
+    },
+    {
+    "charity_id":"charity_038",
+    "name":"Terre des Hommes",
+    "website":"https://www.tdh.ch/en",
+    "donation_url":"https://www.tdh.ch/en/donate",
+    "regions":["Pakistan","Afghanistan","Philippines","Nigeria"],
+    "focus_values":["children","education","healthcare","refugees"],
+    "description":"Protects children from poverty, disease, and exploitation and provides humanitarian aid in crisis zones.",
+    "verified":true
+    },
+    {
+    "charity_id":"charity_039",
+    "name":"Plan International Canada",
+    "website":"https://plancanada.ca",
+    "donation_url":"https://plancanada.ca/donate",
+    "regions":["Nigeria","Philippines","Pakistan","Colombia"],
+    "focus_values":["education","children","women_support"],
+    "description":"Advances children’s rights and equality for girls in underserved communities.",
+    "verified":true
+    },
+    {
+    "charity_id":"charity_040",
+    "name":"World Vision",
+    "website":"https://www.worldvision.org",
+    "donation_url":"https://www.worldvision.org/donate",
+    "regions":["Nigeria","Kenya","Ethiopia","Philippines","Pakistan","Afghanistan"],
+    "focus_values":["children","healthcare","education","food_security","poverty"],
+    "description":"Provides humanitarian aid, development programs, and advocacy for children and communities in need.",
+    "verified":true
     }
   ]
 }

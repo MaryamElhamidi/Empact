@@ -17,7 +17,7 @@ import requests
 from bs4 import BeautifulSoup
 
 UPDATES_URL = "https://reliefweb.int/updates"
-LISTING_PAGES = 5  # page=1 through page=5
+LISTING_PAGES = 10  # page=1 through page=10 (~200 reports)
 REQUEST_HEADERS = {
     "User-Agent": "Empact/1.0 (Humanitarian discovery platform; +https://reliefweb.int)",
     "Accept": "text/html,application/xhtml+xml",
