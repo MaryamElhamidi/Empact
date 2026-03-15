@@ -2,6 +2,7 @@
 API layer: return opportunities to UI. Schema must remain unchanged for UI consumption.
 Per _md/00: output JSON schema must remain unchanged.
 """
+import json
 import sys
 from pathlib import Path
 
@@ -11,9 +12,11 @@ if str(_backend) not in sys.path:
 
 from fastapi import FastAPI, Query
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 from typing import List, Optional
 
+from config import CHARITY_REGISTRY_PATH
 from pipeline.run import get_stored_opportunities, get_opportunities_for_user
 
 app = FastAPI(title="Empact Backend API", version="0.1.0")
@@ -52,6 +55,31 @@ def get_opportunities(
         prefs["regions"] = [r.strip() for r in regions.split(",") if r.strip()]
     ranked = get_opportunities_for_user(prefs)
     return {"opportunities": ranked}
+
+
+@app.get("/opportunities/{opportunity_id}")
+def get_opportunity_by_id(opportunity_id: str):
+    """Return one opportunity by id (from stored opportunities). Used by Support Initiative modal."""
+    opportunities = get_stored_opportunities()
+    for o in opportunities:
+        if (o.get("opportunity_id") or "").strip() == (opportunity_id or "").strip():
+            from pipeline.run import _enrich_with_donation_url
+            [enriched] = _enrich_with_donation_url([o])
+            return enriched
+    return JSONResponse(status_code=404, content={"error": "Opportunity not found"})
+
+
+@app.get("/charities/{charity_id}")
+def get_charity_by_id(charity_id: str):
+    """Return one charity by id from backend/data/charity_registry.json. Used by Support Initiative modal."""
+    if not CHARITY_REGISTRY_PATH.exists():
+        return JSONResponse(status_code=404, content={"error": "Charity registry not found"})
+    with open(CHARITY_REGISTRY_PATH, encoding="utf-8") as f:
+        registry = json.load(f)
+    for c in registry.get("charities") or []:
+        if (c.get("charity_id") or "").strip() == (charity_id or "").strip():
+            return c
+    return JSONResponse(status_code=404, content={"error": "Charity not found"})
 
 
 @app.post("/user/preferences")

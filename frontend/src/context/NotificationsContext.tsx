@@ -121,10 +121,14 @@ export function NotificationsProvider({ children }: { children: ReactNode }) {
         }
     }, [user?.profile?.id]);
 
-    // Fetch dynamic news (opportunities)
+    // Fetch dynamic news: opportunities tailored to the user (same as Discover when logged in)
     const fetchNews = useCallback(async () => {
         try {
-            const opportunities = await api.getOpportunities();
+            const causes = user?.profile?.causes?.length ? user.profile.causes.join(",") : "";
+            const regions = user?.profile?.locations?.length ? user.profile.locations.join(",") : "";
+            const opportunities = causes || regions
+                ? await api.getOpportunities({ causes, regions })
+                : await api.getOpportunities();
             const latest = opportunities.slice(0, 5).map((opp: any) => ({
                 id: opp.opportunity_id,
                 title: opp.title,
@@ -156,7 +160,7 @@ export function NotificationsProvider({ children }: { children: ReactNode }) {
             console.error(e);
             return [];
         }
-    }, [browserPushEnabled]);
+    }, [user?.profile?.causes, user?.profile?.locations, browserPushEnabled]);
 
     const refreshNotifications = useCallback(async () => {
         setIsLoading(true);

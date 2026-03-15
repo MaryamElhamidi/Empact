@@ -3,23 +3,16 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { FilterBar } from "@/components/discover/FilterBar";
 import { OpportunityCard, OpportunityProps } from "@/components/discover/OpportunityCard";
+import { SupportInitiativeModal } from "@/components/discover/SupportInitiativeModal";
 import { api } from "@/lib/api";
 import { useOpportunities } from "@/context/OpportunitiesContext";
 import { useAuth } from "@/context/AuthContext";
-import { Loader2, X, ExternalLink } from "lucide-react";
+import type { OpportunityItem } from "@/context/OpportunitiesContext";
+import { Loader2 } from "lucide-react";
 
 const PAGE_SIZE = 9;
 
-type OpportunityApi = {
-    opportunity_id: string;
-    title: string;
-    summary?: string | null;
-    region?: string | null;
-    organization?: { name?: string; website?: string | null; verified?: boolean };
-    donation?: { donation_url?: string | null; suggested_amounts?: number[] };
-};
-
-function mapApiToProps(opp: OpportunityApi): OpportunityProps {
+function mapApiToProps(opp: OpportunityItem): OpportunityProps {
     return {
         id: opp.opportunity_id,
         title: opp.title ?? "",
@@ -28,47 +21,97 @@ function mapApiToProps(opp: OpportunityApi): OpportunityProps {
         donationUrl: opp.donation?.donation_url ?? null,
         organizationWebsite: opp.organization?.website ?? null,
         isVerified: opp.organization?.verified,
+        cause: opp.cause ?? null,
+        values: opp.values ?? [],
     };
+}
+
+function formatCauseLabel(cause: string): string {
+    return cause.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
 }
 
 export default function Discover() {
     const { user, isAuthenticated } = useAuth();
     const { opportunities: rawOpportunities, isLoading: opportunitiesLoading } = useOpportunities();
+    const [selectedCause, setSelectedCause] = useState<string>("all");
+    const [selectedRegion, setSelectedRegion] = useState<string>("any");
     const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
     const [topIssues, setTopIssues] = useState<Array<{ name: string; icon: string; count: number }>>([]);
+
+    const uniqueRegions = [...new Set(rawOpportunities.map((o) => o.region).filter(Boolean))].sort() as string[];
+    const uniqueCauses = [...new Set(rawOpportunities.map((o) => o.cause).filter(Boolean))].sort() as string[];
+
+    const filteredOpportunities = (() => {
+        const isDefaultFilters = selectedCause === "all" && selectedRegion === "any";
+        if (isDefaultFilters) {
+            return rawOpportunities;
+        }
+        const filtered = rawOpportunities.filter((o) => {
+            if (selectedCause !== "all" && (o.cause || "").toLowerCase() !== selectedCause.toLowerCase()) return false;
+            if (selectedRegion !== "any" && (o.region || "") !== selectedRegion) return false;
+            return true;
+        });
+        const parseDate = (s: string | null | undefined) => {
+            if (!s) return 0;
+            try {
+                return new Date(s.replace("Z", "+00:00")).getTime();
+            } catch {
+                return 0;
+            }
+        };
+        return [...filtered].sort((a, b) => parseDate(b.date_discovered) - parseDate(a.date_discovered));
+    })();
     const [loadingMore, setLoadingMore] = useState(false);
     const [issuesLoading, setIssuesLoading] = useState(true);
-    const [relatedOpportunityId, setRelatedOpportunityId] = useState<string | null>(null);
-    const [relatedCharities, setRelatedCharities] = useState<Array<{ charity_id: string; name: string; website: string | null; donation_url: string | null }>>([]);
-    const [relatedLoading, setRelatedLoading] = useState(false);
+    const [supportModalOpportunityId, setSupportModalOpportunityId] = useState<string | null>(null);
     const loadMoreSentinelRef = useRef<HTMLDivElement>(null);
 
-    const allOpportunities: OpportunityProps[] = rawOpportunities.map(mapApiToProps);
+    const allOpportunities: OpportunityProps[] = filteredOpportunities.map(mapApiToProps);
     const loading = opportunitiesLoading;
     const [highlightedId, setHighlightedId] = useState<string | null>(null);
+    const [hashFromUrl, setHashFromUrl] = useState<string>(() =>
+        typeof window !== "undefined" ? (window.location.hash || "").replace(/^#/, "") : ""
+    );
 
     useEffect(() => {
-        if (!loading && allOpportunities.length > 0) {
-            const hash = window.location.hash.replace("#", "");
-            if (hash && !highlightedId) {
-                setHighlightedId(hash);
-                const index = allOpportunities.findIndex(opp => opp.id === hash);
-                if (index !== -1) {
-                    if (index >= visibleCount) {
-                        setVisibleCount(index + 1);
-                    }
-                    setTimeout(() => {
-                        const el = document.getElementById(`opp-${hash}`);
-                        if (el) {
-                            el.scrollIntoView({ behavior: "smooth", block: "center" });
-                        }
-                    }, 500);
-                }
-            }
+        const onHashChange = () => setHashFromUrl((window.location.hash || "").replace(/^#/, ""));
+        window.addEventListener("hashchange", onHashChange);
+        if (typeof window !== "undefined" && window.location.hash) {
+            setHashFromUrl((window.location.hash || "").replace(/^#/, ""));
         }
-    }, [loading, allOpportunities, visibleCount, highlightedId]);
+        return () => window.removeEventListener("hashchange", onHashChange);
+    }, []);
+
+    useEffect(() => {
+        if (!hashFromUrl) {
+            setHighlightedId(null);
+            return;
+        }
+        if (loading || allOpportunities.length === 0) return;
+        const index = allOpportunities.findIndex((opp) => opp.id === hashFromUrl);
+        if (index === -1) return;
+        setHighlightedId(hashFromUrl);
+        if (index >= visibleCount) {
+            setVisibleCount(index + 1);
+        }
+        const scrollToCard = () => {
+            const el = document.getElementById(`opp-${hashFromUrl}`);
+            if (el) el.scrollIntoView({ behavior: "smooth", block: "center" });
+        };
+        const t = setTimeout(scrollToCard, index >= visibleCount ? 400 : 100);
+        return () => clearTimeout(t);
+    }, [loading, allOpportunities, hashFromUrl, visibleCount]);
     const hasMore = visibleCount < allOpportunities.length;
     const opportunities = allOpportunities.slice(0, visibleCount);
+
+    const handleCauseChange = (value: string) => {
+        setSelectedCause(value);
+        setVisibleCount(PAGE_SIZE);
+    };
+    const handleRegionChange = (value: string) => {
+        setSelectedRegion(value);
+        setVisibleCount(PAGE_SIZE);
+    };
 
     const loadMoreTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
     const loadMore = useCallback(() => {
@@ -106,63 +149,16 @@ export default function Discover() {
             .finally(() => setIssuesLoading(false));
     }, []);
 
-    useEffect(() => {
-        if (!relatedOpportunityId) {
-            setRelatedCharities([]);
-            return;
-        }
-        setRelatedLoading(true);
-        api.getRelatedCharities(relatedOpportunityId)
-            .then(setRelatedCharities)
-            .catch(() => setRelatedCharities([]))
-            .finally(() => setRelatedLoading(false));
-    }, [relatedOpportunityId]);
-
     const handleSupportClick = (opportunityId: string) => {
-        setRelatedOpportunityId(opportunityId);
+        setSupportModalOpportunityId(opportunityId);
     };
 
     return (
         <div className="flex flex-col min-h-screen bg-background pb-24">
-            {/* Related charities popup – top right */}
-            {relatedOpportunityId && (
-                <div className="fixed top-20 right-4 z-50 w-80 max-w-[calc(100vw-2rem)] rounded-2xl border border-border bg-card shadow-xl p-4 animate-in slide-in-from-right-5 duration-200">
-                    <div className="flex items-center justify-between mb-3">
-                        <h3 className="font-bold text-sm text-foreground">Charities with same causes</h3>
-                        <button
-                            type="button"
-                            onClick={() => setRelatedOpportunityId(null)}
-                            className="p-1 rounded-full hover:bg-muted text-muted-foreground"
-                            aria-label="Close"
-                        >
-                            <X className="h-4 w-4" />
-                        </button>
-                    </div>
-                    {relatedLoading ? (
-                        <div className="flex items-center justify-center py-6">
-                            <Loader2 className="w-6 h-6 animate-spin text-primary" />
-                        </div>
-                    ) : relatedCharities.length === 0 ? (
-                        <p className="text-sm text-muted-foreground py-2">No related charities found.</p>
-                    ) : (
-                        <ul className="space-y-2">
-                            {relatedCharities.map((c) => (
-                                <li key={c.charity_id}>
-                                    <a
-                                        href={c.donation_url || c.website || "#"}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="flex items-center gap-2 text-sm font-medium text-primary hover:underline"
-                                    >
-                                        <span className="line-clamp-1">{c.name}</span>
-                                        <ExternalLink className="h-3.5 w-3.5 flex-shrink-0" />
-                                    </a>
-                                </li>
-                            ))}
-                        </ul>
-                    )}
-                </div>
-            )}
+            <SupportInitiativeModal
+                opportunityId={supportModalOpportunityId}
+                onClose={() => setSupportModalOpportunityId(null)}
+            />
 
             <div className="bg-primary text-primary-foreground pt-20 pb-28 lg:pb-32 relative overflow-hidden">
                 <div className="absolute inset-0 bg-secondary opacity-50 mix-blend-multiply" />
@@ -174,7 +170,15 @@ export default function Discover() {
             </div>
 
             <div className="container mx-auto px-4 lg:px-8 -mt-12 relative z-20">
-                <FilterBar />
+                <FilterBar
+                    regions={uniqueRegions}
+                    causes={uniqueCauses}
+                    selectedCause={selectedCause}
+                    selectedRegion={selectedRegion}
+                    onCauseChange={handleCauseChange}
+                    onRegionChange={handleRegionChange}
+                    formatCauseLabel={formatCauseLabel}
+                />
             </div>
 
             <div className="container mx-auto px-4 lg:px-8 mt-20">

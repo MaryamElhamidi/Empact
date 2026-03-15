@@ -96,6 +96,51 @@ function sortByRelevancy(opportunities, userCauses, userRegions) {
   });
 }
 
+function resolveDataPath(relativeFromBackend) {
+  const fromHelpers = path.resolve(__dirname, "../../data", relativeFromBackend);
+  if (fs.existsSync(fromHelpers)) return fromHelpers;
+  const fromCwd = path.resolve(process.cwd(), "backend", "data", relativeFromBackend);
+  if (fs.existsSync(fromCwd)) return fromCwd;
+  return fromHelpers;
+}
+
+/** Load opportunities from backend/data/opportunities.json; enrich donation_url from charity_registry. */
+function getOpportunitiesFromJsonSync(filters) {
+  const opportunitiesPath = resolveDataPath("opportunities.json");
+  let list;
+  try {
+    const raw = fs.readFileSync(opportunitiesPath, "utf8");
+    list = JSON.parse(raw);
+    if (!Array.isArray(list)) return null;
+  } catch (_) {
+    return null;
+  }
+  const registryPath = resolveDataPath("charity_registry.json");
+  let charityIdToUrl = {};
+  try {
+    const registry = JSON.parse(fs.readFileSync(registryPath, "utf8"));
+    (registry.charities || []).forEach((c) => {
+      if (c.charity_id) charityIdToUrl[c.charity_id] = c.donation_url || "";
+    });
+  } catch (_) {}
+  const userCauses = filters && filters.causes
+    ? (typeof filters.causes === "string" ? filters.causes.split(",").map((s) => s.trim()).filter(Boolean) : filters.causes)
+    : [];
+  const userRegions = filters && filters.regions
+    ? (typeof filters.regions === "string" ? filters.regions.split(",").map((s) => s.trim()).filter(Boolean) : filters.regions)
+    : [];
+  const useRelevancy = userCauses.length > 0 || userRegions.length > 0;
+  const out = list.map((o) => {
+    const donation = { ...(o.donation || {}) };
+    const cid = donation.charity_id;
+    if (cid && charityIdToUrl[cid] != null) donation.donation_url = charityIdToUrl[cid];
+    else if (!donation.donation_url) donation.donation_url = "";
+    return { ...o, donation };
+  });
+  if (useRelevancy) return sortByRelevancy(out, userCauses, userRegions);
+  return out;
+}
+
 /** Map DB row to opportunities.json shape */
 function rowToJson(r) {
   const suggestedAmounts = r.suggested_amounts != null
@@ -128,6 +173,9 @@ function rowToJson(r) {
 
 async function getOpportunities(filters) {
   filters = filters || {};
+  const fromJson = getOpportunitiesFromJsonSync(filters);
+  if (fromJson && fromJson.length > 0) return fromJson;
+
   const userCauses = filters.causes ? (typeof filters.causes === "string" ? filters.causes.split(",").map((s) => s.trim()).filter(Boolean) : filters.causes) : [];
   const userRegions = filters.regions ? (typeof filters.regions === "string" ? filters.regions.split(",").map((s) => s.trim()).filter(Boolean) : filters.regions) : [];
   const useRelevancy = userCauses.length > 0 || userRegions.length > 0;
@@ -160,6 +208,8 @@ async function getOpportunities(filters) {
 }
 
 async function getFeaturedOpportunity() {
+  const fromJson = getOpportunitiesFromJsonSync({});
+  if (fromJson && fromJson.length > 0) return fromJson[0];
   const [rows] = await db.execute(
     "SELECT opportunity_id, title, summary, cause, region, org_name, org_website, org_verified, donation_url, suggested_amounts, `values`, ai_confidence_score, date_discovered, source_url FROM opportunities ORDER BY ai_confidence_score DESC LIMIT 1"
   );
@@ -167,6 +217,11 @@ async function getFeaturedOpportunity() {
 }
 
 async function getOpportunityById(id) {
+  const fromJson = getOpportunitiesFromJsonSync({});
+  if (fromJson && fromJson.length > 0) {
+    const found = fromJson.find((o) => (o.opportunity_id || "").toString() === (id || "").toString());
+    if (found) return found;
+  }
   const [rows] = await db.execute(
     "SELECT opportunity_id, title, summary, cause, region, org_name, org_website, org_verified, donation_url, suggested_amounts, `values`, ai_confidence_score, date_discovered, source_url FROM opportunities WHERE opportunity_id = ?",
     [id]
