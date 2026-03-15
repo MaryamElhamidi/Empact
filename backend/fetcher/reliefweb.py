@@ -1,7 +1,7 @@
 """
-ReliefWeb updates fetcher. HTML only: fetch listing pages 1–5, then each report page.
+ReliefWeb updates fetcher. HTML only: fetch Headlines listing pages, then each report page.
 Per _md/01_reliefweb_fetching.md: title, event URL, region, publish date, article text.
-Listing: https://reliefweb.int/updates?page=1 (through page=5)
+Listing: https://reliefweb.int/updates?view=headlines&page=1 (through page=10)
 Report: https://reliefweb.int/report/{country}/{slug}
 """
 import re
@@ -17,6 +17,7 @@ import requests
 from bs4 import BeautifulSoup
 
 UPDATES_URL = "https://reliefweb.int/updates"
+LISTING_VIEW = "headlines"  # view=headlines for headlines listing
 LISTING_PAGES = 10  # page=1 through page=10 (~200 reports)
 REQUEST_HEADERS = {
     "User-Agent": "Empact/1.0 (Humanitarian discovery platform; +https://reliefweb.int)",
@@ -35,10 +36,10 @@ def _strip_html(text: str) -> str:
 
 
 def _fetch_listing_page(page: int) -> str:
-    """Fetch one updates listing page: https://reliefweb.int/updates?page=1 .. page=5."""
+    """Fetch one Headlines listing page: ...?view=headlines&page=1 .. page=10."""
     resp = requests.get(
         UPDATES_URL,
-        params={"page": page},
+        params={"view": LISTING_VIEW, "page": page},
         headers=REQUEST_HEADERS,
         timeout=25,
     )
@@ -148,7 +149,7 @@ def _fetch_report_page(url: str) -> dict:
 
 def fetch_all_raw_events() -> list:
     """
-    Fetch pages 1–5 of https://reliefweb.int/updates, extract report URLs, then visit each
+    Fetch pages 1–N of https://reliefweb.int/updates?view=headlines, extract report URLs, then visit each
     report page and extract title, region, date, raw_text. Returns list of {title, url, region, date, raw_text}.
     """
     raw_events = []

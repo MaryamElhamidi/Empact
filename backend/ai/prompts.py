@@ -9,13 +9,13 @@ Your job is to convert the following article into a structured humanitarian oppo
 Rules:
 
 - Summarize the crisis clearly in under 60 words
-- Identify the main cause of the crisis
-- Identify the geographic region
-- Assign relevant humanitarian values from the provided list
+- Set "cause" to exactly ONE of the allowed values below that best describes the primary cause of the crisis. Do NOT default to disaster_relief unless the crisis is primarily a natural disaster (flood, earthquake, cyclone, etc.). Use conflict_relief for armed conflict or war; refugees for displacement/refugee crises; climate for climate-related or drought; food_security for hunger/famine; healthcare or medical_aid for disease/health; education when education is disrupted; etc.
+- Identify the geographic region (country or region name)
+- Assign all relevant humanitarian values from the allowed list that apply (can be multiple)
 - Leave the donation_url field empty
 - Return ONLY valid JSON
 
-Allowed values:
+Allowed values for both "cause" (pick one) and "values" (pick all that apply):
 
 children
 education

@@ -19,7 +19,7 @@ _backend = Path(__file__).resolve().parent.parent
 if str(_backend) not in sys.path:
     sys.path.insert(0, str(_backend))
 
-from config import OPPORTUNITIES_PATH
+from config import OPPORTUNITIES_PATH, VALUES_TAXONOMY_PATH
 from fetcher.reliefweb import fetch_all_raw_events
 from ai.gemini_client import summarize_and_structure
 from charity_matching.matcher import populate_donation_and_organization
@@ -27,6 +27,85 @@ from matching.user_matching import rank_opportunities_for_user
 
 # In-memory store for opportunities; also persisted to backend/data/opportunities.json
 _opportunities_store: list = []
+
+# Allowed cause values (same as values taxonomy) for validation
+def _allowed_causes() -> list:
+    try:
+        with open(VALUES_TAXONOMY_PATH) as f:
+            return json.load(f).get("values", [])
+    except Exception:
+        return ["children", "education", "healthcare", "food_security", "refugees", "poverty", "climate", "disaster_relief", "conflict_relief", "women_support", "water_access", "housing", "medical_aid"]
+
+
+# Map common Gemini phrasing to taxonomy cause values
+_CAUSE_SYNONYMS = {
+    "conflict": "conflict_relief", "war": "conflict_relief", "armed conflict": "conflict_relief",
+    "disaster": "disaster_relief", "flood": "disaster_relief", "earthquake": "disaster_relief",
+    "cyclone": "disaster_relief", "natural disaster": "disaster_relief",
+    "drought": "climate", "climate": "climate", "climate change": "climate",
+    "refugee": "refugees", "displacement": "refugees",
+    "famine": "food_security", "hunger": "food_security", "food": "food_security",
+    "health": "healthcare", "disease": "medical_aid", "cholera": "medical_aid", "malnutrition": "medical_aid",
+    "education": "education", "children": "children",
+    "poverty": "poverty", "water": "water_access", "housing": "housing",
+    "women": "women_support",
+}
+
+# Keyword hints to infer cause from text when model defaults to disaster_relief (order matters: first match wins)
+_CAUSE_KEYWORDS = [
+    ("conflict_relief", ["conflict", "war", "warring", "violence", "evacuation", "hostilities", "armed", "military", "displacement due to conflict"]),
+    ("refugees", ["refugee", "displaced", "displacement", "fleeing", "fled", "asylum", "returnees"]),
+    ("food_security", ["famine", "hunger", "food insecurity", "starving", "malnutrition", "food crisis", "acute food"]),
+    ("climate", ["drought", "climate", "cyclone", "flooding", "floods", "rainfall", "heavy rain"]),
+    ("medical_aid", ["cholera", "disease", "health crisis", "vaccine", "immunization", "outbreak", "medical"]),
+    ("healthcare", ["health", "healthcare", "hospital", "clinics"]),
+    ("education", ["education", "schools", "children out of school", "learning"]),
+    ("disaster_relief", ["flood", "earthquake", "cyclone", "natural disaster", "flooding"]),  # keep as fallback
+]
+
+
+def _infer_cause_from_text(text: str) -> str:
+    """Infer cause from summary/title when Gemini defaults to disaster_relief. Returns taxonomy cause value."""
+    if not text:
+        return "disaster_relief"
+    t = text.lower()
+    for cause, keywords in _CAUSE_KEYWORDS:
+        if any(k in t for k in keywords):
+            return cause
+    return "disaster_relief"
+
+
+def _normalize_cause(gemini_out: dict) -> None:
+    """Ensure cause is exactly one of the allowed taxonomy values; fix if not."""
+    allowed = _allowed_causes()
+    cause = (gemini_out.get("cause") or "").strip().lower()
+    summary = (gemini_out.get("summary") or gemini_out.get("title") or "")
+
+    # When model defaults to disaster_relief, infer from text so causes are varied
+    if cause == "disaster_relief" and summary:
+        inferred = _infer_cause_from_text(summary)
+        if inferred in allowed and inferred != "disaster_relief":
+            gemini_out["cause"] = inferred
+            return
+    if cause in allowed:
+        return
+    # Try synonym map (e.g. "conflict" -> conflict_relief)
+    if cause in _CAUSE_SYNONYMS and _CAUSE_SYNONYMS[cause] in allowed:
+        gemini_out["cause"] = _CAUSE_SYNONYMS[cause]
+        return
+    for key, val in _CAUSE_SYNONYMS.items():
+        if key in cause or cause in key:
+            if val in allowed:
+                gemini_out["cause"] = val
+                return
+    # Try first value from "values" that is allowed
+    for v in gemini_out.get("values") or []:
+        if v in allowed:
+            gemini_out["cause"] = v
+            return
+    # Last resort: infer from summary/title text
+    inferred = _infer_cause_from_text(summary)
+    gemini_out["cause"] = inferred if inferred in allowed else "disaster_relief"
 
 
 def _make_opportunity(raw: dict, gemini_out: dict, source_url: str) -> dict:
@@ -79,9 +158,11 @@ def run_pipeline(max_events: int = 20) -> list:
                 "ai_confidence_score": 0.0,
                 "date_discovered": datetime.now(timezone.utc).isoformat(),
             }
+        _normalize_cause(gemini_out)
         opp = _make_opportunity(raw, gemini_out, raw.get("url", ""))
         opp["donation"]["donation_url"] = ""
         opp = populate_donation_and_organization(opp)
+        opp["donation"]["donation_url"] = ""  # keep donation_url blank per request
         opportunities.append(opp)
     global _opportunities_store
     _opportunities_store = opportunities
