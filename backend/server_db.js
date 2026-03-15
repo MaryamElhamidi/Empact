@@ -127,10 +127,14 @@ router.get("/users/:userId/donations", async (req, res) => {
   }
 });
 
-/* Get impact stats for user */
+/* Get impact stats for user (total donated, people helped, countries from donations table) */
 router.get("/users/:userId/impact", async (req, res) => {
   try {
-    const result = await donations.getImpactStatsByUser(req.params.userId);
+    const userId = parseInt(req.params.userId, 10);
+    if (Number.isNaN(userId) || userId < 1) {
+      return res.status(400).json({ error: "Invalid user id" });
+    }
+    const result = await donations.getImpactStatsByUser(userId);
     res.json(result);
   } catch (err) {
     console.error(err);

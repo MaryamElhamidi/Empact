@@ -40,6 +40,8 @@ export function Globe({
     const canvasRef = useRef<HTMLCanvasElement>(null)
     const pointerInteracting = useRef<number | null>(null)
     const pointerInteractionMovement = useRef(0)
+    const spinVelocity = useRef(0)
+    const lastPointerData = useRef<{ x: number; t: number } | null>(null)
     const [r, setR] = useState(0)
 
     const updatePointerInteraction = (value: number | null) => {
@@ -47,10 +49,23 @@ export function Globe({
         if (canvasRef.current) {
             canvasRef.current.style.cursor = value !== null ? "grabbing" : "grab"
         }
+        if (value === null) {
+            lastPointerData.current = null
+        }
     }
 
     const updateMovement = (clientX: number) => {
         if (pointerInteracting.current !== null) {
+            const now = performance.now()
+            if (lastPointerData.current) {
+                const dx = clientX - lastPointerData.current.x
+                const dt = now - lastPointerData.current.t
+                if (dt > 0) {
+                    const velocity = dx / dt
+                    spinVelocity.current = velocity * 0.02
+                }
+            }
+            lastPointerData.current = { x: clientX, t: now }
             const delta = clientX - pointerInteracting.current
             pointerInteractionMovement.current = delta
             setR(delta / 200)
@@ -59,7 +74,13 @@ export function Globe({
 
     const onRender = useCallback(
         (state: Record<string, any>) => {
-            if (pointerInteracting.current === null) phi += 0.003
+            if (pointerInteracting.current === null) {
+                phi += 0.003 + spinVelocity.current
+                spinVelocity.current *= 0.95
+                if (Math.abs(spinVelocity.current) < 0.0001) {
+                    spinVelocity.current = 0
+                }
+            }
             state.phi = phi + r
             state.width = width * 2
             state.height = width * 2

@@ -118,6 +118,61 @@ export const api = {
     return data as { message: string };
   },
 
+  /** POST /model/donate - run agent donate flow. If onProgress provided, streams progress via SSE. Records donation in DB when done. */
+  async donate(
+    email: string,
+    url: string,
+    amount: number,
+    onProgress?: (msg: string) => void,
+    options?: { organizationName?: string; currency?: string; country?: string }
+  ): Promise<{ started?: boolean }> {
+    const headers: Record<string, string> = { "Content-Type": "application/json" };
+    if (onProgress) headers["Accept"] = "text/event-stream";
+    const body: Record<string, unknown> = { email, url, amount };
+    if (options?.organizationName) body.organization_name = options.organizationName;
+    if (options?.currency) body.currency = options.currency;
+    if (options?.country) body.country = options.country;
+    const res = await fetch(`${getBaseUrl()}/model/donate`, {
+      method: "POST",
+      headers,
+      body: JSON.stringify(body),
+    });
+    if (!onProgress) {
+      const data = await res.json();
+      if (!res.ok) throw new Error((data as { error?: string }).error || "Donate failed");
+      return data as { started: boolean };
+    }
+    if (!res.ok) {
+      const data = await res.json().catch(() => ({}));
+      throw new Error((data as { error?: string }).error || "Donate failed");
+    }
+    const reader = res.body?.getReader();
+    if (!reader) throw new Error("No response body");
+    const decoder = new TextDecoder();
+    let buffer = "";
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      buffer += decoder.decode(value, { stream: true });
+      const lines = buffer.split("\n");
+      buffer = lines.pop() ?? "";
+      for (const line of lines) {
+        if (line.startsWith("data: ")) {
+          try {
+            const obj = JSON.parse(line.slice(6)) as { msg?: string; error?: string; done?: boolean };
+            if (obj.msg) onProgress(obj.msg);
+            if (obj.error) throw new Error(obj.error);
+            if (obj.done) return {};
+          } catch (e) {
+            if (e instanceof SyntaxError) continue;
+            throw e;
+          }
+        }
+      }
+    }
+    return {};
+  },
+
   /** GET /api/users/:userId/impact */
   async getImpactStats(userId: number) {
     const res = await fetch(`${getBaseUrl()}/api/users/${userId}/impact`);

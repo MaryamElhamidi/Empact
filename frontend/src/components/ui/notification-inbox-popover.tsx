@@ -25,8 +25,8 @@ function NotificationInboxPopover() {
     return (
         <Popover>
             <PopoverTrigger asChild>
-                <Button size="icon" variant="outline" className="relative group rounded-full w-10 h-10 border-border/40 hover:border-primary/50 transition-all duration-300" aria-label="Open notifications">
-                    <Bell size={18} strokeWidth={2} aria-hidden="true" className="text-muted-foreground group-hover:text-primary transition-colors" />
+                <Button size="icon" variant="outline" className="relative group rounded-full w-10 h-10 border-border/40 hover:border-primary/50 hover:bg-primary transition-all duration-300" aria-label="Open notifications">
+                    <Bell size={18} strokeWidth={2} aria-hidden="true" className="text-muted-foreground group-hover:text-white transition-colors duration-300" />
                     {unreadCount > 0 && (
                         <Badge className="absolute -top-1 -right-1 min-w-[20px] h-[20px] flex items-center justify-center bg-primary text-primary-foreground font-bold text-[10px] p-0 border-2 border-background shadow-sm shadow-primary/20">
                             {unreadCount > 99 ? "99+" : unreadCount}

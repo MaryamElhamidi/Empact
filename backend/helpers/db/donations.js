@@ -7,8 +7,8 @@ async function createDonation(donation) {
 
   const sql = `
     INSERT INTO donations
-    (user_id, campaign_url, amount, currency, country, people_helped)
-    VALUES (?, ?, ?, ?, ?, ?)
+    (user_id, campaign_url, amount, currency, country, people_helped, organization_name)
+    VALUES (?, ?, ?, ?, ?, ?, ?)
   `;
 
   const values = [
@@ -17,7 +17,8 @@ async function createDonation(donation) {
     donation.amount,
     donation.currency ?? "USD",
     donation.country ?? null,
-    donation.people_helped ?? null
+    donation.people_helped ?? null,
+    donation.organization_name ?? null
   ];
 
   const [result] = await db.execute(sql, values);

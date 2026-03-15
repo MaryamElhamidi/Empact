@@ -14,8 +14,14 @@ export function ImpactDashboard({ userId }: ImpactDashboardProps) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    const id = Number(userId);
+    if (Number.isNaN(id) || id < 1) {
+      setStats({ totalDonated: 0, peopleHelped: 0, countriesSupported: 0 });
+      setLoading(false);
+      return;
+    }
     api
-      .getImpactStats(userId)
+      .getImpactStats(id)
       .then(setStats)
       .catch(() => setStats({ totalDonated: 0, peopleHelped: 0, countriesSupported: 0 }))
       .finally(() => setLoading(false));

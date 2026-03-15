@@ -1,19 +1,10 @@
 const { Builder, By, until, Key } = require("selenium-webdriver");
 const chrome = require("selenium-webdriver/chrome");
+const users = require("./db/users");
 
 require("chromedriver");
 
-const BACKEND_URL = process.env.BACKEND_URL || process.env.API_URL || "http://localhost:3001";
-
-/** Fetch user by email from the backend API (no direct DB access). */
-async function getUserByEmailFromApi(email) {
-  const url = `${BACKEND_URL.replace(/\/$/, "")}/api/users/${encodeURIComponent(email)}`;
-  const res = await fetch(url);
-  if (!res.ok) return null;
-  return await res.json();
-}
-
-/** Map API user (snake_case) to shape expected by fillUserFields (camelCase) */
+/** Map DB user (snake_case) to shape expected by fillUserFields (camelCase) */
 function mapDbUserToFormUser(dbUser) {
   return {
     firstName: dbUser.first_name ?? "",
@@ -48,82 +39,53 @@ async function scanPage(driver) {
       "button,input,select,a,label"
     ));
 
-    return els.map(el => {
-      const inner = (el.innerText || "").toLowerCase();
-      const full = (el.textContent || "").toLowerCase();
-      return {
-        el,
-        text: (inner || full).trim(),
-        textWithChildren: (inner + " " + full).trim(),
-        aria: (el.getAttribute("aria-label") || "").toLowerCase(),
-        name: (el.name || "").toLowerCase(),
-        id: (el.id || "").toLowerCase(),
-        cls: (el.className || "").toLowerCase(),
-        placeholder: (el.getAttribute("placeholder") || "").toLowerCase()
-      };
-    });
+    return els.map(el => ({
+      el,
+      text: (el.innerText || "").toLowerCase(),
+      aria: (el.getAttribute("aria-label") || "").toLowerCase(),
+      name: (el.name || "").toLowerCase(),
+      id: (el.id || "").toLowerCase(),
+      cls: (el.className || "").toLowerCase()
+    }));
 
   });
 
 }
 
 function detectAmountButton(elements, amount) {
-  const amountNum = Number(amount);
-  if (Number.isNaN(amountNum)) return null;
-  for (const e of elements) {
-    const searchText = (e.textWithChildren != null ? e.textWithChildren : e.text) || "";
-    const match = searchText.match(/[\$£€]?\s*(\d+(?:\.\d+)?)/);
+
+  for (let e of elements) {
+
+    const match = e.text.match(/[\$£€]?\s?(\d+(\.\d+)?)/);
+
     if (match) {
+
       const value = parseFloat(match[1]);
-      if (value === amountNum) return e.el;
+
+      if (value === amount) {
+        return e.el;
+      }
+
     }
   }
+
   return null;
 }
 
 function detectAmountInput(elements) {
-  let matched = null;
 
   for (let e of elements) {
-    const name = e.name || "";
-    const id = e.id || "";
-    const cls = e.cls || "";
-    const placeholder = e.placeholder || "";
 
-    // Strongly prefer explicit "other amount" style inputs:
-    // <input name="amount_other" type="number" class="input-element" placeholder="Other" ...>
-    const phLower = placeholder.toLowerCase();
     if (
-      name === "amount_other" ||
-      (name.includes("amount") && name.includes("other")) ||
-      (cls.includes("input-element") && (phLower === "other" || phLower === "other amount"))
+      e.name.includes("amount") ||
+      e.id.includes("amount") ||
+      e.cls.includes("amount")
     ) {
-      matched = e.el;
-      break;
-    }
-
-    // Existing heuristics: generic "amount" fields
-    if (
-      name.includes("amount") ||
-      id.includes("amount") ||
-      cls.includes("amount")
-    ) {
-      matched = e.el;
-      break;
-    }
-
-    // Explicit support for inputs like:
-    // <input class="n3o-input-amount" ... placeholder="Enter an amount">
-    if (
-      cls.includes("n3o-input-amount") ||
-      placeholder.includes("enter an amount")
-    ) {
-      matched = e.el;
-      break;
+      return e.el;
     }
   }
 
-  return matched;
+  return null;
 }
 
 function detectNextButton(elements) {
@@ -286,7 +248,7 @@ async function fillUserFields(driver, user) {
 async function agent_fill_multistep(email, url, donation_amount) {
 
   const driver = await openDriver();
-  const dbUser = await getUserByEmailFromApi(email);
+  const dbUser = await users.getUserByEmail(email);
   if (!dbUser) {
     await driver.quit();
     throw new Error("User not found: " + email);
@@ -330,18 +292,7 @@ async function agent_fill_multistep(email, url, donation_amount) {
 
         if (!amountSelected) {
 
-                  let amountInput = detectAmountInput(elements);
-
-                  // Fallback: explicitly target inputs like
-                  // <input class="n3o-input-amount" type="number" ... placeholder="Enter an amount">
-                  if (!amountInput) {
-                    try {
-                      const specialInputs = await driver.findElements(By.css("input.n3o-input-amount"));
-                      if (specialInputs && specialInputs.length > 0) {
-                        amountInput = specialInputs[0];
-                      }
-                    } catch {}
-                  }
+          const amountInput = detectAmountInput(elements);
 
           if (amountInput) {
             try {
@@ -385,15 +336,10 @@ async function agent_fill_multistep(email, url, donation_amount) {
 
         console.log("Reached payment page");
 
-        try {
-          await driver.executeScript(
-            "arguments[0].scrollIntoView({behavior:'smooth'})",
-            payBtn
-          );
-        } catch (e) {
-          // If the element went stale between detection and scroll, just continue
-          console.warn("scrollIntoView payBtn failed (stale?), continuing");
-        }
+        await driver.executeScript(
+          "arguments[0].scrollIntoView({behavior:'smooth'})",
+          payBtn
+        );
 
         break;
       }
@@ -616,24 +562,16 @@ async function openVisibleCheckout(url) {
 //   console.log("Done")
 // }
 
-async function donate(email, url, donation_amount, onProgress) {
-  const progress = typeof onProgress === "function" ? onProgress : () => {};
+async function donate(email, url, donation_amount) {
 
   const options = new chrome.Options();
-  options.addArguments(
-    "--disable-gpu",
-    "--disable-extensions",
-    "--disable-background-networking",
-    "--disable-sync",
-    "--disable-notifications"
-  );
+
   const driver = await new Builder()
     .forBrowser("chrome")
     .setChromeOptions(options)
     .build();
 
   try {
-    progress("Opening donation page…");
     console.log("Opening donation page:", url);
     await driver.get(url);
     await driver.wait(until.elementLocated(By.css("body")), 10000);
@@ -656,10 +594,9 @@ async function donate(email, url, donation_amount, onProgress) {
         ) {
           // Make absolute URL
           const donationUrl = new URL(href, url).href;
-          progress("Found donation form, loading…");
           console.log("Found donation URL:", donationUrl);
-
-          const dbUser = await getUserByEmailFromApi(email);
+          
+          const dbUser = await users.getUserByEmail(email);
             if (!dbUser) {
               await driver.quit();
               throw new Error("User not found: " + email);
@@ -670,7 +607,6 @@ async function donate(email, url, donation_amount, onProgress) {
 
             try {
 
-              progress("Entering donation amount $" + donation_amount + "…");
               console.log("Navigating to:", donationUrl);
 
               await driver.get(donationUrl);
@@ -698,79 +634,28 @@ async function donate(email, url, donation_amount, onProgress) {
                     try {
                       await amountBtn.click();
                       amountSelected = true;
-                      progress("Donation amount $" + donation_amount + " selected.");
                       console.log("Amount button selected");
-                    } catch (err) {}
+                    } catch {}
                   }
 
                   if (!amountSelected) {
 
-                    let amountInput = detectAmountInput(elements);
-                    // Dynamically detect any input related to donation amount
-                    if (!amountInput) {
-                      try {
-
-                        const inputs = await driver.findElements(By.css("input, textarea"));
-
-                        for (const input of inputs) {
-
-                          const name = ((await input.getAttribute("name")) || "").toLowerCase();
-                          const id = ((await input.getAttribute("id")) || "").toLowerCase();
-                          const cls = ((await input.getAttribute("class")) || "").toLowerCase();
-                          const placeholder = ((await input.getAttribute("placeholder")) || "").toLowerCase();
-                          const aria = ((await input.getAttribute("aria-label")) || "").toLowerCase();
-                          const style = ((await input.getAttribute("style")) || "").toLowerCase();
-                          const type = ((await input.getAttribute("type")) || "").toLowerCase();
-
-                          const combined = `${name} ${id} ${cls} ${placeholder} ${aria} ${style}`;
-
-                          if (
-                            combined.includes("amount") ||
-                            combined.includes("other") ||
-                            combined.includes("donation") ||
-                            placeholder.includes("$") ||
-                            type === "number"
-                          ) {
-                            amountInput = input;
-                            break;
-                          }
-
-                        }
-
-                      } catch {}
-                    }
-                    if (!amountInput) {
-                      try {
-                        const iframes = await driver.findElements(By.css("iframe"));
-                        for (const frame of iframes) {
-                          await driver.switchTo().frame(frame);
-                          for (const sel of ["input[name='amount_other']", "input.input-element[type='number']", "input.n3o-input-amount", "input[placeholder*='amount']"]) {
-                            const inFrame = await driver.findElements(By.css(sel));
-                            if (inFrame && inFrame.length > 0) { amountInput = inFrame[0]; break; }
-                          }
-                          if (amountInput) break;
-                          await driver.switchTo().defaultContent();
-                        }
-                      } catch (e) { try { await driver.switchTo().defaultContent(); } catch {} }
-                    }
+                    const amountInput = detectAmountInput(elements);
 
                     if (amountInput) {
                       try {
                         await amountInput.clear();
                         await amountInput.sendKeys(donation_amount.toString());
                         amountSelected = true;
-                        progress("Entered donation amount $" + donation_amount + ".");
                         console.log("Typed donation amount");
                       } catch {}
                     }
-                    try { await driver.switchTo().defaultContent(); } catch {}
 
                   }
 
                 }
                 // -----------------------------------------------
 
-                progress("Entering your information…");
                 await fillUserFields(driver, user);
 
                 const nextBtn = detectNextButton(elements);
@@ -779,7 +664,6 @@ async function donate(email, url, donation_amount, onProgress) {
 
                   try {
 
-                    progress("Moving to next step…");
                     console.log("Clicking next");
 
                     const prev = await driver.findElement(By.css("body"));
@@ -798,17 +682,12 @@ async function donate(email, url, donation_amount, onProgress) {
 
                 if (payBtn) {
 
-                  progress("Ready for payment. Complete payment in the browser window.");
                   console.log("Reached payment page");
 
-                  try {
-                    await driver.executeScript(
-                      "arguments[0].scrollIntoView({behavior:'smooth'})",
-                      payBtn
-                    );
-                  } catch (e) {
-                    console.warn("scrollIntoView payBtn failed (stale?), continuing");
-                  }
+                  await driver.executeScript(
+                    "arguments[0].scrollIntoView({behavior:'smooth'})",
+                    payBtn
+                  );
 
                   break;
                 }
@@ -816,19 +695,8 @@ async function donate(email, url, donation_amount, onProgress) {
               }
 
               console.log("Automation finished. Ready for payment.");
-              progress("Close the browser window when you are done with payment.");
 
-              while (true) {
-                try {
-                  await driver.getWindowHandle();
-                  await driver.sleep(1000);
-                } catch (err) {
-                  console.log("Browser window closed.");
-                  break;
-                }
-              }
-
-              return null;
+              return driver;
 
             } catch (err) {
 
@@ -841,13 +709,15 @@ async function donate(email, url, donation_amount, onProgress) {
       } catch {}
     }
 
-    progress("No donation link detected on this page.");
     console.log("No donation link detected.");
 
-    const donationUrl = url;
-          console.log("Found donation URL:", donationUrl);
+
+    
+          // Make absolute URL
+          const donationUrl = url;
+          console.log("Donation URL:", donationUrl);
           
-          const dbUser = await getUserByEmailFromApi(email);
+          const dbUser = await users.getUserByEmail(email);
             if (!dbUser) {
               await driver.quit();
               throw new Error("User not found: " + email);
@@ -890,55 +760,7 @@ async function donate(email, url, donation_amount, onProgress) {
 
                   if (!amountSelected) {
 
-                    let amountInput = detectAmountInput(elements);
-                    // Dynamically detect any input related to donation amount
-                    if (!amountInput) {
-                      try {
-
-                        const inputs = await driver.findElements(By.css("input, textarea"));
-
-                        for (const input of inputs) {
-
-                          const name = ((await input.getAttribute("name")) || "").toLowerCase();
-                          const id = ((await input.getAttribute("id")) || "").toLowerCase();
-                          const cls = ((await input.getAttribute("class")) || "").toLowerCase();
-                          const placeholder = ((await input.getAttribute("placeholder")) || "").toLowerCase();
-                          const aria = ((await input.getAttribute("aria-label")) || "").toLowerCase();
-                          const style = ((await input.getAttribute("style")) || "").toLowerCase();
-                          const type = ((await input.getAttribute("type")) || "").toLowerCase();
-
-                          const combined = `${name} ${id} ${cls} ${placeholder} ${aria} ${style}`;
-
-                          if (
-                            combined.includes("amount") ||
-                            combined.includes("other") ||
-                            combined.includes("donation") ||
-                            placeholder.includes("$") ||
-                            type === "number"
-                          ) {
-                            amountInput = input;
-                            break;
-                          }
-
-                        }
-
-                      } catch {}
-                    }
-                        
-                    if (!amountInput) {
-                      try {
-                        const iframes = await driver.findElements(By.css("iframe"));
-                        for (const frame of iframes) {
-                          await driver.switchTo().frame(frame);
-                          for (const sel of ["input[name='amount_other']", "input.input-element[type='number']", "input.n3o-input-amount", "input[placeholder*='amount']"]) {
-                            const inFrame = await driver.findElements(By.css(sel));
-                            if (inFrame && inFrame.length > 0) { amountInput = inFrame[0]; break; }
-                          }
-                          if (amountInput) break;
-                          await driver.switchTo().defaultContent();
-                        }
-                      } catch (e) { try { await driver.switchTo().defaultContent(); } catch {} }
-                    }
+                    const amountInput = detectAmountInput(elements);
 
                     if (amountInput) {
                       try {
@@ -948,7 +770,6 @@ async function donate(email, url, donation_amount, onProgress) {
                         console.log("Typed donation amount");
                       } catch {}
                     }
-                    try { await driver.switchTo().defaultContent(); } catch {}
 
                   }
 
@@ -983,14 +804,10 @@ async function donate(email, url, donation_amount, onProgress) {
 
                   console.log("Reached payment page");
 
-                  try {
-                    await driver.executeScript(
-                      "arguments[0].scrollIntoView({behavior:'smooth'})",
-                      payBtn
-                    );
-                  } catch (e) {
-                    console.warn("scrollIntoView payBtn failed (stale?), continuing");
-                  }
+                  await driver.executeScript(
+                    "arguments[0].scrollIntoView({behavior:'smooth'})",
+                    payBtn
+                  );
 
                   break;
                 }
@@ -998,19 +815,8 @@ async function donate(email, url, donation_amount, onProgress) {
               }
 
               console.log("Automation finished. Ready for payment.");
-              console.log("Close the browser window when you are done with payment.");
 
-              while (true) {
-                try {
-                  await driver.getWindowHandle();
-                  await driver.sleep(1000);
-                } catch (err) {
-                  console.log("Browser window closed.");
-                  break;
-                }
-              }
-
-              return null;
+              return driver;
 
             } catch (err) {
 
@@ -1023,21 +829,22 @@ async function donate(email, url, donation_amount, onProgress) {
     return null;
 
   } catch (err) {
-    progress("Error: " + (err && err.message));
     console.error("Agent donation failed:", err);
     return null;
   } finally {
-    try {
-      await driver.quit();
-    } catch (e) {
-      // ignore if window was already closed by user
-    }
+    await driver.quit();
   }
 
 }
 
-module.exports = {
-  agent_fill_multistep,
-  agent_donate,
-  donate
-};
+async function test() {
+  donate("carolzjwang@gmail.com", "https://www.unicef.ca/en", 15);
+  // await agent_fill_multistep(
+  //   "carolzjwang@gmail.com",
+  //   "https://secure.unicef.ca/page/31858/donate/1",
+  //   15
+  // );
+
+}
+
+test();

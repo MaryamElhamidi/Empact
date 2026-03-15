@@ -5,6 +5,7 @@ import { X, MapPin, Calendar, ExternalLink, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { api } from "@/lib/api";
+import { useAuth } from "@/context/AuthContext";
 import { DonateAmountModal } from "@/components/discover/DonateAmountModal";
 
 function formatTag(s: string): string {
@@ -19,6 +20,11 @@ function formatDate(s: string | null | undefined): string {
     } catch {
         return String(s);
     }
+}
+
+/** Remove AI citation placeholders e.g. :contentReference[oaicite:4]{index=4} from text. */
+function stripContentReference(text: string): string {
+    return text.replace(/:contentReference\[oaicite:\d+\]\{index=\d+\}/g, "").trim();
 }
 
 export interface SupportModalOpportunity {
@@ -62,11 +68,14 @@ interface SupportInitiativeModalProps {
 }
 
 export function SupportInitiativeModal({ opportunityId, trendContent = null, onClose }: SupportInitiativeModalProps) {
+    const { user } = useAuth();
     const [opportunity, setOpportunity] = useState<SupportModalOpportunity | null>(null);
     const [opportunityLoading, setOpportunityLoading] = useState(false);
     const [charity, setCharity] = useState<CharityInfo | null>(null);
     const [charityLoading, setCharityLoading] = useState(false);
     const [showDonateAmount, setShowDonateAmount] = useState(false);
+    const [donateLoading, setDonateLoading] = useState(false);
+    const [donateProgress, setDonateProgress] = useState<string | null>(null);
 
     useEffect(() => {
         if (trendContent) {
@@ -161,7 +170,7 @@ export function SupportInitiativeModal({ opportunityId, trendContent = null, onC
                                     </div>
                                 )}
                                 {charity.description && (
-                                    <p className="text-sm text-foreground/80 leading-relaxed mb-6">{charity.description}</p>
+                                    <p className="text-sm text-foreground/80 leading-relaxed mb-6">{stripContentReference(charity.description)}</p>
                                 )}
                             </>
                         ) : (
@@ -169,19 +178,31 @@ export function SupportInitiativeModal({ opportunityId, trendContent = null, onC
                         )}
                         <Button
                             className="w-full h-12 font-bold rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground"
+                            disabled={!donationUrl || !user?.profile?.email || donateLoading}
                             onClick={() => setShowDonateAmount(true)}
                         >
-                            Donate Now
+                            {donateLoading ? "Running…" : "Donate Now"}
                         </Button>
+                        {donateLoading && donateProgress && (
+                            <p className="mt-3 text-sm text-muted-foreground text-center">{donateProgress}</p>
+                        )}
                     </div>
                 </div>
             </div>
             {showDonateAmount && (
                 <DonateAmountModal
                     onClose={() => setShowDonateAmount(false)}
-                    onConfirm={(amount) => {
-                        if (donationUrl) window.open(donationUrl, "_blank", "noopener,noreferrer");
+                    onConfirm={async (amount) => {
+                        const email = user?.profile?.email;
+                        if (!donationUrl || !email) return;
+                        setDonateLoading(true);
+                        setDonateProgress(null);
                         setShowDonateAmount(false);
+                        try {
+                            await api.donate(email, donationUrl, amount, (msg) => setDonateProgress(msg), { organizationName: charity?.name });
+                        } finally {
+                            setDonateLoading(false);
+                        }
                     }}
                 />
             )}
@@ -301,7 +322,7 @@ export function SupportInitiativeModal({ opportunityId, trendContent = null, onC
                             )}
                             {charity.description && (
                                 <p className="text-sm text-foreground/80 leading-relaxed mb-6">
-                                    {charity.description}
+                                    {stripContentReference(charity.description)}
                                 </p>
                             )}
                         </>
@@ -311,20 +332,32 @@ export function SupportInitiativeModal({ opportunityId, trendContent = null, onC
 
                     <Button
                         className="w-full h-12 font-bold rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground"
+                        disabled={!charity?.donation_url || !user?.profile?.email || donateLoading}
                         onClick={() => setShowDonateAmount(true)}
                     >
-                        Donate Now
+                        {donateLoading ? "Running…" : "Donate Now"}
                     </Button>
+                    {donateLoading && donateProgress && (
+                        <p className="mt-3 text-sm text-muted-foreground text-center">{donateProgress}</p>
+                    )}
                 </div>
             </div>
         </div>
         {showDonateAmount && (
             <DonateAmountModal
                 onClose={() => setShowDonateAmount(false)}
-                onConfirm={(amount) => {
+                onConfirm={async (amount) => {
+                    const email = user?.profile?.email;
                     const url = charity?.donation_url;
-                    if (url) window.open(url, "_blank", "noopener,noreferrer");
+                    if (!url || !email) return;
+                    setDonateLoading(true);
+                    setDonateProgress(null);
                     setShowDonateAmount(false);
+                    try {
+                        await api.donate(email, url, amount, (msg) => setDonateProgress(msg), { organizationName: charity?.name });
+                    } finally {
+                        setDonateLoading(false);
+                    }
                 }}
             />
         )}

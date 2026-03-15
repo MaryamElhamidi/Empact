@@ -34,7 +34,9 @@ export function FilterBar({
             <div className="grid grid-cols-2 gap-3 w-full flex-grow">
                 <Select value={selectedCause} onValueChange={onCauseChange}>
                     <SelectTrigger className="rounded-xl h-12 border-border/80 font-semibold bg-muted/40 focus:ring-primary/20 transition-all hover:bg-muted/80">
-                        <SelectValue placeholder="Cause" />
+                        <SelectValue placeholder="Cause">
+                            {selectedCause === "all" ? "All Causes" : formatCauseLabel(selectedCause)}
+                        </SelectValue>
                     </SelectTrigger>
                     <SelectContent className="rounded-xl font-medium max-h-[280px] overflow-y-auto">
                         <SelectItem value="all" className="rounded-lg">All Causes</SelectItem>
@@ -48,7 +50,9 @@ export function FilterBar({
 
                 <Select value={selectedRegion} onValueChange={onRegionChange}>
                     <SelectTrigger className="rounded-xl h-12 border-border/80 font-semibold bg-muted/40 focus:ring-primary/20 transition-all hover:bg-muted/80">
-                        <SelectValue placeholder="Region" />
+                        <SelectValue placeholder="Region">
+                            {selectedRegion === "any" ? "Any Region" : selectedRegion}
+                        </SelectValue>
                     </SelectTrigger>
                     <SelectContent className="rounded-xl font-medium max-h-[280px] overflow-y-auto">
                         <SelectItem value="any" className="rounded-lg">Any Region</SelectItem>
