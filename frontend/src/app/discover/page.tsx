@@ -70,27 +70,38 @@ export default function Discover() {
     const allOpportunities: OpportunityProps[] = filteredOpportunities.map(mapApiToProps);
     const loading = opportunitiesLoading;
     const [highlightedId, setHighlightedId] = useState<string | null>(null);
+    const [hashFromUrl, setHashFromUrl] = useState<string>(() =>
+        typeof window !== "undefined" ? (window.location.hash || "").replace(/^#/, "") : ""
+    );
 
     useEffect(() => {
-        if (!loading && allOpportunities.length > 0) {
-            const hash = window.location.hash.replace("#", "");
-            if (hash && !highlightedId) {
-                setHighlightedId(hash);
-                const index = allOpportunities.findIndex(opp => opp.id === hash);
-                if (index !== -1) {
-                    if (index >= visibleCount) {
-                        setVisibleCount(index + 1);
-                    }
-                    setTimeout(() => {
-                        const el = document.getElementById(`opp-${hash}`);
-                        if (el) {
-                            el.scrollIntoView({ behavior: "smooth", block: "center" });
-                        }
-                    }, 500);
-                }
-            }
+        const onHashChange = () => setHashFromUrl((window.location.hash || "").replace(/^#/, ""));
+        window.addEventListener("hashchange", onHashChange);
+        if (typeof window !== "undefined" && window.location.hash) {
+            setHashFromUrl((window.location.hash || "").replace(/^#/, ""));
         }
-    }, [loading, allOpportunities, visibleCount, highlightedId]);
+        return () => window.removeEventListener("hashchange", onHashChange);
+    }, []);
+
+    useEffect(() => {
+        if (!hashFromUrl) {
+            setHighlightedId(null);
+            return;
+        }
+        if (loading || allOpportunities.length === 0) return;
+        const index = allOpportunities.findIndex((opp) => opp.id === hashFromUrl);
+        if (index === -1) return;
+        setHighlightedId(hashFromUrl);
+        if (index >= visibleCount) {
+            setVisibleCount(index + 1);
+        }
+        const scrollToCard = () => {
+            const el = document.getElementById(`opp-${hashFromUrl}`);
+            if (el) el.scrollIntoView({ behavior: "smooth", block: "center" });
+        };
+        const t = setTimeout(scrollToCard, index >= visibleCount ? 400 : 100);
+        return () => clearTimeout(t);
+    }, [loading, allOpportunities, hashFromUrl, visibleCount]);
     const hasMore = visibleCount < allOpportunities.length;
     const opportunities = allOpportunities.slice(0, visibleCount);
 
