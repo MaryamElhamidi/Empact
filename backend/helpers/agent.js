@@ -1,10 +1,19 @@
 const { Builder, By, until, Key } = require("selenium-webdriver");
 const chrome = require("selenium-webdriver/chrome");
-const users = require("./db/users");
 
 require("chromedriver");
 
-/** Map DB user (snake_case) to shape expected by fillUserFields (camelCase) */
+const BACKEND_URL = process.env.BACKEND_URL || process.env.API_URL || "http://localhost:3001";
+
+/** Fetch user by email from the backend API (no direct DB access). */
+async function getUserByEmailFromApi(email) {
+  const url = `${BACKEND_URL.replace(/\/$/, "")}/api/users/${encodeURIComponent(email)}`;
+  const res = await fetch(url);
+  if (!res.ok) return null;
+  return await res.json();
+}
+
+/** Map API user (snake_case) to shape expected by fillUserFields (camelCase) */
 function mapDbUserToFormUser(dbUser) {
   return {
     firstName: dbUser.first_name ?? "",
@@ -248,7 +257,7 @@ async function fillUserFields(driver, user) {
 async function agent_fill_multistep(email, url, donation_amount) {
 
   const driver = await openDriver();
-  const dbUser = await users.getUserByEmail(email);
+  const dbUser = await getUserByEmailFromApi(email);
   if (!dbUser) {
     await driver.quit();
     throw new Error("User not found: " + email);
@@ -596,7 +605,7 @@ async function donate(email, url, donation_amount) {
           const donationUrl = new URL(href, url).href;
           console.log("Found donation URL:", donationUrl);
           
-          const dbUser = await users.getUserByEmail(email);
+          const dbUser = await getUserByEmailFromApi(email);
             if (!dbUser) {
               await driver.quit();
               throw new Error("User not found: " + email);
@@ -695,8 +704,19 @@ async function donate(email, url, donation_amount) {
               }
 
               console.log("Automation finished. Ready for payment.");
+              console.log("Close the browser window when you are done with payment.");
 
-              return driver;
+              while (true) {
+                try {
+                  await driver.getWindowHandle();
+                  await driver.sleep(1000);
+                } catch (err) {
+                  console.log("Browser window closed.");
+                  break;
+                }
+              }
+
+              return null;
 
             } catch (err) {
 
@@ -716,19 +736,17 @@ async function donate(email, url, donation_amount) {
     console.error("Agent donation failed:", err);
     return null;
   } finally {
-    await driver.quit();
+    try {
+      await driver.quit();
+    } catch (e) {
+      // ignore if window was already closed by user
+    }
   }
 
 }
 
-async function test() {
-  donate("carolzjwang@gmail.com", "https://www.unicef.ca/en", 15);
-  // await agent_fill_multistep(
-  //   "carolzjwang@gmail.com",
-  //   "https://secure.unicef.ca/page/31858/donate/1",
-  //   15
-  // );
-
-}
-
-test();
+module.exports = {
+  agent_fill_multistep,
+  agent_donate,
+  donate
+};
