@@ -42,11 +42,7 @@ export const userStore = {
     getUserData: (): UserData => {
         if (typeof window === "undefined") return defaultUserData;
         const stored = localStorage.getItem(STORAGE_KEY);
-        if (!stored) {
-            // Initialize with default data if none exists
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(defaultUserData));
-            return defaultUserData;
-        }
+        if (!stored) return defaultUserData;
         return JSON.parse(stored);
     },
 

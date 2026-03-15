@@ -7,15 +7,17 @@ async function createDonation(donation) {
 
   const sql = `
     INSERT INTO donations
-    (user_id, campaign_url, amount, currency)
-    VALUES (?, ?, ?, ?)
+    (user_id, campaign_url, amount, currency, country, people_helped)
+    VALUES (?, ?, ?, ?, ?, ?)
   `;
 
   const values = [
     donation.user_id,
-    donation.campaign_url,
+    donation.campaign_url ?? null,
     donation.amount,
-    donation.currency
+    donation.currency ?? "USD",
+    donation.country ?? null,
+    donation.people_helped ?? null
   ];
 
   const [result] = await db.execute(sql, values);
@@ -69,14 +71,18 @@ async function updateDonation(donationId, updatedDonation) {
     SET
       campaign_url = ?,
       amount = ?,
-      currency = ?
+      currency = ?,
+      country = ?,
+      people_helped = ?
     WHERE donation_id = ?
   `;
 
   const values = [
-    updatedDonation.campaign_url,
+    updatedDonation.campaign_url ?? null,
     updatedDonation.amount,
-    updatedDonation.currency,
+    updatedDonation.currency ?? "USD",
+    updatedDonation.country ?? null,
+    updatedDonation.people_helped ?? null,
     donationId
   ];
 
@@ -101,11 +107,43 @@ async function deleteDonation(donationId) {
   return result.affectedRows;
 }
 
+/*
+Impact stats for a user: totalDonated, peopleHelped, countriesSupported
+*/
+async function getImpactStatsByUser(userId) {
+
+  const [sumRows] = await db.execute(
+    `SELECT COALESCE(SUM(amount), 0) AS total_donated,
+            COALESCE(SUM(people_helped), 0) AS total_people_helped
+     FROM donations WHERE user_id = ?`,
+    [userId]
+  );
+
+  const [countryRows] = await db.execute(
+    `SELECT COUNT(DISTINCT country) AS count
+     FROM donations WHERE user_id = ? AND country IS NOT NULL AND country != ''`,
+    [userId]
+  );
+
+  const totalDonated = Number(sumRows[0]?.total_donated ?? 0);
+  let peopleHelped = Number(sumRows[0]?.total_people_helped ?? 0);
+  if (peopleHelped === 0 && totalDonated > 0) {
+    peopleHelped = Math.max(1, Math.floor(totalDonated / 6.25));
+  }
+  const countriesSupported = Number(countryRows[0]?.count ?? 0);
+
+  return {
+    totalDonated,
+    peopleHelped,
+    countriesSupported
+  };
+}
 
 module.exports = {
   createDonation,
   getDonationById,
   getDonationsByUser,
   updateDonation,
-  deleteDonation
+  deleteDonation,
+  getImpactStatsByUser
 };

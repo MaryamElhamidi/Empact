@@ -3,6 +3,11 @@ const bcrypt = require("bcrypt");
 const db = require("./helpers/db/db_conn");
 const users = require("./helpers/db/users");
 const donations = require("./helpers/db/donations");
+const opportunities = require("./helpers/db/opportunities");
+const globalIssues = require("./helpers/db/global_issues");
+const notifications = require("./helpers/db/notifications");
+const wallets = require("./helpers/db/wallets");
+const paymentMethods = require("./helpers/db/payment_methods");
 const router = express.Router();
 
 /*
@@ -14,7 +19,11 @@ USER ROUTES
 /* Create user */
 router.post("/users", async (req, res) => {
   try {
-    const id = await users.createUser(req.body);
+    const body = { ...req.body };
+    if (body.password) {
+      body.password = await bcrypt.hash(body.password, 10);
+    }
+    const id = await users.createUser(body);
     res.json({ user_id: id });
   } catch (err) {
     console.error(err);
@@ -115,6 +124,119 @@ router.get("/users/:userId/donations", async (req, res) => {
   }
 });
 
+/* Get impact stats for user */
+router.get("/users/:userId/impact", async (req, res) => {
+  try {
+    const result = await donations.getImpactStatsByUser(req.params.userId);
+    res.json(result);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to retrieve impact stats" });
+  }
+});
+
+/* Get user notifications */
+router.get("/users/:userId/notifications", async (req, res) => {
+  try {
+    const result = await notifications.getByUserId(req.params.userId);
+    res.json(result);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to retrieve notifications" });
+  }
+});
+
+/* Mark all notifications read */
+router.patch("/users/:userId/notifications/read-all", async (req, res) => {
+  try {
+    await notifications.markAllAsRead(req.params.userId);
+    res.json({ updated: true });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to update notifications" });
+  }
+});
+
+/* Mark one notification read */
+router.patch("/users/:userId/notifications/:id/read", async (req, res) => {
+  try {
+    const n = await notifications.markAsRead(req.params.id, req.params.userId);
+    if (n === 0) return res.status(404).json({ error: "Notification not found" });
+    res.json({ updated: true });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to update notification" });
+  }
+});
+
+/* Create notification */
+router.post("/users/:userId/notifications", async (req, res) => {
+  try {
+    const id = await notifications.create(req.params.userId, req.body);
+    res.status(201).json({ notification_id: id });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to create notification" });
+  }
+});
+
+/* Delete notification */
+router.delete("/users/:userId/notifications/:id", async (req, res) => {
+  try {
+    const n = await notifications.remove(req.params.id, req.params.userId);
+    if (n === 0) return res.status(404).json({ error: "Notification not found" });
+    res.json({ deleted: true });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to delete notification" });
+  }
+});
+
+/* Get or create wallet */
+router.get("/users/:userId/wallet", async (req, res) => {
+  try {
+    const result = await wallets.getOrCreateWallet(req.params.userId, req.query.currency);
+    res.json(result);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to retrieve wallet" });
+  }
+});
+
+/* Get payment methods */
+router.get("/users/:userId/payment-methods", async (req, res) => {
+  try {
+    const result = await paymentMethods.getByUserId(req.params.userId);
+    res.json(result);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to retrieve payment methods" });
+  }
+});
+
+/* Add payment method */
+router.post("/users/:userId/payment-methods", async (req, res) => {
+  try {
+    const id = await paymentMethods.add(req.params.userId, req.body);
+    res.status(201).json({ payment_method_id: id });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to add payment method" });
+  }
+});
+
+/* Remove payment method */
+router.delete("/users/:userId/payment-methods/:id", async (req, res) => {
+  try {
+    const n = await paymentMethods.remove(req.params.id, req.params.userId);
+    if (n === 0) return res.status(404).json({ error: "Payment method not found" });
+    res.json({ deleted: true });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to remove payment method" });
+  }
+});
+
 /* Update donation */
 router.put("/donations/:id", async (req, res) => {
   try {
@@ -147,11 +269,64 @@ router.delete("/donations/:id", async (req, res) => {
   }
 });
 
+/*
+--------------------------------
+OPPORTUNITIES & GLOBAL ISSUES
+--------------------------------
+*/
+
+/* Get opportunities (query: urgency, country, issue_id) */
+router.get("/opportunities", async (req, res) => {
+  try {
+    const result = await opportunities.getOpportunities(req.query);
+    res.json(result);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to retrieve opportunities" });
+  }
+});
+
+/* Get featured opportunity (home page) */
+router.get("/opportunities/featured", async (req, res) => {
+  try {
+    const result = await opportunities.getFeaturedOpportunity();
+    if (!result) return res.status(404).json({ error: "No featured opportunity" });
+    res.json(result);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to retrieve featured opportunity" });
+  }
+});
+
+/* Get opportunity by ID */
+router.get("/opportunities/:id", async (req, res) => {
+  try {
+    const result = await opportunities.getOpportunityById(req.params.id);
+    if (!result) return res.status(404).json({ error: "Opportunity not found" });
+    res.json(result);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to retrieve opportunity" });
+  }
+});
+
+/* Get global issues with opportunity counts */
+router.get("/global-issues", async (req, res) => {
+  try {
+    const result = await globalIssues.getGlobalIssuesWithCounts();
+    res.json(result);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to retrieve global issues" });
+  }
+});
+
 router.post("/login", async (req, res) => {
 
   try {
 
-    const { email, password } = req.body;
+    const email = req.body.email;
+    const password = req.body.password;
 
     if (!email || !password) {
       return res.status(400).json({ success: false, error: "Missing email or password" });

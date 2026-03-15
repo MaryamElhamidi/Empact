@@ -107,7 +107,7 @@ function NotificationItem({ notification }: { notification: Notification }) {
 }
 
 export const NotificationsMenu = () => {
-    const { notifications, unreadCount, markAllAsRead } = useNotifications();
+    const { notifications, unreadCount, markAllAsRead, isLoading } = useNotifications();
     const [activeTab, setActiveTab] = React.useState<string>("all");
 
     const criticalCount = notifications.filter(n => n.type === "CRITICAL_ALERT").length;
@@ -183,7 +183,11 @@ export const NotificationsMenu = () => {
 
             <CardContent className="h-full p-0 relative z-10">
                 <div className="space-y-0 divide-y divide-border/20">
-                    {filteredNotifications.length > 0 ? (
+                    {isLoading ? (
+                        <div className="py-24 flex items-center justify-center text-muted-foreground font-medium">
+                            Loading…
+                        </div>
+                    ) : filteredNotifications.length > 0 ? (
                         filteredNotifications.map((notification) => (
                             <NotificationItem
                                 key={notification.id}

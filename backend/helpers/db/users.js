@@ -56,15 +56,15 @@ async function createUser(user) {
   `;
 
   const values = [
-    user.firstName,
-    user.lastName,
-    user.email,
-    user.address,
-    user.city,
-    user.postalCode,
-    user.country,
-    user.stripeCustomerId,
-    user.password
+    user.firstName ?? null,
+    user.lastName ?? null,
+    user.email ?? null,
+    user.address ?? null,
+    user.city ?? null,
+    user.postalCode ?? null,
+    user.country ?? null,
+    user.stripeCustomerId ?? null,
+    user.password ?? null
   ];
 
   const [result] = await db.execute(sql, values);

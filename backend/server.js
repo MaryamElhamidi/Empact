@@ -1,11 +1,13 @@
 require("dotenv").config();
 const express = require("express");
+const cors = require("cors");
 
 const dbRoutes = require("./server_db");
 const modelRoutes = require("./server_agent");
 
 const app = express();
 
+app.use(cors({ origin: true }));
 app.use(express.json());
 
 /* Mount DB routes */

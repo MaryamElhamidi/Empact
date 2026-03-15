@@ -1,23 +1,42 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/context/AuthContext";
 import { DonationButtonGroup } from "@/components/donate/DonationButtonGroup";
 import { Button } from "@/components/ui/button";
 import { InteractiveHoverButton } from "@/components/ui/interactive-hover-button";
 import { CheckCircle2, ShieldCheck, ArrowRight, HeartPulse } from "lucide-react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
+import { api } from "@/lib/api";
 
 export default function DonateFlow() {
     const [step, setStep] = useState(1);
     const [amount, setAmount] = useState<number>(0);
+    const [error, setError] = useState<string | null>(null);
+    const { user, isLoading: authLoading } = useAuth();
+    const router = useRouter();
 
-    const handleDonate = () => {
-        if (amount > 0) {
-            setStep(2);
-            setTimeout(() => {
-                setStep(3); // success screen
-            }, 2000);
+    const handleDonate = async () => {
+        if (amount <= 0) return;
+        if (!user?.profile?.id) {
+            router.push("/login");
+            return;
+        }
+        setError(null);
+        setStep(2);
+        try {
+            await api.createDonation({
+                user_id: Number(user.profile.id),
+                amount,
+                currency: "USD",
+                campaign_url: undefined,
+            });
+            setStep(3);
+        } catch (e) {
+            setError(e instanceof Error ? e.message : "Donation failed");
+            setStep(1);
         }
     };
 
@@ -26,6 +45,25 @@ export default function DonateFlow() {
         const families = Math.floor(amount / 6.25);
         return `Provides emergency support for ${families || 1} famil${families === 1 ? 'y' : 'ies'}.`;
     };
+
+    if (authLoading) {
+        return (
+            <div className="flex items-center justify-center min-h-[calc(100vh-5rem)]">
+                <HeartPulse className="w-10 h-10 animate-pulse text-primary" />
+            </div>
+        );
+    }
+
+    if (!user) {
+        return (
+            <div className="flex flex-col min-h-[calc(100vh-5rem)] bg-muted/20 items-center justify-center gap-6 px-4">
+                <p className="text-lg font-medium text-muted-foreground">Sign in to make a donation.</p>
+                <Link href="/login">
+                    <Button className="rounded-2xl font-bold">Sign In</Button>
+                </Link>
+            </div>
+        );
+    }
 
     return (
         <div className="flex flex-col min-h-[calc(100vh-5rem)] bg-muted/20">
@@ -63,6 +101,10 @@ export default function DonateFlow() {
                                         <p className="text-foreground/80 font-semibold text-lg">{getImpactEstimate()}</p>
                                     </div>
                                 </div>
+
+                                {error && (
+                                    <p className="text-destructive font-medium text-sm">{error}</p>
+                                )}
 
                                 <Button
                                     onClick={handleDonate}

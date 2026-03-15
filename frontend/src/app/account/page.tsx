@@ -5,14 +5,51 @@ import { ImpactDashboard } from "@/components/account/ImpactDashboard";
 import { WalletCard } from "@/components/account/WalletCard";
 import { LogOut, User, Mail, ShieldAlert, Bell, Check, Loader2, Smartphone, ShieldCheck, Heart, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Badge } from "@/components/ui/badge";
+import { api } from "@/lib/api";
+
+type DonationRecord = {
+  id: number;
+  charity: string;
+  amount: number;
+  date: string;
+  receipt: string;
+};
 
 export default function Account() {
     const { user, logout, updateUser, isLoading } = useAuth();
     const router = useRouter();
     const [isUpdating, setIsUpdating] = useState(false);
+    const [history, setHistory] = useState<DonationRecord[]>([]);
+    const [historyLoading, setHistoryLoading] = useState(true);
+
+    useEffect(() => {
+        if (!user?.profile?.id) return;
+        const userId = Number(user.profile.id);
+        if (!userId) return;
+        api.getDonationsByUser(userId)
+            .then((donations) => {
+                setHistory(
+                    donations.map((d) => ({
+                        id: d.donation_id,
+                        charity: d.campaign_url || "Donation",
+                        amount: d.amount,
+                        date: d.created_at ? new Date(d.created_at).toLocaleDateString("en-US", { year: "numeric", month: "short", day: "2-digit" }) : "—",
+                        receipt: "#",
+                    }))
+                );
+            })
+            .catch(() => setHistory([]))
+            .finally(() => setHistoryLoading(false));
+    }, [user?.profile?.id]);
+
+    useEffect(() => {
+        if (!isLoading && !user) {
+            router.push("/login");
+        }
+    }, [isLoading, user, router]);
 
     if (isLoading) {
         return (
@@ -23,17 +60,10 @@ export default function Account() {
     }
 
     if (!user) {
-        router.push("/login");
         return null;
     }
 
     const { profile, preferences } = user;
-
-    const history = [
-        { id: 1, charity: "Global Medical Response", amount: 50, date: "Oct 24, 2026", receipt: "#" },
-        { id: 2, charity: "Climate Action Network", amount: 25, date: "Sep 12, 2026", receipt: "#" },
-        { id: 3, charity: "Disaster Relief Asia", amount: 100, date: "Jul 05, 2026", receipt: "#" },
-    ];
 
     const togglePreference = async (key: keyof typeof preferences) => {
         setIsUpdating(true);
@@ -87,7 +117,7 @@ export default function Account() {
 
             <div className="container mx-auto px-4 lg:px-8 -mt-16 relative z-20">
                 <div className="bg-card rounded-[2.5rem] p-6 md:p-10 shadow-2xl border border-border/40 shadow-black/5 backdrop-blur-xl bg-card/80">
-                    <ImpactDashboard />
+                    <ImpactDashboard userId={Number(profile.id)} />
                 </div>
             </div>
 
@@ -99,7 +129,14 @@ export default function Account() {
                             <Button variant="ghost" className="text-primary font-bold hover:bg-primary/5 hover:text-primary rounded-xl">View All</Button>
                         </div>
                         <div className="bg-card rounded-[2.5rem] border border-border/40 shadow-xl shadow-black/5 overflow-hidden">
-                            {history.map((record, i) => (
+                            {historyLoading ? (
+                                <div className="p-12 flex items-center justify-center gap-3 text-muted-foreground">
+                                    <Loader2 className="w-6 h-6 animate-spin" /> Loading history…
+                                </div>
+                            ) : history.length === 0 ? (
+                                <div className="p-12 text-center text-muted-foreground font-medium">No donations yet.</div>
+                            ) : (
+                            history.map((record, i) => (
                                 <div key={record.id} className={`p-8 flex flex-col sm:flex-row sm:items-center justify-between gap-5 hover:bg-muted/30 transition-colors ${i !== history.length - 1 ? 'border-b border-border/20' : ''}`}>
                                     <div>
                                         <h4 className="font-bold text-xl mb-1 text-foreground">{record.charity}</h4>
@@ -118,7 +155,8 @@ export default function Account() {
                                         </Button>
                                     </div>
                                 </div>
-                            ))}
+                            ))
+                            )}
                         </div>
                     </section>
 
@@ -245,7 +283,7 @@ export default function Account() {
                 </div>
 
                 <div className="lg:col-span-4 flex flex-col gap-8">
-                    <WalletCard />
+                    <WalletCard userId={Number(profile.id)} />
 
                     <div className="bg-card rounded-[2.5rem] border border-border/40 shadow-xl shadow-black/5 p-8 flex flex-col gap-6">
                         <div className="flex items-center justify-between">

@@ -1,16 +1,16 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import React, { createContext, useContext, useState, useEffect, useCallback, ReactNode } from "react";
 import {
-    Bell,
     AlertTriangle,
     CheckCircle2,
     Users,
     Target,
-    Heart,
-    Eye,
+    Bell,
     LucideIcon
 } from "lucide-react";
+import { useAuth } from "@/context/AuthContext";
+import { api } from "@/lib/api";
 
 export type NotificationType = "CRITICAL_ALERT" | "IMPACT_UPDATE" | "PEER_ACTIVITY" | "GOAL_REACHED" | "GENERAL";
 
@@ -48,121 +48,133 @@ export interface Notification {
 interface NotificationsContextType {
     notifications: Notification[];
     unreadCount: number;
+    isLoading: boolean;
     markAsRead: (id: string) => void;
     markAllAsRead: () => void;
     removeNotification: (id: string) => void;
     addNotification: (notification: Omit<Notification, "id" | "isRead" | "timestamp" | "timeAgo">) => void;
+    refreshNotifications: () => void;
 }
 
 const NotificationsContext = createContext<NotificationsContextType | undefined>(undefined);
 
-const initialNotifications: Notification[] = [
-    {
-        id: "1",
-        type: "CRITICAL_ALERT",
-        title: "Urgent Relief Needed",
-        message: "A major earthquake has struck Turkey. Immediate medical fuel is required for Al-Shifa hospital.",
-        user: {
-            name: "Emergency Response Team",
-            avatar: "https://api.dicebear.com/7.x/notionists/svg?seed=Emergency",
-            fallback: "ER",
-        },
-        target: "Turkey Earthquake Fund",
-        timestamp: "Today 3:12 PM",
-        timeAgo: "12 mins ago",
-        isRead: false,
-        icon: AlertTriangle,
-        actions: [
-            { label: "Donate Now", href: "/donate", variant: "default" },
-            { label: "Donate Later", variant: "outline" }
-        ]
-    },
-    {
-        id: "2",
-        type: "IMPACT_UPDATE",
-        title: "Your Impact in Kenya",
-        message: "The community well you supported is now providing clean water to 400 people daily.",
-        user: {
-            name: "Water Project Kenya",
-            fallback: "WP",
-        },
-        target: "Kenya Water Well #4",
-        timestamp: "Today 2:00 PM",
-        timeAgo: "2 hours ago",
-        isRead: false,
-        icon: CheckCircle2,
-        actions: [
-            { label: "View Impact Report", variant: "outline" }
-        ]
-    },
-    {
-        id: "3",
-        type: "PEER_ACTIVITY",
-        title: "New Follower",
-        message: "Amélie is now following your impact journey.",
-        user: {
-            name: "Amélie",
-            avatar: "https://api.dicebear.com/7.x/notionists/svg?seed=Amélie",
-            fallback: "A",
-        },
-        timestamp: "Yesterday 4:30 PM",
-        timeAgo: "1 day ago",
-        isRead: true,
-        icon: Users,
-    },
-    {
-        id: "4",
-        type: "GOAL_REACHED",
-        title: "Goal Reached!",
-        message: "The Gaza Relief Taskforce has reached its funding goal thanks to donors like you.",
-        target: "Gaza Relief",
-        timestamp: "2 days ago",
-        timeAgo: "2 days ago",
-        isRead: true,
-        icon: Target,
-    }
-];
+const typeToIcon: Record<string, LucideIcon> = {
+    CRITICAL_ALERT: AlertTriangle,
+    IMPACT_UPDATE: CheckCircle2,
+    PEER_ACTIVITY: Users,
+    GOAL_REACHED: Target,
+    GENERAL: Bell,
+};
+
+function formatTimeAgo(dateStr: string): string {
+    const d = new Date(dateStr);
+    const now = new Date();
+    const diffMs = now.getTime() - d.getTime();
+    const diffMins = Math.floor(diffMs / 60000);
+    const diffHours = Math.floor(diffMs / 3600000);
+    const diffDays = Math.floor(diffMs / 86400000);
+    if (diffMins < 1) return "Just now";
+    if (diffMins < 60) return `${diffMins} min${diffMins !== 1 ? "s" : ""} ago`;
+    if (diffHours < 24) return `${diffHours} hour${diffHours !== 1 ? "s" : ""} ago`;
+    if (diffDays < 7) return `${diffDays} day${diffDays !== 1 ? "s" : ""} ago`;
+    return d.toLocaleDateString();
+}
+
+function mapBackendToNotification(raw: {
+    id: number;
+    type: string;
+    title: string;
+    message: string;
+    target?: string;
+    userName?: string;
+    userAvatar?: string;
+    userFallback?: string;
+    isRead: boolean;
+    actions?: unknown;
+    createdAt: string;
+}): Notification {
+    return {
+        id: String(raw.id),
+        type: (raw.type || "GENERAL") as NotificationType,
+        title: raw.title,
+        message: raw.message,
+        target: raw.target,
+        user: raw.userName ? { name: raw.userName, avatar: raw.userAvatar, fallback: raw.userFallback || raw.userName.slice(0, 2).toUpperCase() } : undefined,
+        timestamp: new Date(raw.createdAt).toLocaleString(),
+        timeAgo: formatTimeAgo(raw.createdAt),
+        isRead: !!raw.isRead,
+        icon: typeToIcon[raw.type] || Bell,
+        actions: Array.isArray(raw.actions) ? (raw.actions as NotificationAction[]) : undefined,
+    };
+}
 
 export function NotificationsProvider({ children }: { children: ReactNode }) {
-    const [notifications, setNotifications] = useState<Notification[]>(initialNotifications);
+    const { user } = useAuth();
+    const [notifications, setNotifications] = useState<Notification[]>([]);
+    const [isLoading, setIsLoading] = useState(false);
+
+    const refreshNotifications = useCallback(() => {
+        const userId = user?.profile?.id ? Number(user.profile.id) : null;
+        if (!userId) {
+            setNotifications([]);
+            return;
+        }
+        setIsLoading(true);
+        api.getNotifications(userId)
+            .then((rawList: unknown[]) => {
+                setNotifications((rawList || []).map((r) => mapBackendToNotification(r as Parameters<typeof mapBackendToNotification>[0])));
+            })
+            .catch(() => setNotifications([]))
+            .finally(() => setIsLoading(false));
+    }, [user?.profile?.id]);
+
+    useEffect(() => {
+        refreshNotifications();
+    }, [refreshNotifications]);
 
     const unreadCount = notifications.filter(n => !n.isRead).length;
 
-    const markAsRead = (id: string) => {
+    const markAsRead = useCallback((id: string) => {
+        const userId = user?.profile?.id ? Number(user.profile.id) : null;
         setNotifications(prev => prev.map(n => n.id === id ? { ...n, isRead: true } : n));
-    };
+        if (userId) api.markNotificationRead(userId, id).catch(() => {});
+    }, [user?.profile?.id]);
 
-    const markAllAsRead = () => {
+    const markAllAsRead = useCallback(() => {
+        const userId = user?.profile?.id ? Number(user.profile.id) : null;
         setNotifications(prev => prev.map(n => ({ ...n, isRead: true })));
-    };
+        if (userId) api.markAllNotificationsRead(userId).catch(() => {});
+    }, [user?.profile?.id]);
 
-    const removeNotification = (id: string) => {
+    const removeNotification = useCallback((id: string) => {
+        const userId = user?.profile?.id ? Number(user.profile.id) : null;
         setNotifications(prev => prev.filter(n => n.id !== id));
-    };
+        if (userId) api.deleteNotification(userId, id).catch(() => {});
+    }, [user?.profile?.id]);
 
-    const addNotification = (newNotif: Omit<Notification, "id" | "isRead" | "timestamp" | "timeAgo">) => {
-        const id = Math.random().toString(36).substr(2, 9);
-        const now = new Date();
-        setNotifications(prev => [
-            {
-                ...newNotif,
-                id,
-                isRead: false,
-                timestamp: "Just now",
-                timeAgo: "1 min ago",
-            },
-            ...prev
-        ]);
-    };
+    const addNotification = useCallback((newNotif: Omit<Notification, "id" | "isRead" | "timestamp" | "timeAgo">) => {
+        const userId = user?.profile?.id ? Number(user.profile.id) : null;
+        if (!userId) return;
+        api.createNotification(userId, {
+            type: newNotif.type,
+            title: newNotif.title,
+            message: newNotif.message,
+            target: newNotif.target,
+            user: newNotif.user,
+            actions: newNotif.actions,
+        }).then(() => refreshNotifications()).catch(() => {});
+    }, [user?.profile?.id, refreshNotifications]);
 
     return (
         <NotificationsContext.Provider value={{
             notifications,
             unreadCount,
+            isLoading,
             markAsRead,
             markAllAsRead,
             removeNotification,
-            addNotification
+            addNotification,
+            refreshNotifications,
         }}>
             {children}
         </NotificationsContext.Provider>

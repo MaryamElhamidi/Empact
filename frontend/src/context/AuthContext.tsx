@@ -2,6 +2,7 @@
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from "react";
 import { UserData, userStore, defaultUserData } from "@/lib/user-store";
+import { api } from "@/lib/api";
 
 interface AuthContextType {
     user: UserData | null;
@@ -15,50 +16,105 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+function backendUserToUserData(backend: {
+  user_id: number;
+  first_name: string;
+  last_name: string;
+  email: string;
+  interests?: string[];
+  locations?: string[];
+}): UserData {
+  return {
+    profile: {
+      id: String(backend.user_id),
+      name: [backend.first_name, backend.last_name].filter(Boolean).join(" ") || backend.email,
+      email: backend.email,
+      locations: backend.locations ?? [],
+      causes: backend.interests ?? [],
+    },
+    preferences: defaultUserData.preferences,
+  };
+}
+
 export function AuthProvider({ children }: { children: ReactNode }) {
     const [user, setUser] = useState<UserData | null>(null);
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
+        if (typeof window === "undefined") {
+            setIsLoading(false);
+            return;
+        }
+        const userId = localStorage.getItem("empact_user_id");
+        if (!userId) {
+            userStore.reset();
+            setUser(null);
+            setIsLoading(false);
+            return;
+        }
         const data = userStore.getUserData();
-        // In a real app, we'd check a token here. For this mock, we'll assume logged in if data exists.
-        setUser(data);
+        if (data?.profile?.id && String(data.profile.id) === userId) {
+            setUser(data);
+        } else {
+            setUser(null);
+        }
         setIsLoading(false);
     }, []);
 
     const login = async (email: string, password: string) => {
         setIsLoading(true);
-        // Mock login delay
-        await new Promise(resolve => setTimeout(resolve, 800));
-
-        // For mock, we just use the stored data or default
-        const data = userStore.getUserData();
-        setUser(data);
-        setIsLoading(false);
+        try {
+            const result = await api.login(email, password);
+            if (!result.success || result.user_id == null) {
+                throw new Error("Invalid email or password");
+            }
+            const backendUser = await api.getUserByEmail(email);
+            const userData = backendUserToUserData(backendUser);
+            userStore.saveUserData(userData);
+            if (typeof window !== "undefined") {
+                localStorage.setItem("empact_user_id", String(backendUser.user_id));
+                localStorage.setItem("empact_email", email);
+            }
+            setUser(userData);
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     const register = async (name: string, email: string, password: string, locations: string[], causes: string[]) => {
         setIsLoading(true);
-        await new Promise(resolve => setTimeout(resolve, 1000));
-
-        const newUser: UserData = {
-            ...defaultUserData,
-            profile: {
-                id: Math.random().toString(36).substr(2, 9),
-                name,
+        try {
+            const parts = name.trim().split(/\s+/);
+            const firstName = parts[0] ?? "";
+            const lastName = parts.slice(1).join(" ") ?? "";
+            await api.createUser({
+                firstName,
+                lastName,
                 email,
-                locations,
-                causes,
+                password,
+                interests: causes.slice(0, 3),
+                locations: locations.slice(0, 3),
+            });
+            const backendUser = await api.getUserByEmail(email);
+            const userData = backendUserToUserData(backendUser);
+            userStore.saveUserData(userData);
+            if (typeof window !== "undefined") {
+                localStorage.setItem("empact_user_id", String(backendUser.user_id));
+                localStorage.setItem("empact_email", email);
             }
-        };
-        userStore.saveUserData(newUser);
-        setUser(newUser);
-        setIsLoading(false);
+            setUser(userData);
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     const logout = () => {
-        // We don't clear localStorage on logout in this mock so preferences persist for next "login"
         setUser(null);
+        if (typeof window !== "undefined") {
+            localStorage.removeItem("empact_user_id");
+            localStorage.removeItem("empact_email");
+        }
+        userStore.reset();
     };
 
     const updateUser = (data: UserData) => {

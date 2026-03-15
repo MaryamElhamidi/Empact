@@ -1,54 +1,43 @@
+"use client";
+
+import { useState, useEffect } from "react";
 import { FilterBar } from "@/components/discover/FilterBar";
 import { OpportunityCard, OpportunityProps } from "@/components/discover/OpportunityCard";
+import { api } from "@/lib/api";
+import { Loader2 } from "lucide-react";
 
 export default function Discover() {
-    const opportunities: OpportunityProps[] = [
-        {
-            id: "1",
-            title: "Flood Relief – Bangladesh",
-            country: "Bangladesh",
-            summary: "Thousands displaced by monsoon floods. Emergency shelters, clean water, and food supplies are urgently needed.",
-            urgency: "HIGH",
-            imageUrl: "https://images.unsplash.com/photo-1542385262-cdf06b2bf4da?q=80&w=2670&auto=format&fit=crop",
-            isVerified: true,
-            recommendation: "You previously supported disaster relief efforts in Asia.",
-        },
-        {
-            id: "2",
-            title: "Earthquake Recovery – Turkey",
-            country: "Turkey",
-            summary: "Rebuilding homes and providing temporary winter shelters for families who lost everything in the devastating quakes.",
-            urgency: "CRITICAL",
-            imageUrl: "https://images.unsplash.com/photo-1555529902-526de8ea2d1d?q=80&w=2670&auto=format&fit=crop",
-            isVerified: true,
-        },
-        {
-            id: "3",
-            title: "Drought Famine Prevention",
-            country: "Sub-Saharan Africa",
-            summary: "Providing emergency food rations and clean water access to communities facing severe multi-year droughts.",
-            urgency: "MODERATE",
-            imageUrl: "https://images.unsplash.com/photo-1596409893991-53b05fccdb98?q=80&w=2671&auto=format&fit=crop",
-            isVerified: true,
-        },
-        {
-            id: "4",
-            title: "Refugee Support Initiative",
-            country: "Jordan",
-            summary: "Supplying warm clothing, schooling materials, and healthcare to families in refugee camps.",
-            urgency: "HIGH",
-            imageUrl: "https://images.unsplash.com/photo-1533222481259-ce20eda1e20b?q=80&w=2670&auto=format&fit=crop",
-            isVerified: true,
-        }
-    ];
+    const [opportunities, setOpportunities] = useState<OpportunityProps[]>([]);
+    const [topIssues, setTopIssues] = useState<Array<{ name: string; icon: string; count: number }>>([]);
+    const [loading, setLoading] = useState(true);
+    const [issuesLoading, setIssuesLoading] = useState(true);
 
-    const topIssues = [
-        { name: "Disaster Relief", icon: "🌋", count: 124 },
-        { name: "Climate Crisis", icon: "🌍", count: 86 },
-        { name: "Healthcare", icon: "⚕️", count: 210 },
-        { name: "Education", icon: "📚", count: 145 },
-        { name: "Food Security", icon: "🌾", count: 312 },
-    ];
+    useEffect(() => {
+        api.getOpportunities()
+            .then((rows: Array<{ id: number; title: string; country: string; summary: string; urgency: string; imageUrl: string | null; isVerified: boolean; recommendation: string | null }>) => {
+                setOpportunities(
+                    rows.map((opp) => ({
+                        id: String(opp.id),
+                        title: opp.title,
+                        country: opp.country,
+                        summary: opp.summary || "",
+                        urgency: (opp.urgency || "MODERATE") as OpportunityProps["urgency"],
+                        imageUrl: opp.imageUrl || "",
+                        isVerified: opp.isVerified,
+                        recommendation: opp.recommendation ?? undefined,
+                    }))
+                );
+            })
+            .catch(() => setOpportunities([]))
+            .finally(() => setLoading(false));
+    }, []);
+
+    useEffect(() => {
+        api.getGlobalIssues()
+            .then(setTopIssues)
+            .catch(() => setTopIssues([]))
+            .finally(() => setIssuesLoading(false));
+    }, []);
 
     return (
         <div className="flex flex-col min-h-screen bg-background pb-24">
@@ -69,15 +58,25 @@ export default function Discover() {
                 <div className="flex items-center justify-between mb-8">
                     <h2 className="text-2xl md:text-3xl font-bold font-sans">Top Global Issues</h2>
                 </div>
-                <div className="flex gap-4 overflow-x-auto pb-8 scrollbar-hide snap-x">
-                    {topIssues.map((issue) => (
-                        <div key={issue.name} className="flex-shrink-0 w-72 p-8 rounded-3xl border border-border bg-card shadow-sm snap-start hover:-translate-y-2 transition-transform cursor-pointer group">
-                            <div className="text-5xl mb-6 transition-transform group-hover:scale-110 origin-left">{issue.icon}</div>
-                            <h3 className="font-bold text-xl mb-2">{issue.name}</h3>
-                            <p className="text-muted-foreground text-sm font-semibold uppercase tracking-wider">{issue.count} Opportunities</p>
-                        </div>
-                    ))}
-                </div>
+                {issuesLoading ? (
+                    <div className="flex gap-4 overflow-x-auto pb-8 items-center justify-center py-12">
+                        <Loader2 className="w-8 h-8 animate-spin text-primary" />
+                    </div>
+                ) : (
+                    <div className="flex gap-4 overflow-x-auto pb-8 scrollbar-hide snap-x">
+                        {topIssues.length === 0 ? (
+                            <p className="text-muted-foreground font-medium py-8">No issues loaded. Run the seed script to add global issues.</p>
+                        ) : (
+                            topIssues.map((issue) => (
+                                <div key={issue.name} className="flex-shrink-0 w-72 p-8 rounded-3xl border border-border bg-card shadow-sm snap-start hover:-translate-y-2 transition-transform cursor-pointer group">
+                                    <div className="text-5xl mb-6 transition-transform group-hover:scale-110 origin-left">{issue.icon || "📌"}</div>
+                                    <h3 className="font-bold text-xl mb-2">{issue.name}</h3>
+                                    <p className="text-muted-foreground text-sm font-semibold uppercase tracking-wider">{issue.count} Opportunities</p>
+                                </div>
+                            ))
+                        )}
+                    </div>
+                )}
             </div>
 
             <div className="container mx-auto px-4 lg:px-8 mt-20">
@@ -88,11 +87,19 @@ export default function Discover() {
                     </span>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 lg:gap-8">
-                    {opportunities.map((opp) => (
-                        <OpportunityCard key={opp.id} data={opp} />
-                    ))}
-                </div>
+                {loading ? (
+                    <div className="flex items-center justify-center py-20">
+                        <Loader2 className="w-10 h-10 animate-spin text-primary" />
+                    </div>
+                ) : opportunities.length === 0 ? (
+                    <p className="text-muted-foreground font-medium py-12">No opportunities yet. Run the seed script to add opportunities.</p>
+                ) : (
+                    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 lg:gap-8">
+                        {opportunities.map((opp) => (
+                            <OpportunityCard key={opp.id} data={opp} />
+                        ))}
+                    </div>
+                )}
             </div>
         </div>
     );
