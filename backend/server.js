@@ -2,6 +2,7 @@ require("dotenv").config();
 const express = require("express");
 
 const dbRoutes = require("./server_db");
+const modelRoutes = require("./server_agent");
 
 const app = express();
 
@@ -9,21 +10,7 @@ app.use(express.json());
 
 /* Mount DB routes */
 app.use("/api", dbRoutes);
-
-
-/*
---------------------------------
-OTHER ROUTES (selenium etc.)
---------------------------------
-*/
-
-app.get("/scrape/test", async (req, res) => {
-
-  // selenium logic later
-  res.json({ message: "selenium endpoint placeholder" });
-
-});
-
+app.use("/model", modelRoutes);
 
 /*
 --------------------------------
@@ -31,7 +18,7 @@ START SERVER
 --------------------------------
 */
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

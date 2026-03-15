@@ -1,8 +1,8 @@
 const express = require("express");
-
+const bcrypt = require("bcrypt");
+const db = require("./helpers/db/db_conn");
 const users = require("./helpers/db/users");
 const donations = require("./helpers/db/donations");
-
 const router = express.Router();
 
 /*
@@ -145,6 +145,48 @@ router.delete("/donations/:id", async (req, res) => {
     console.error(err);
     res.status(500).json({ error: "Failed to delete donation" });
   }
+});
+
+router.post("/login", async (req, res) => {
+
+  try {
+
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+      return res.status(400).json({ success: false, error: "Missing email or password" });
+    }
+
+    const sql = `
+      SELECT user_id, email, password
+      FROM users
+      WHERE email = ?
+    `;
+
+    const [rows] = await db.execute(sql, [email]);
+
+    if (rows.length === 0) {
+      return res.json({ success: false });
+    }
+
+    const user = rows[0];
+
+    const passwordMatch = await bcrypt.compare(password, user.password);
+
+    if (!passwordMatch) {
+      return res.json({ success: false });
+    }
+
+    return res.json({
+      success: true,
+      user_id: user.user_id
+    });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, error: "Server error" });
+  }
+
 });
 
 module.exports = router;

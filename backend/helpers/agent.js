@@ -216,4 +216,3 @@ async function test() {
   //console.log("Checkout URL:", checkoutUrl);
   console.log("Done")
 }
-test();
