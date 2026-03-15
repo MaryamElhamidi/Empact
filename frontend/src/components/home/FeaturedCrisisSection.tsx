@@ -2,10 +2,10 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Loader2 } from "lucide-react";
 import { CrisisCard } from "@/components/home/CrisisCard";
+import { UrgencyLevel } from "@/components/ui/urgency-badge";
 import { api } from "@/lib/api";
-import { Loader2 } from "lucide-react";
 
 const fallbackCrisis = {
   title: "Emergency Medical Aid - Gaza",
@@ -15,8 +15,16 @@ const fallbackCrisis = {
   imageUrl: "https://images.unsplash.com/photo-1579684385127-1ef15d508118?q=80&w=2680&auto=format&fit=crop",
 };
 
+interface CrisisData {
+  title: string;
+  location: string;
+  summary: string;
+  urgency: UrgencyLevel;
+  imageUrl: string;
+}
+
 export function FeaturedCrisisSection() {
-  const [data, setData] = useState<typeof fallbackCrisis | null>(null);
+  const [data, setData] = useState<CrisisData | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -28,7 +36,7 @@ export function FeaturedCrisisSection() {
             title: row.title,
             location: row.location || row.country || "",
             summary: row.summary || "",
-            urgency: (row.urgency || "CRITICAL") as "CRITICAL" | "HIGH" | "MODERATE" | "LOW",
+            urgency: (row.urgency === "HIGH" || row.urgency === "MODERATE" ? row.urgency : "CRITICAL") as UrgencyLevel,
             imageUrl: row.imageUrl || fallbackCrisis.imageUrl,
           });
         } else {

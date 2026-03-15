@@ -278,7 +278,7 @@ export function SupportInitiativeModal({ opportunityId, trendContent = null, onC
                             </div>
                             {(charity.regions || []).length > 0 && (
                                 <div className="flex flex-wrap gap-1.5 mb-3">
-                                    {charity.regions.slice(0, 6).map((r) => (
+                                    {(charity.regions || []).slice(0, 6).map((r) => (
                                         <span key={r} className="bg-muted text-muted-foreground px-2 py-0.5 rounded-md text-xs">
                                             {r}
                                         </span>
@@ -297,7 +297,7 @@ export function SupportInitiativeModal({ opportunityId, trendContent = null, onC
 
                     <Button
                         className="w-full h-12 font-bold rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground"
-                        onClick={() => {}}
+                        onClick={() => { }}
                     >
                         Donate Now
                     </Button>
