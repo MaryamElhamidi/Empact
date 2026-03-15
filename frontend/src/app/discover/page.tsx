@@ -69,6 +69,28 @@ export default function Discover() {
 
     const allOpportunities: OpportunityProps[] = filteredOpportunities.map(mapApiToProps);
     const loading = opportunitiesLoading;
+    const [highlightedId, setHighlightedId] = useState<string | null>(null);
+
+    useEffect(() => {
+        if (!loading && allOpportunities.length > 0) {
+            const hash = window.location.hash.replace("#", "");
+            if (hash && !highlightedId) {
+                setHighlightedId(hash);
+                const index = allOpportunities.findIndex(opp => opp.id === hash);
+                if (index !== -1) {
+                    if (index >= visibleCount) {
+                        setVisibleCount(index + 1);
+                    }
+                    setTimeout(() => {
+                        const el = document.getElementById(`opp-${hash}`);
+                        if (el) {
+                            el.scrollIntoView({ behavior: "smooth", block: "center" });
+                        }
+                    }, 500);
+                }
+            }
+        }
+    }, [loading, allOpportunities, visibleCount, highlightedId]);
     const hasMore = visibleCount < allOpportunities.length;
     const opportunities = allOpportunities.slice(0, visibleCount);
 
@@ -207,7 +229,7 @@ export default function Discover() {
                 ) : (
                     <div className="flex gap-4 overflow-x-auto pb-8 scrollbar-hide snap-x">
                         {topIssues.length === 0 ? (
-                            <p className="text-muted-foreground font-medium py-8">No issues loaded. Run the seed script to add global issues.</p>
+                            <p className="text-muted-foreground font-medium py-8">No issues loaded.</p>
                         ) : (
                             topIssues.map((issue) => (
                                 <div key={issue.name} className="flex-shrink-0 w-72 p-8 rounded-3xl border border-border bg-card shadow-sm snap-start hover:-translate-y-2 transition-transform cursor-pointer group">
@@ -243,12 +265,17 @@ export default function Discover() {
                         <Loader2 className="w-10 h-10 animate-spin text-primary" />
                     </div>
                 ) : opportunities.length === 0 ? (
-                    <p className="text-muted-foreground font-medium py-12">No opportunities yet. Run the seed script to add opportunities.</p>
+                    <p className="text-muted-foreground font-medium py-12">No opportunities yet.</p>
                 ) : (
                     <>
                         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 lg:gap-8">
                             {opportunities.map((opp) => (
-                                <OpportunityCard key={opp.id} data={opp} onSupportClick={handleSupportClick} />
+                                <OpportunityCard
+                                    key={opp.id}
+                                    data={opp}
+                                    onSupportClick={handleSupportClick}
+                                    highlighted={highlightedId === opp.id}
+                                />
                             ))}
                         </div>
                         <div ref={loadMoreSentinelRef} className="h-4 min-h-4 w-full" aria-hidden />

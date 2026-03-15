@@ -33,6 +33,12 @@ export default function DonateFlow() {
                 currency: "USD",
                 campaign_url: undefined,
             });
+            await api.createNotification(Number(user.profile.id), {
+                type: "IMPACT_UPDATE",
+                title: "Impact Confirmed!",
+                message: `Your $${amount} donation provided emergency support for ${Math.floor(amount / 6.25) || 1} families. Thank you!`,
+                target: "Donation History"
+            });
             setStep(3);
         } catch (e) {
             setError(e instanceof Error ? e.message : "Donation failed");

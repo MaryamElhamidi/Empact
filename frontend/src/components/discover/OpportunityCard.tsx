@@ -1,6 +1,7 @@
 "use client";
 
 import { MapPin, ShieldCheck } from "lucide-react";
+import { cn } from "@/lib/utils";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
@@ -28,9 +29,10 @@ export interface OpportunityProps {
 interface OpportunityCardProps {
     data: OpportunityProps;
     onSupportClick?: (opportunityId: string) => void;
+    highlighted?: boolean;
 }
 
-export function OpportunityCard({ data, onSupportClick }: OpportunityCardProps) {
+export function OpportunityCard({ data, onSupportClick, highlighted }: OpportunityCardProps) {
     const orgLink = data.donationUrl || data.organizationWebsite || null;
     const causeFormatted = data.cause ? formatTag(data.cause) : null;
     const causeNorm = normCause(data.cause || "");
@@ -55,7 +57,13 @@ export function OpportunityCard({ data, onSupportClick }: OpportunityCardProps) 
     };
 
     return (
-        <Card className="group overflow-hidden border-border bg-card shadow-sm transition-all duration-300 hover:shadow-xl hover:-translate-y-1 rounded-2xl flex flex-col h-full">
+        <Card
+            id={`opp-${data.id}`}
+            className={cn(
+                "group overflow-hidden border-border bg-card shadow-sm transition-all duration-300 hover:shadow-xl hover:-translate-y-1 rounded-2xl flex flex-col h-full",
+                highlighted && "ring-2 ring-primary ring-offset-4 ring-offset-background scale-[1.02] shadow-2xl shadow-primary/20 z-10"
+            )}
+        >
             <CardHeader className="p-5 pb-2">
                 <div className="flex flex-wrap items-center gap-2 mb-2">
                     {data.isVerified && (
