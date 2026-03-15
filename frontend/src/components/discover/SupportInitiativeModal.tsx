@@ -36,24 +36,47 @@ interface CharityInfo {
     charity_id: string;
     name: string;
     description?: string;
+    donation_url?: string;
     regions?: string[];
     focus_values?: string[];
     verified?: boolean;
 }
 
+export interface TrendContent {
+    title: string;
+    region: string;
+    summary: string;
+    cause: string;
+    values: string[];
+    /** charity_id from charity_registry (e.g. charity_003 for UNICEF). Fetched and shown as AI Suggested Charity. */
+    suggestedCharityId: string;
+}
+
 interface SupportInitiativeModalProps {
-    /** Opportunity id (e.g. opp_xxx). Modal fetches the full opportunity from the API (backend/data/opportunities.json) to get donation.charity_id, then fetches that charity. */
+    /** Opportunity id (e.g. opp_xxx). Modal fetches the full opportunity from the API to get donation.charity_id, then fetches that charity. */
     opportunityId: string | null;
+    /** When set, show this trend-issue with AI Suggested Charity (fetched by suggestedCharityId). Same modal format as opportunity. */
+    trendContent?: TrendContent | null;
     onClose: () => void;
 }
 
-export function SupportInitiativeModal({ opportunityId, onClose }: SupportInitiativeModalProps) {
+export function SupportInitiativeModal({ opportunityId, trendContent = null, onClose }: SupportInitiativeModalProps) {
     const [opportunity, setOpportunity] = useState<SupportModalOpportunity | null>(null);
     const [opportunityLoading, setOpportunityLoading] = useState(false);
     const [charity, setCharity] = useState<CharityInfo | null>(null);
     const [charityLoading, setCharityLoading] = useState(false);
 
     useEffect(() => {
+        if (trendContent) {
+            setOpportunity(null);
+            setCharity(null);
+            setCharityLoading(true);
+            api.getCharityById(trendContent.suggestedCharityId)
+                .then(setCharity)
+                .catch(() => setCharity(null))
+                .finally(() => setCharityLoading(false));
+            return;
+        }
         if (!opportunityId) {
             setOpportunity(null);
             setCharity(null);
@@ -76,9 +99,83 @@ export function SupportInitiativeModal({ opportunityId, onClose }: SupportInitia
             })
             .catch(() => setOpportunity(null))
             .finally(() => setOpportunityLoading(false));
-    }, [opportunityId]);
+    }, [opportunityId, trendContent]);
 
-    if (!opportunityId) return null;
+    const isTrend = !!trendContent;
+    const isOpen = !!opportunityId || isTrend;
+
+    if (!isOpen) return null;
+
+    if (isTrend && trendContent) {
+        const tags = [formatTag(trendContent.cause), ...(trendContent.values || []).map(formatTag)];
+        const donationUrl = charity?.donation_url;
+        return (
+            <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
+                <div className="bg-card border border-border rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] flex flex-col overflow-hidden animate-in zoom-in-95 duration-200">
+                    <div className="flex items-center justify-end p-3 border-b border-border/60 shrink-0">
+                        <button type="button" onClick={onClose} className="p-2 rounded-full hover:bg-muted text-muted-foreground hover:text-foreground transition-colors" aria-label="Close">
+                            <X className="h-5 w-5" />
+                        </button>
+                    </div>
+                    <div className="overflow-y-auto flex-1 px-6 pb-8">
+                        <div className="flex flex-wrap items-start gap-2 justify-between mb-2">
+                            <h2 className="text-xl font-bold text-foreground leading-tight pr-2">{trendContent.title}</h2>
+                            <div className="flex flex-wrap gap-1.5 shrink-0">
+                                {tags.map((t) => (
+                                    <span key={t} className="bg-muted text-muted-foreground px-2 py-0.5 rounded-md text-xs font-medium">{t}</span>
+                                ))}
+                            </div>
+                        </div>
+                        <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground mb-4">
+                            <span className="flex items-center gap-1.5">
+                                <MapPin className="h-4 w-4" />
+                                {trendContent.region}
+                            </span>
+                        </div>
+                        <p className="text-sm text-foreground/90 leading-relaxed whitespace-pre-wrap mb-4">{trendContent.summary}</p>
+                        <Separator className="my-6" />
+                        <h3 className="text-sm font-bold uppercase tracking-wider text-muted-foreground mb-3">AI Suggested Charity</h3>
+                        {charityLoading ? (
+                            <div className="flex items-center gap-2 py-4 text-muted-foreground">
+                                <Loader2 className="h-5 w-5 animate-spin" />
+                                <span className="text-sm">Loading charity…</span>
+                            </div>
+                        ) : charity ? (
+                            <>
+                                <div className="flex flex-wrap items-center gap-2 mb-2">
+                                    <span className="font-bold text-foreground">{charity.name}</span>
+                                    {(charity.focus_values || []).map((v) => (
+                                        <span key={v} className="bg-primary/10 text-primary px-2 py-0.5 rounded-md text-xs font-medium">
+                                            {formatTag(v)}
+                                        </span>
+                                    ))}
+                                </div>
+                                {(charity.regions || []).length > 0 && (
+                                    <div className="flex flex-wrap gap-1.5 mb-3">
+                                        {(charity.regions || []).slice(0, 6).map((r) => (
+                                            <span key={r} className="bg-muted text-muted-foreground px-2 py-0.5 rounded-md text-xs">{r}</span>
+                                        ))}
+                                    </div>
+                                )}
+                                {charity.description && (
+                                    <p className="text-sm text-foreground/80 leading-relaxed mb-6">{charity.description}</p>
+                                )}
+                            </>
+                        ) : (
+                            <p className="text-sm text-muted-foreground py-2">No suggested charity for this issue.</p>
+                        )}
+                        <Button
+                            className="w-full h-12 font-bold rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground"
+                            onClick={() => donationUrl && window.open(donationUrl, "_blank", "noopener,noreferrer")}
+                        >
+                            Donate Now
+                        </Button>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
     if (opportunityLoading || !opportunity) {
         return (
             <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
