@@ -10,7 +10,6 @@
 - **Smart Summarization**: Gemini-powered reports that distill complex situations into actionable insights.
 - **Personalized Matching**: Crises are ranked based on your individual causes (e.g., Education, Disaster Relief) and preferred regions.
 - **Automation Agents**: Headless Selenium agents that navigate donation forms, autofilling information to ensure help reaches its destination faster.
-- **Interactive Globe**: Visualize real-time crises and your global impact through a 3D Earth visualization.
 
 ## Tech Stack
 
