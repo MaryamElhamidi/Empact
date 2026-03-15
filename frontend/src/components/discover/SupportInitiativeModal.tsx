@@ -5,6 +5,7 @@ import { X, MapPin, Calendar, ExternalLink, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { api } from "@/lib/api";
+import { DonateAmountModal } from "@/components/discover/DonateAmountModal";
 
 function formatTag(s: string): string {
     return s.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
@@ -65,6 +66,7 @@ export function SupportInitiativeModal({ opportunityId, trendContent = null, onC
     const [opportunityLoading, setOpportunityLoading] = useState(false);
     const [charity, setCharity] = useState<CharityInfo | null>(null);
     const [charityLoading, setCharityLoading] = useState(false);
+    const [showDonateAmount, setShowDonateAmount] = useState(false);
 
     useEffect(() => {
         if (trendContent) {
@@ -110,6 +112,7 @@ export function SupportInitiativeModal({ opportunityId, trendContent = null, onC
         const tags = [formatTag(trendContent.cause), ...(trendContent.values || []).map(formatTag)];
         const donationUrl = charity?.donation_url;
         return (
+            <>
             <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
                 <div className="bg-card border border-border rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] flex flex-col overflow-hidden animate-in zoom-in-95 duration-200">
                     <div className="flex items-center justify-end p-3 border-b border-border/60 shrink-0">
@@ -166,13 +169,23 @@ export function SupportInitiativeModal({ opportunityId, trendContent = null, onC
                         )}
                         <Button
                             className="w-full h-12 font-bold rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground"
-                            onClick={() => donationUrl && window.open(donationUrl, "_blank", "noopener,noreferrer")}
+                            onClick={() => setShowDonateAmount(true)}
                         >
                             Donate Now
                         </Button>
                     </div>
                 </div>
             </div>
+            {showDonateAmount && (
+                <DonateAmountModal
+                    onClose={() => setShowDonateAmount(false)}
+                    onConfirm={(amount) => {
+                        if (donationUrl) window.open(donationUrl, "_blank", "noopener,noreferrer");
+                        setShowDonateAmount(false);
+                    }}
+                />
+            )}
+        </>
         );
     }
 
@@ -198,6 +211,7 @@ export function SupportInitiativeModal({ opportunityId, trendContent = null, onC
     const oppTags = [...(causeFormatted ? [causeFormatted] : []), ...valuesFormatted];
 
     return (
+        <>
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
             <div className="bg-card border border-border rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] flex flex-col overflow-hidden animate-in zoom-in-95 duration-200">
                 <div className="flex items-center justify-end p-3 border-b border-border/60 shrink-0">
@@ -297,12 +311,23 @@ export function SupportInitiativeModal({ opportunityId, trendContent = null, onC
 
                     <Button
                         className="w-full h-12 font-bold rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground"
-                        onClick={() => { }}
+                        onClick={() => setShowDonateAmount(true)}
                     >
                         Donate Now
                     </Button>
                 </div>
             </div>
         </div>
+        {showDonateAmount && (
+            <DonateAmountModal
+                onClose={() => setShowDonateAmount(false)}
+                onConfirm={(amount) => {
+                    const url = charity?.donation_url;
+                    if (url) window.open(url, "_blank", "noopener,noreferrer");
+                    setShowDonateAmount(false);
+                }}
+            />
+        )}
+    </>
     );
 }

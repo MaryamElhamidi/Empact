@@ -6,6 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { api } from "@/lib/api";
+import { AddCardModal } from "@/components/account/AddCardModal";
 
 interface WalletCardProps {
   userId: number;
@@ -15,6 +16,11 @@ export function WalletCard({ userId }: WalletCardProps) {
   const [wallet, setWallet] = useState<{ balance: string; currency: string } | null>(null);
   const [paymentMethods, setPaymentMethods] = useState<Array<{ id: number; lastFour: string; expMonth: number; expYear: number }>>([]);
   const [loading, setLoading] = useState(true);
+  const [addCardOpen, setAddCardOpen] = useState(false);
+
+  const refreshPaymentMethods = () => {
+    api.getPaymentMethods(userId).then((pm) => setPaymentMethods(pm || [])).catch(() => {});
+  };
 
   useEffect(() => {
     Promise.all([api.getWallet(userId), api.getPaymentMethods(userId)])
@@ -93,10 +99,21 @@ export function WalletCard({ userId }: WalletCardProps) {
             ))
           )}
 
-          <Button variant="ghost" className="w-full border-2 border-dashed border-border/80 h-16 rounded-2xl text-primary font-bold hover:bg-primary/5 hover:border-primary/40 transition-all">
+          <Button
+            variant="ghost"
+            className="w-full border-2 border-dashed border-border/80 h-16 rounded-2xl text-primary font-bold hover:bg-primary/5 hover:border-primary/40 transition-all"
+            onClick={() => setAddCardOpen(true)}
+          >
             <Plus className="mr-2 w-5 h-5" /> Add New Card
           </Button>
         </div>
+        {addCardOpen && (
+          <AddCardModal
+            userId={userId}
+            onClose={() => setAddCardOpen(false)}
+            onSuccess={refreshPaymentMethods}
+          />
+        )}
       </CardContent>
     </Card>
   );
