@@ -22,7 +22,7 @@ if str(_backend) not in sys.path:
 from config import OPPORTUNITIES_PATH, VALUES_TAXONOMY_PATH
 from fetcher.reliefweb import fetch_all_raw_events
 from ai.gemini_client import summarize_and_structure
-from charity_matching.matcher import populate_donation_and_organization
+from charity_matching.matcher import populate_donation_and_organization, get_donation_url_for_charity
 from matching.user_matching import rank_opportunities_for_user
 
 # In-memory store for opportunities; also persisted to backend/data/opportunities.json
@@ -109,9 +109,12 @@ def _normalize_cause(gemini_out: dict) -> None:
 
 
 def _make_opportunity(raw: dict, gemini_out: dict, source_url: str) -> dict:
-    """Build full opportunity JSON; ensure donation_url empty until charity match."""
+    """Build full opportunity JSON; donation uses charity_id (set by charity match)."""
     opp_id = gemini_out.get("opportunity_id") or f"opp_{uuid.uuid4().hex[:12]}"
     date_d = gemini_out.get("date_discovered") or datetime.now(timezone.utc).isoformat()
+    donation = gemini_out.get("donation") or {}
+    if "donation_url" in donation:
+        donation = {k: v for k, v in donation.items() if k != "donation_url"}
     return {
         "opportunity_id": opp_id,
         "title": gemini_out.get("title") or raw.get("title", ""),
@@ -119,7 +122,10 @@ def _make_opportunity(raw: dict, gemini_out: dict, source_url: str) -> dict:
         "cause": gemini_out.get("cause", ""),
         "region": gemini_out.get("region", ""),
         "organization": gemini_out.get("organization") or {"name": "", "website": "", "verified": False},
-        "donation": gemini_out.get("donation") or {"donation_url": "", "suggested_amounts": [10, 25, 50, 100]},
+        "donation": {
+            "charity_id": donation.get("charity_id", ""),
+            "suggested_amounts": donation.get("suggested_amounts") or [10, 25, 50, 100],
+        },
         "values": gemini_out.get("values") or [],
         "ai_confidence_score": float(gemini_out.get("ai_confidence_score") or 0),
         "date_discovered": date_d,
@@ -153,16 +159,14 @@ def run_pipeline(max_events: int = 20) -> list:
                 "cause": "disaster_relief",
                 "region": raw.get("region", ""),
                 "organization": {"name": "", "website": "", "verified": False},
-                "donation": {"donation_url": "", "suggested_amounts": [10, 25, 50, 100]},
+                "donation": {"charity_id": "", "suggested_amounts": [10, 25, 50, 100]},
                 "values": ["disaster_relief"],
                 "ai_confidence_score": 0.0,
                 "date_discovered": datetime.now(timezone.utc).isoformat(),
             }
         _normalize_cause(gemini_out)
         opp = _make_opportunity(raw, gemini_out, raw.get("url", ""))
-        opp["donation"]["donation_url"] = ""
         opp = populate_donation_and_organization(opp)
-        opp["donation"]["donation_url"] = ""  # keep donation_url blank per request
         opportunities.append(opp)
     global _opportunities_store
     _opportunities_store = opportunities
@@ -174,6 +178,22 @@ def run_pipeline(max_events: int = 20) -> list:
     except Exception:
         pass
     return opportunities
+
+
+def _enrich_with_donation_url(opportunities: list) -> list:
+    """Add donation_url to each opportunity's donation from charity_id (for API response)."""
+    out = []
+    for opp in opportunities:
+        opp = dict(opp)
+        donation = dict(opp.get("donation") or {})
+        cid = donation.get("charity_id", "")
+        if cid:
+            donation["donation_url"] = get_donation_url_for_charity(cid)
+        else:
+            donation["donation_url"] = ""
+        opp["donation"] = donation
+        out.append(opp)
+    return out
 
 
 def get_stored_opportunities() -> list:
@@ -192,5 +212,6 @@ def get_stored_opportunities() -> list:
 
 
 def get_opportunities_for_user(user_preferences: dict) -> list:
-    """Return opportunities ranked by value match, recency, confidence."""
-    return rank_opportunities_for_user(user_preferences, get_stored_opportunities())
+    """Return opportunities ranked by value match, recency, confidence. Enriched with donation_url from charity_id."""
+    raw = rank_opportunities_for_user(user_preferences, get_stored_opportunities())
+    return _enrich_with_donation_url(raw)
