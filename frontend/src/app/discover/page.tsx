@@ -149,13 +149,17 @@ export default function Discover() {
     const hasMore = visibleCount < allOpportunities.length;
     const opportunities = allOpportunities.slice(0, visibleCount);
 
-    const handleCauseChange = (value: string) => {
-        setSelectedCause(value);
-        setVisibleCount(PAGE_SIZE);
+    const handleCauseChange = (value: string | null) => {
+        if (value) {
+            setSelectedCause(value);
+            setVisibleCount(PAGE_SIZE);
+        }
     };
-    const handleRegionChange = (value: string) => {
-        setSelectedRegion(value);
-        setVisibleCount(PAGE_SIZE);
+    const handleRegionChange = (value: string | null) => {
+        if (value) {
+            setSelectedRegion(value);
+            setVisibleCount(PAGE_SIZE);
+        }
     };
 
     const loadMoreTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
