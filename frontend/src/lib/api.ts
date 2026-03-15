@@ -128,8 +128,15 @@ export const api = {
 
   /** GET /api/opportunities */
   async getOpportunities(params?: { urgency?: string; country?: string; issue_id?: string }) {
-    const q = new URLSearchParams(params as Record<string, string>).toString();
-    const res = await fetch(`${getBaseUrl()}/api/opportunities${q ? `?${q}` : ""}`);
+    const q = new URLSearchParams();
+    if (params) {
+      if (params.urgency) q.set("urgency", params.urgency);
+      if (params.country) q.set("country", params.country);
+      if (params.issue_id) q.set("issue_id", params.issue_id);
+    }
+    const query = q.toString();
+    const url = `${getBaseUrl()}/api/opportunities${query ? `?${query}` : ""}`;
+    const res = await fetch(url);
     const data = await res.json();
     if (!res.ok) throw new Error(data.error || "Failed to load opportunities");
     return data;
@@ -150,6 +157,14 @@ export const api = {
     const data = await res.json();
     if (!res.ok) throw new Error(data.error || "Failed to load opportunity");
     return data;
+  },
+
+  /** GET /api/opportunities/:opportunityId/related-charities – 3 charities with same causes (from SQL) */
+  async getRelatedCharities(opportunityId: string) {
+    const res = await fetch(`${getBaseUrl()}/api/opportunities/${encodeURIComponent(opportunityId)}/related-charities`);
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || "Failed to load related charities");
+    return data as Array<{ charity_id: string; name: string; website: string | null; donation_url: string | null; description: string | null; verified: boolean }>;
   },
 
   /** GET /api/global-issues */

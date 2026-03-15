@@ -5,6 +5,7 @@ const users = require("./helpers/db/users");
 const donations = require("./helpers/db/donations");
 const opportunities = require("./helpers/db/opportunities");
 const globalIssues = require("./helpers/db/global_issues");
+const charities = require("./helpers/db/charities");
 const notifications = require("./helpers/db/notifications");
 const wallets = require("./helpers/db/wallets");
 const paymentMethods = require("./helpers/db/payment_methods");
@@ -295,6 +296,17 @@ router.get("/opportunities/featured", async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Failed to retrieve featured opportunity" });
+  }
+});
+
+/* Get 3 related charities (same causes) for an opportunity – uses SQL DB only */
+router.get("/opportunities/:opportunityId/related-charities", async (req, res) => {
+  try {
+    const list = await charities.getRelatedCharitiesForOpportunity(req.params.opportunityId, 3);
+    res.json(list);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to retrieve related charities" });
   }
 });
 

@@ -61,6 +61,50 @@ CREATE TABLE donations (
 );
 
 /*
+Causes (value slugs: disaster_relief, healthcare, etc.) – kept consistent with charity focus_values and opportunity values
+*/
+CREATE TABLE causes (
+  cause_slug VARCHAR(50) PRIMARY KEY
+);
+
+/*
+Regions (geographic names) – kept consistent with charity regions and opportunity region
+*/
+CREATE TABLE regions (
+  region_id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(150) UNIQUE NOT NULL
+);
+
+/*
+Charities (from charity_registry); linked to causes and regions via junction tables
+*/
+CREATE TABLE charities (
+  charity_id VARCHAR(50) PRIMARY KEY,
+  name VARCHAR(255) NOT NULL,
+  website VARCHAR(500),
+  donation_url VARCHAR(500),
+  description TEXT,
+  verified TINYINT(1) DEFAULT 1
+);
+
+CREATE TABLE charity_causes (
+  charity_id VARCHAR(50),
+  cause_slug VARCHAR(50),
+  PRIMARY KEY (charity_id, cause_slug),
+  FOREIGN KEY (charity_id) REFERENCES charities(charity_id) ON DELETE CASCADE,
+  FOREIGN KEY (cause_slug) REFERENCES causes(cause_slug)
+);
+
+CREATE TABLE charity_regions (
+  charity_id VARCHAR(50),
+  region_id INT,
+  PRIMARY KEY (charity_id, region_id),
+  FOREIGN KEY (charity_id) REFERENCES charities(charity_id) ON DELETE CASCADE,
+  FOREIGN KEY (region_id) REFERENCES regions(region_id)
+);
+
+
+/*
 Opportunities (shape matches opportunities.json)
 */
 CREATE TABLE opportunities (
