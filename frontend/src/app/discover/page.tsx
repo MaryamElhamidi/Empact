@@ -6,20 +6,12 @@ import { OpportunityCard, OpportunityProps } from "@/components/discover/Opportu
 import { api } from "@/lib/api";
 import { useOpportunities } from "@/context/OpportunitiesContext";
 import { useAuth } from "@/context/AuthContext";
+import type { OpportunityItem } from "@/context/OpportunitiesContext";
 import { Loader2, X, ExternalLink } from "lucide-react";
 
 const PAGE_SIZE = 9;
 
-type OpportunityApi = {
-    opportunity_id: string;
-    title: string;
-    summary?: string | null;
-    region?: string | null;
-    organization?: { name?: string; website?: string | null; verified?: boolean };
-    donation?: { donation_url?: string | null; suggested_amounts?: number[] };
-};
-
-function mapApiToProps(opp: OpportunityApi): OpportunityProps {
+function mapApiToProps(opp: OpportunityItem): OpportunityProps {
     return {
         id: opp.opportunity_id,
         title: opp.title ?? "",
@@ -28,14 +20,46 @@ function mapApiToProps(opp: OpportunityApi): OpportunityProps {
         donationUrl: opp.donation?.donation_url ?? null,
         organizationWebsite: opp.organization?.website ?? null,
         isVerified: opp.organization?.verified,
+        cause: opp.cause ?? null,
+        values: opp.values ?? [],
     };
+}
+
+function formatCauseLabel(cause: string): string {
+    return cause.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
 }
 
 export default function Discover() {
     const { user, isAuthenticated } = useAuth();
     const { opportunities: rawOpportunities, isLoading: opportunitiesLoading } = useOpportunities();
+    const [selectedCause, setSelectedCause] = useState<string>("all");
+    const [selectedRegion, setSelectedRegion] = useState<string>("any");
     const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
     const [topIssues, setTopIssues] = useState<Array<{ name: string; icon: string; count: number }>>([]);
+
+    const uniqueRegions = [...new Set(rawOpportunities.map((o) => o.region).filter(Boolean))].sort() as string[];
+    const uniqueCauses = [...new Set(rawOpportunities.map((o) => o.cause).filter(Boolean))].sort() as string[];
+
+    const filteredOpportunities = (() => {
+        const isDefaultFilters = selectedCause === "all" && selectedRegion === "any";
+        if (isDefaultFilters) {
+            return rawOpportunities;
+        }
+        const filtered = rawOpportunities.filter((o) => {
+            if (selectedCause !== "all" && (o.cause || "").toLowerCase() !== selectedCause.toLowerCase()) return false;
+            if (selectedRegion !== "any" && (o.region || "") !== selectedRegion) return false;
+            return true;
+        });
+        const parseDate = (s: string | null | undefined) => {
+            if (!s) return 0;
+            try {
+                return new Date(s.replace("Z", "+00:00")).getTime();
+            } catch {
+                return 0;
+            }
+        };
+        return [...filtered].sort((a, b) => parseDate(b.date_discovered) - parseDate(a.date_discovered));
+    })();
     const [loadingMore, setLoadingMore] = useState(false);
     const [issuesLoading, setIssuesLoading] = useState(true);
     const [relatedOpportunityId, setRelatedOpportunityId] = useState<string | null>(null);
@@ -43,10 +67,19 @@ export default function Discover() {
     const [relatedLoading, setRelatedLoading] = useState(false);
     const loadMoreSentinelRef = useRef<HTMLDivElement>(null);
 
-    const allOpportunities: OpportunityProps[] = rawOpportunities.map(mapApiToProps);
+    const allOpportunities: OpportunityProps[] = filteredOpportunities.map(mapApiToProps);
     const loading = opportunitiesLoading;
     const hasMore = visibleCount < allOpportunities.length;
     const opportunities = allOpportunities.slice(0, visibleCount);
+
+    const handleCauseChange = (value: string) => {
+        setSelectedCause(value);
+        setVisibleCount(PAGE_SIZE);
+    };
+    const handleRegionChange = (value: string) => {
+        setSelectedRegion(value);
+        setVisibleCount(PAGE_SIZE);
+    };
 
     const loadMoreTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
     const loadMore = useCallback(() => {
@@ -152,7 +185,15 @@ export default function Discover() {
             </div>
 
             <div className="container mx-auto px-4 lg:px-8 -mt-12 relative z-20">
-                <FilterBar />
+                <FilterBar
+                    regions={uniqueRegions}
+                    causes={uniqueCauses}
+                    selectedCause={selectedCause}
+                    selectedRegion={selectedRegion}
+                    onCauseChange={handleCauseChange}
+                    onRegionChange={handleRegionChange}
+                    formatCauseLabel={formatCauseLabel}
+                />
             </div>
 
             <div className="container mx-auto px-4 lg:px-8 mt-20">
