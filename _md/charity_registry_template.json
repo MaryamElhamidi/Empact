@@ -1,0 +1,14 @@
+{
+    "charities": [
+      {
+        "charity_id": "charity_001",
+        "name": "Example Relief Organization",
+        "website": "https://example.org",
+        "donation_url": "https://example.org/donate",
+        "regions": ["global"],
+        "focus_values": ["children","education","healthcare"],
+        "description": "Provides humanitarian relief for vulnerable children and families.",
+        "verified": true
+      }
+    ]
+  }
