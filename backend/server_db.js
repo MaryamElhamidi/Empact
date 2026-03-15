@@ -1,5 +1,7 @@
 const express = require("express");
 const bcrypt = require("bcrypt");
+const path = require("path");
+const fs = require("fs");
 const db = require("./helpers/db/db_conn");
 const users = require("./helpers/db/users");
 const donations = require("./helpers/db/donations");
@@ -330,6 +332,30 @@ router.get("/global-issues", async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Failed to retrieve global issues" });
+  }
+});
+
+/* Get one charity by id from charity_registry.json (for Support Initiative modal) */
+function getCharityRegistryPath() {
+  const fromDir = path.resolve(__dirname, "data", "charity_registry.json");
+  if (fs.existsSync(fromDir)) return fromDir;
+  const fromCwd = path.resolve(process.cwd(), "backend", "data", "charity_registry.json");
+  if (fs.existsSync(fromCwd)) return fromCwd;
+  return fromDir;
+}
+router.get("/charities/:charityId", (req, res) => {
+  try {
+    const registryPath = getCharityRegistryPath();
+    const raw = fs.readFileSync(registryPath, "utf8");
+    const registry = JSON.parse(raw);
+    const list = registry.charities || [];
+    const charityIdParam = (req.params.charityId || "").toString().trim();
+    const charity = list.find((c) => (c.charity_id || "").toString().trim() === charityIdParam);
+    if (!charity) return res.status(404).json({ error: "Charity not found" });
+    res.json(charity);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to retrieve charity" });
   }
 });
 

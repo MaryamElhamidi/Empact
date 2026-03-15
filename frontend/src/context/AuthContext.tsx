@@ -17,23 +17,23 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 function backendUserToUserData(backend: {
-  user_id: number;
-  first_name: string;
-  last_name: string;
-  email: string;
-  interests?: string[];
-  locations?: string[];
+    user_id: number;
+    first_name: string;
+    last_name: string;
+    email: string;
+    interests?: string[];
+    locations?: string[];
 }): UserData {
-  return {
-    profile: {
-      id: String(backend.user_id),
-      name: [backend.first_name, backend.last_name].filter(Boolean).join(" ") || backend.email,
-      email: backend.email,
-      locations: backend.locations ?? [],
-      causes: backend.interests ?? [],
-    },
-    preferences: defaultUserData.preferences,
-  };
+    return {
+        profile: {
+            id: String(backend.user_id),
+            name: [backend.first_name, backend.last_name].filter(Boolean).join(" ") || backend.email,
+            email: backend.email,
+            locations: backend.locations ?? [],
+            causes: backend.interests ?? [],
+        },
+        preferences: defaultUserData.preferences,
+    };
 }
 
 export function AuthProvider({ children }: { children: ReactNode }) {
@@ -102,6 +102,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                 localStorage.setItem("empact_user_id", String(backendUser.user_id));
                 localStorage.setItem("empact_email", email);
             }
+            api.createNotification(backendUser.user_id, {
+                type: "GENERAL",
+                title: "Welcome to EmPact!",
+                message: "We're glad to have you here. Start exploring humanitarian opportunities in the Discover tab.",
+                target: "Welcome"
+            }).catch(() => { });
             setUser(userData);
         } finally {
             setIsLoading(false);
@@ -118,8 +124,23 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     };
 
     const updateUser = (data: UserData) => {
+        const userId = Number(data.profile.id);
+        const oldTwoFactor = user?.preferences.twoFactorEnabled;
+        const newTwoFactor = data.preferences.twoFactorEnabled;
+
         setUser(data);
         userStore.saveUserData(data);
+
+        if (userId && oldTwoFactor !== newTwoFactor) {
+            api.createNotification(userId, {
+                type: "SYSTEM_UPDATE",
+                title: newTwoFactor ? "2FA Enabled" : "2FA Disabled",
+                message: newTwoFactor
+                    ? "Two-factor authentication has been successfully enabled for your account."
+                    : "Two-factor authentication has been disabled. We recommend keeping it on for better security.",
+                target: "Security"
+            }).catch(() => { });
+        }
     };
 
     return (
