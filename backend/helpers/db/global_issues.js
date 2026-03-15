@@ -1,21 +1,16 @@
 const db = require("./db_conn");
 
 /*
-Get global issues with opportunity count per issue
+Get global issues with opportunity count (from opportunities.values JSON; no opportunity_issues table)
 */
 async function getGlobalIssuesWithCounts() {
   const [rows] = await db.execute(
-    `SELECT g.issue_id, g.name, g.icon,
-            COUNT(oi.opportunity_id) AS count
-     FROM global_issues g
-     LEFT JOIN opportunity_issues oi ON g.issue_id = oi.issue_id
-     GROUP BY g.issue_id, g.name, g.icon
-     ORDER BY g.name ASC`
+    `SELECT g.issue_id, g.name, g.icon FROM global_issues g ORDER BY g.name ASC`
   );
   return rows.map((r) => ({
     name: r.name,
     icon: r.icon || "📌",
-    count: Number(r.count),
+    count: 0,
   }));
 }
 
@@ -24,7 +19,7 @@ Get all global issues (no counts)
 */
 async function getGlobalIssues() {
   const [rows] = await db.execute(
-    `SELECT issue_id, name, icon, sort_order FROM global_issues ORDER BY sort_order, name`
+    `SELECT issue_id, name, icon FROM global_issues ORDER BY name`
   );
   return rows;
 }
@@ -40,19 +35,8 @@ async function createGlobalIssue(issue) {
   return result.insertId;
 }
 
-/*
-Link opportunity to issue
-*/
-async function linkOpportunityToIssue(opportunityId, issueId) {
-  await db.execute(
-    `INSERT IGNORE INTO opportunity_issues (opportunity_id, issue_id) VALUES (?, ?)`,
-    [opportunityId, issueId]
-  );
-}
-
 module.exports = {
   getGlobalIssuesWithCounts,
   getGlobalIssues,
   createGlobalIssue,
-  linkOpportunityToIssue,
 };
