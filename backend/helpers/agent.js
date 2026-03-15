@@ -559,6 +559,85 @@ async function findBestDonationLink(driver, baseUrl) {
   }
 }
 
+function scoreAmountInputCandidate(meta) {
+  const {
+    name = "",
+    id = "",
+    cls = "",
+    placeholder = "",
+    aria = "",
+    style = "",
+    type = ""
+  } = meta;
+
+  let score = 0;
+
+  const hasAmount =
+    name.includes("amount") || id.includes("amount") || placeholder.includes("amount");
+  const hasOther =
+    name.includes("other") || id.includes("other") || placeholder.includes("other");
+  const hasDonation =
+    name.includes("donation") || id.includes("donation") || cls.includes("donation");
+
+  if (hasAmount) score += 3;
+  if (hasOther) score += 4; // strongly favor "other" amount-style fields
+  if (hasDonation) score += 3;
+
+  if (placeholder.includes("$")) score += 2;
+  if (type === "number") score += 2;
+
+  if (aria.includes("other") && aria.includes("amount")) score += 3;
+
+  // Slight preference for visibly styled inputs
+  if (style && !style.includes("display:none") && !style.includes("visibility:hidden")) {
+    score += 1;
+  }
+
+  return score;
+}
+
+async function findBestAmountInputInCurrentContext(driver) {
+  const inputs = await driver.findElements(By.css("input, textarea"));
+  let bestCandidate = null;
+  let bestScore = 0;
+
+  for (const input of inputs) {
+    try {
+      const name = ((await input.getAttribute("name")) || "").toLowerCase();
+      const id = ((await input.getAttribute("id")) || "").toLowerCase();
+      const cls = ((await input.getAttribute("class")) || "").toLowerCase();
+      const placeholder = ((await input.getAttribute("placeholder")) || "").toLowerCase();
+      const aria = ((await input.getAttribute("aria-label")) || "").toLowerCase();
+      const style = ((await input.getAttribute("style")) || "").toLowerCase();
+      const type = ((await input.getAttribute("type")) || "").toLowerCase();
+
+      const score = scoreAmountInputCandidate({
+        name,
+        id,
+        cls,
+        placeholder,
+        aria,
+        style,
+        type
+      });
+
+      if (score > bestScore) {
+        bestScore = score;
+        bestCandidate = input;
+      }
+    } catch {
+      // ignore individual element failures
+    }
+  }
+
+  // Require a minimum score so we do not grab unrelated numeric fields
+  if (bestCandidate && bestScore >= 5) {
+    return bestCandidate;
+  }
+
+  return null;
+}
+
 async function performMultiStepDonation(driver, donationUrl, user, donation_amount, progress) {
   let amountSelected = false;
 
@@ -598,51 +677,10 @@ async function performMultiStepDonation(driver, donationUrl, user, donation_amou
       if (!amountSelected) {
 
         let amountInput = detectAmountInput(elements);
-        // Dynamically detect any input related to donation amount
+        // Dynamically detect any input related to donation amount in the main document
         if (!amountInput) {
           try {
-            const inputs = await driver.findElements(By.css("input, textarea"));
-            let bestCandidate = null;
-            let bestScore = 0;
-
-            for (const input of inputs) {
-              const name = ((await input.getAttribute("name")) || "").toLowerCase();
-              const id = ((await input.getAttribute("id")) || "").toLowerCase();
-              const cls = ((await input.getAttribute("class")) || "").toLowerCase();
-              const placeholder = ((await input.getAttribute("placeholder")) || "").toLowerCase();
-              const aria = ((await input.getAttribute("aria-label")) || "").toLowerCase();
-              const style = ((await input.getAttribute("style")) || "").toLowerCase();
-              const type = ((await input.getAttribute("type")) || "").toLowerCase();
-
-              let score = 0;
-
-              const hasAmount = name.includes("amount") || id.includes("amount") || placeholder.includes("amount");
-              const hasOther = name.includes("other") || id.includes("other") || placeholder.includes("other");
-              const hasDonation = name.includes("donation") || id.includes("donation") || cls.includes("donation");
-
-              if (hasAmount) score += 3;
-              if (hasOther) score += 4; // strongly favor "other" amount-style fields
-              if (hasDonation) score += 3;
-
-              if (placeholder.includes("$")) score += 2;
-              if (type === "number") score += 2;
-
-              if (aria.includes("other") && aria.includes("amount")) score += 3;
-
-              // Slight preference for visibly styled inputs
-              if (style && !style.includes("display:none") && !style.includes("visibility:hidden")) {
-                score += 1;
-              }
-
-              if (score > bestScore) {
-                bestScore = score;
-                bestCandidate = input;
-              }
-            }
-
-            if (bestCandidate && bestScore >= 5) {
-              amountInput = bestCandidate;
-            }
+            amountInput = await findBestAmountInputInCurrentContext(driver);
           } catch { }
         }
         if (!amountInput) {
@@ -650,14 +688,23 @@ async function performMultiStepDonation(driver, donationUrl, user, donation_amou
             const iframes = await driver.findElements(By.css("iframe"));
             for (const frame of iframes) {
               await driver.switchTo().frame(frame);
-              for (const sel of ["input[name='amount_other']", "input.input-element[type='number']", "input.n3o-input-amount", "input[placeholder*='amount']"]) {
-                const inFrame = await driver.findElements(By.css(sel));
-                if (inFrame && inFrame.length > 0) { amountInput = inFrame[0]; break; }
+              try {
+                const candidate = await findBestAmountInputInCurrentContext(driver);
+                if (candidate) {
+                  amountInput = candidate;
+                  break;
+                }
+              } finally {
+                try {
+                  await driver.switchTo().defaultContent();
+                } catch {
+                  // ignore switch-back failures; next loop will handle context
+                }
               }
-              if (amountInput) break;
-              await driver.switchTo().defaultContent();
             }
-          } catch (e) { try { await driver.switchTo().defaultContent(); } catch { } }
+          } catch (e) {
+            try { await driver.switchTo().defaultContent(); } catch { }
+          }
         }
 
         if (amountInput) {
@@ -881,6 +928,8 @@ async function openVisibleCheckout(url) {
 // }
 
 async function donate(email, url, donation_amount, onProgress) {
+  console.log("Start donation");
+  console.log("Donate $"+donation_amount);
   const progress = typeof onProgress === "function" ? onProgress : () => { };
 
   const options = new chrome.Options();
