@@ -61,27 +61,23 @@ CREATE TABLE donations (
 );
 
 /*
-Opportunities / Live crisis feed (+ featured for home)
+Opportunities (shape matches opportunities.json)
 */
 CREATE TABLE opportunities (
-  opportunity_id INT AUTO_INCREMENT PRIMARY KEY,
+  opportunity_id VARCHAR(100) PRIMARY KEY,
   title VARCHAR(255) NOT NULL,
-  country VARCHAR(100) NOT NULL,
   summary TEXT,
-  urgency ENUM('LOW','MODERATE','HIGH','CRITICAL') NOT NULL DEFAULT 'MODERATE',
-  image_url VARCHAR(500),
-  is_verified TINYINT(1) DEFAULT 1,
-  recommendation TEXT,
-  is_featured TINYINT(1) DEFAULT 0,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
-CREATE TABLE opportunity_issues (
-  opportunity_id INT,
-  issue_id INT,
-  PRIMARY KEY (opportunity_id, issue_id),
-  FOREIGN KEY (opportunity_id) REFERENCES opportunities(opportunity_id) ON DELETE CASCADE,
-  FOREIGN KEY (issue_id) REFERENCES global_issues(issue_id)
+  cause VARCHAR(500),
+  region VARCHAR(255),
+  org_name VARCHAR(255),
+  org_website VARCHAR(500),
+  org_verified TINYINT(1) DEFAULT 1,
+  donation_url VARCHAR(500),
+  suggested_amounts JSON,
+  `values` JSON,
+  ai_confidence_score DECIMAL(3,2),
+  date_discovered VARCHAR(50),
+  source_url VARCHAR(500)
 );
 
 /*

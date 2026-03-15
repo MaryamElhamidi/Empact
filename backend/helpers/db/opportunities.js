@@ -1,64 +1,100 @@
 const db = require("./db_conn");
 
+/** Map DB row to opportunities.json shape */
+function rowToJson(r) {
+  const suggestedAmounts = r.suggested_amounts != null
+    ? (typeof r.suggested_amounts === "string" ? JSON.parse(r.suggested_amounts) : r.suggested_amounts)
+    : [];
+  const valuesArr = r.values != null
+    ? (typeof r.values === "string" ? JSON.parse(r.values) : r.values)
+    : [];
+  return {
+    opportunity_id: r.opportunity_id,
+    title: r.title,
+    summary: r.summary ?? null,
+    cause: r.cause ?? null,
+    region: r.region ?? null,
+    organization: {
+      name: r.org_name ?? null,
+      website: r.org_website ?? null,
+      verified: !!r.org_verified
+    },
+    donation: {
+      donation_url: r.donation_url ?? null,
+      suggested_amounts: Array.isArray(suggestedAmounts) ? suggestedAmounts : []
+    },
+    values: Array.isArray(valuesArr) ? valuesArr : [],
+    ai_confidence_score: r.ai_confidence_score != null ? Number(r.ai_confidence_score) : null,
+    date_discovered: r.date_discovered ?? null,
+    source_url: r.source_url ?? null
+  };
+}
+
 async function getOpportunities(filters) {
   filters = filters || {};
   let sql = [
-    "SELECT opportunity_id AS id, title, country, summary, urgency,",
-    "image_url AS imageUrl, is_verified AS isVerified, recommendation,",
-    "is_featured AS isFeatured, created_at AS createdAt FROM opportunities WHERE 1=1"
+    "SELECT opportunity_id, title, summary, cause, region, org_name, org_website, org_verified,",
+    "donation_url, suggested_amounts, `values`, ai_confidence_score, date_discovered, source_url",
+    "FROM opportunities WHERE 1=1"
   ].join(" ");
   const params = [];
-  if (filters.urgency) {
-    sql += " AND urgency = ?";
-    params.push(filters.urgency);
+  if (filters.region) {
+    sql += " AND region = ?";
+    params.push(filters.region);
   }
-  if (filters.country) {
-    sql += " AND country = ?";
-    params.push(filters.country);
+  if (filters.cause) {
+    sql += " AND cause LIKE ?";
+    params.push("%" + filters.cause + "%");
   }
-  if (filters.issue_id) {
-    sql += " AND opportunity_id IN (SELECT opportunity_id FROM opportunity_issues WHERE issue_id = ?)";
-    params.push(filters.issue_id);
+  if (filters.value) {
+    sql += " AND JSON_CONTAINS(`values`, ?)";
+    params.push(JSON.stringify(filters.value));
   }
-  sql += " ORDER BY FIELD(urgency, 'CRITICAL', 'HIGH', 'MODERATE', 'LOW'), created_at DESC";
+  sql += " ORDER BY ai_confidence_score DESC, date_discovered DESC";
   const [rows] = await db.execute(sql, params);
-  return rows.map(function (r) {
-    return Object.assign({}, r, { isVerified: !!r.isVerified, isFeatured: !!r.isFeatured });
-  });
+  return rows.map(rowToJson);
 }
 
 async function getFeaturedOpportunity() {
   const [rows] = await db.execute(
-    "SELECT opportunity_id AS id, title, country AS location, summary, urgency, image_url AS imageUrl FROM opportunities WHERE is_featured = 1 LIMIT 1"
+    "SELECT opportunity_id, title, summary, cause, region, org_name, org_website, org_verified, donation_url, suggested_amounts, `values`, ai_confidence_score, date_discovered, source_url FROM opportunities ORDER BY ai_confidence_score DESC LIMIT 1"
   );
-  return rows.length ? rows[0] : null;
+  return rows.length ? rowToJson(rows[0]) : null;
 }
 
 async function getOpportunityById(id) {
   const [rows] = await db.execute(
-    "SELECT opportunity_id AS id, title, country, summary, urgency, image_url AS imageUrl, is_verified AS isVerified, recommendation, created_at AS createdAt FROM opportunities WHERE opportunity_id = ?",
+    "SELECT opportunity_id, title, summary, cause, region, org_name, org_website, org_verified, donation_url, suggested_amounts, `values`, ai_confidence_score, date_discovered, source_url FROM opportunities WHERE opportunity_id = ?",
     [id]
   );
-  if (!rows.length) return null;
-  const r = rows[0];
-  return Object.assign({}, r, { isVerified: !!r.isVerified });
+  return rows.length ? rowToJson(rows[0]) : null;
 }
 
 async function createOpportunity(opp) {
-  const [result] = await db.execute(
-    "INSERT INTO opportunities (title, country, summary, urgency, image_url, is_verified, recommendation, is_featured) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+  const org = opp.organization || {};
+  const donation = opp.donation || {};
+  const suggestedAmounts = donation.suggested_amounts != null ? JSON.stringify(donation.suggested_amounts) : null;
+  const valuesJson = opp.values != null ? JSON.stringify(opp.values) : null;
+  await db.execute(
+    "INSERT INTO opportunities (opportunity_id, title, summary, cause, region, org_name, org_website, org_verified, donation_url, suggested_amounts, `values`, ai_confidence_score, date_discovered, source_url) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
     [
+      opp.opportunity_id,
       opp.title,
-      opp.country,
-      opp.summary || null,
-      opp.urgency || "MODERATE",
-      opp.image_url || opp.imageUrl || null,
-      opp.is_verified != null ? opp.is_verified : opp.isVerified != null ? opp.isVerified : 1,
-      opp.recommendation || null,
-      opp.is_featured != null ? opp.is_featured : opp.isFeatured != null ? opp.isFeatured : 0
+      opp.summary ?? null,
+      opp.cause ?? null,
+      opp.region ?? null,
+      org.name ?? null,
+      org.website ?? null,
+      org.verified === true ? 1 : 0,
+      donation.donation_url ?? null,
+      suggestedAmounts,
+      valuesJson,
+      opp.ai_confidence_score ?? null,
+      opp.date_discovered ?? null,
+      opp.source_url ?? null
     ]
   );
-  return result.insertId;
+  return opp.opportunity_id;
 }
 
 module.exports = {
