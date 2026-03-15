@@ -15,22 +15,26 @@ CREATE TABLE users (
   password VARCHAR(255) NOT NULL
 );
 
-CREATE TABLE interests (
-  interest_id INT AUTO_INCREMENT PRIMARY KEY,
-  name VARCHAR(100) UNIQUE NOT NULL
-);
-
 CREATE TABLE locations (
   location_id INT AUTO_INCREMENT PRIMARY KEY,
   name VARCHAR(100) UNIQUE NOT NULL
 );
 
-CREATE TABLE user_interests (
+/*
+Global issues (replaces interests; used for user preferences and discover counts)
+*/
+CREATE TABLE global_issues (
+  issue_id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(100) NOT NULL UNIQUE,
+  icon VARCHAR(20)
+);
+
+CREATE TABLE user_issues (
   user_id INT,
-  interest_id INT,
-  PRIMARY KEY (user_id, interest_id),
+  issue_id INT,
+  PRIMARY KEY (user_id, issue_id),
   FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
-  FOREIGN KEY (interest_id) REFERENCES interests(interest_id)
+  FOREIGN KEY (issue_id) REFERENCES global_issues(issue_id)
 );
 
 CREATE TABLE user_locations (
@@ -70,16 +74,6 @@ CREATE TABLE opportunities (
   recommendation TEXT,
   is_featured TINYINT(1) DEFAULT 0,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
-/*
-Top global issues (name + icon; count derived from opportunity_issues)
-*/
-CREATE TABLE global_issues (
-  issue_id INT AUTO_INCREMENT PRIMARY KEY,
-  name VARCHAR(100) NOT NULL UNIQUE,
-  icon VARCHAR(20),
-  sort_order INT DEFAULT 0
 );
 
 CREATE TABLE opportunity_issues (

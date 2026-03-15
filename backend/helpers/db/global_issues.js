@@ -5,12 +5,12 @@ Get global issues with opportunity count per issue
 */
 async function getGlobalIssuesWithCounts() {
   const [rows] = await db.execute(
-    `SELECT g.issue_id, g.name, g.icon, g.sort_order,
+    `SELECT g.issue_id, g.name, g.icon,
             COUNT(oi.opportunity_id) AS count
      FROM global_issues g
      LEFT JOIN opportunity_issues oi ON g.issue_id = oi.issue_id
-     GROUP BY g.issue_id, g.name, g.icon, g.sort_order
-     ORDER BY g.sort_order ASC, g.name ASC`
+     GROUP BY g.issue_id, g.name, g.icon
+     ORDER BY g.name ASC`
   );
   return rows.map((r) => ({
     name: r.name,
@@ -34,8 +34,8 @@ Create global issue (admin/seed)
 */
 async function createGlobalIssue(issue) {
   const [result] = await db.execute(
-    `INSERT INTO global_issues (name, icon, sort_order) VALUES (?, ?, ?)`,
-    [issue.name, issue.icon ?? null, issue.sort_order ?? 0]
+    `INSERT INTO global_issues (name, icon) VALUES (?, ?)`,
+    [issue.name, issue.icon ?? null]
   );
   return result.insertId;
 }

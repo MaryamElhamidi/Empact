@@ -1,17 +1,17 @@
 const db = require("./db_conn");
 
 
-async function getOrCreateInterest(name) {
+async function getOrCreateIssue(name) {
 
   const [rows] = await db.execute(
-    `SELECT interest_id FROM interests WHERE name = ?`,
+    `SELECT issue_id FROM global_issues WHERE name = ?`,
     [name]
   );
 
-  if (rows.length > 0) return rows[0].interest_id;
+  if (rows.length > 0) return rows[0].issue_id;
 
   const [result] = await db.execute(
-    `INSERT INTO interests (name) VALUES (?)`,
+    `INSERT INTO global_issues (name, icon) VALUES (?, NULL)`,
     [name]
   );
 
@@ -76,11 +76,11 @@ async function createUser(user) {
 
     for (const interest of user.interests) {
 
-      const interestId = await getOrCreateInterest(interest);
+      const issueId = await getOrCreateIssue(interest);
 
       await db.execute(
-        `INSERT INTO user_interests (user_id, interest_id) VALUES (?, ?)`,
-        [userId, interestId]
+        `INSERT INTO user_issues (user_id, issue_id) VALUES (?, ?)`,
+        [userId, issueId]
       );
     }
   }
@@ -117,12 +117,11 @@ async function getUserByEmail(email) {
 
   const user = rows[0];
 
-
   const [interests] = await db.execute(
     `
-    SELECT i.name
-    FROM interests i
-    JOIN user_interests ui ON i.interest_id = ui.interest_id
+    SELECT g.name
+    FROM global_issues g
+    JOIN user_issues ui ON g.issue_id = ui.issue_id
     WHERE ui.user_id = ?
     `,
     [user.user_id]
@@ -194,17 +193,17 @@ async function updateUser(email, updatedUser) {
       throw new Error("Maximum 3 interests allowed");
 
     await db.execute(
-      `DELETE FROM user_interests WHERE user_id = ?`,
+      `DELETE FROM user_issues WHERE user_id = ?`,
       [userId]
     );
 
     for (const interest of updatedUser.interests) {
 
-      const interestId = await getOrCreateInterest(interest);
+      const issueId = await getOrCreateIssue(interest);
 
       await db.execute(
-        `INSERT INTO user_interests (user_id, interest_id) VALUES (?, ?)`,
-        [userId, interestId]
+        `INSERT INTO user_issues (user_id, issue_id) VALUES (?, ?)`,
+        [userId, issueId]
       );
     }
   }
