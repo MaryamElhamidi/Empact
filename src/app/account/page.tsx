@@ -3,7 +3,7 @@
 import { useAuth } from "@/context/AuthContext";
 import { ImpactDashboard } from "@/components/account/ImpactDashboard";
 import { WalletCard } from "@/components/account/WalletCard";
-import { LogOut, User, Mail, ShieldAlert, Bell, Check, Loader2, Smartphone, ShieldCheck } from "lucide-react";
+import { LogOut, User, Mail, ShieldAlert, Bell, Check, Loader2, Smartphone, ShieldCheck, Heart, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -119,6 +119,54 @@ export default function Account() {
                                     </div>
                                 </div>
                             ))}
+                        </div>
+                    </section>
+
+                    <section>
+                        <div className="flex items-center justify-between mb-8">
+                            <h3 className="text-3xl font-black font-cabinet tracking-tight">Your Interests</h3>
+                            <Button variant="ghost" className="text-primary font-bold hover:bg-primary/5 hover:text-primary rounded-xl">Edit Interests</Button>
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div className="bg-card rounded-[2.5rem] border border-border/40 shadow-xl shadow-black/5 p-8 flex flex-col gap-6">
+                                <div className="flex items-center gap-3">
+                                    <div className="p-2.5 bg-secondary/10 text-secondary rounded-xl">
+                                        <Heart size={20} fill="currentColor" />
+                                    </div>
+                                    <h4 className="font-bold text-xl">Causes</h4>
+                                </div>
+                                <div className="flex flex-wrap gap-2">
+                                    {profile.causes.length > 0 ? (
+                                        profile.causes.map(cause => (
+                                            <Badge key={cause} variant="secondary" className="bg-secondary/10 text-secondary border-none font-bold uppercase text-[10px] px-3 py-1.5 h-auto rounded-lg">
+                                                {cause.replace('_', ' ')}
+                                            </Badge>
+                                        ))
+                                    ) : (
+                                        <p className="text-sm text-muted-foreground font-medium">No causes selected.</p>
+                                    )}
+                                </div>
+                            </div>
+
+                            <div className="bg-card rounded-[2.5rem] border border-border/40 shadow-xl shadow-black/5 p-8 flex flex-col gap-6">
+                                <div className="flex items-center gap-3">
+                                    <div className="p-2.5 bg-primary/10 text-primary rounded-xl">
+                                        <MapPin size={20} />
+                                    </div>
+                                    <h4 className="font-bold text-xl">Regions</h4>
+                                </div>
+                                <div className="flex flex-wrap gap-2">
+                                    {profile.locations.length > 0 ? (
+                                        profile.locations.map(loc => (
+                                            <Badge key={loc} variant="secondary" className="bg-primary/10 text-primary border-none font-bold uppercase text-[10px] px-3 py-1.5 h-auto rounded-lg">
+                                                {loc}
+                                            </Badge>
+                                        ))
+                                    ) : (
+                                        <p className="text-sm text-muted-foreground font-medium">No regions selected.</p>
+                                    )}
+                                </div>
+                            </div>
                         </div>
                     </section>
 
