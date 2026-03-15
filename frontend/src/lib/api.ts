@@ -168,6 +168,14 @@ export const api = {
     return data as Array<{ charity_id: string; name: string; website: string | null; donation_url: string | null; description: string | null; verified: boolean }>;
   },
 
+  /** GET /api/charities/:id – one charity from charity_registry (for Support Initiative modal) */
+  async getCharityById(charityId: string) {
+    const res = await fetch(`${getBaseUrl()}/api/charities/${encodeURIComponent(charityId)}`);
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || "Failed to load charity");
+    return data as { charity_id: string; name: string; website?: string; donation_url?: string; regions?: string[]; focus_values?: string[]; description?: string; verified?: boolean };
+  },
+
   /** GET /api/global-issues */
   async getGlobalIssues() {
     const res = await fetch(`${getBaseUrl()}/api/global-issues`);

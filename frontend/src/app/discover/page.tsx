@@ -3,11 +3,12 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { FilterBar } from "@/components/discover/FilterBar";
 import { OpportunityCard, OpportunityProps } from "@/components/discover/OpportunityCard";
+import { SupportInitiativeModal } from "@/components/discover/SupportInitiativeModal";
 import { api } from "@/lib/api";
 import { useOpportunities } from "@/context/OpportunitiesContext";
 import { useAuth } from "@/context/AuthContext";
 import type { OpportunityItem } from "@/context/OpportunitiesContext";
-import { Loader2, X, ExternalLink } from "lucide-react";
+import { Loader2 } from "lucide-react";
 
 const PAGE_SIZE = 9;
 
@@ -62,9 +63,7 @@ export default function Discover() {
     })();
     const [loadingMore, setLoadingMore] = useState(false);
     const [issuesLoading, setIssuesLoading] = useState(true);
-    const [relatedOpportunityId, setRelatedOpportunityId] = useState<string | null>(null);
-    const [relatedCharities, setRelatedCharities] = useState<Array<{ charity_id: string; name: string; website: string | null; donation_url: string | null }>>([]);
-    const [relatedLoading, setRelatedLoading] = useState(false);
+    const [supportModalOpportunityId, setSupportModalOpportunityId] = useState<string | null>(null);
     const loadMoreSentinelRef = useRef<HTMLDivElement>(null);
 
     const allOpportunities: OpportunityProps[] = filteredOpportunities.map(mapApiToProps);
@@ -150,63 +149,16 @@ export default function Discover() {
             .finally(() => setIssuesLoading(false));
     }, []);
 
-    useEffect(() => {
-        if (!relatedOpportunityId) {
-            setRelatedCharities([]);
-            return;
-        }
-        setRelatedLoading(true);
-        api.getRelatedCharities(relatedOpportunityId)
-            .then(setRelatedCharities)
-            .catch(() => setRelatedCharities([]))
-            .finally(() => setRelatedLoading(false));
-    }, [relatedOpportunityId]);
-
     const handleSupportClick = (opportunityId: string) => {
-        setRelatedOpportunityId(opportunityId);
+        setSupportModalOpportunityId(opportunityId);
     };
 
     return (
         <div className="flex flex-col min-h-screen bg-background pb-24">
-            {/* Related charities popup – top right */}
-            {relatedOpportunityId && (
-                <div className="fixed top-20 right-4 z-50 w-80 max-w-[calc(100vw-2rem)] rounded-2xl border border-border bg-card shadow-xl p-4 animate-in slide-in-from-right-5 duration-200">
-                    <div className="flex items-center justify-between mb-3">
-                        <h3 className="font-bold text-sm text-foreground">Charities with same causes</h3>
-                        <button
-                            type="button"
-                            onClick={() => setRelatedOpportunityId(null)}
-                            className="p-1 rounded-full hover:bg-muted text-muted-foreground"
-                            aria-label="Close"
-                        >
-                            <X className="h-4 w-4" />
-                        </button>
-                    </div>
-                    {relatedLoading ? (
-                        <div className="flex items-center justify-center py-6">
-                            <Loader2 className="w-6 h-6 animate-spin text-primary" />
-                        </div>
-                    ) : relatedCharities.length === 0 ? (
-                        <p className="text-sm text-muted-foreground py-2">No related charities found.</p>
-                    ) : (
-                        <ul className="space-y-2">
-                            {relatedCharities.map((c) => (
-                                <li key={c.charity_id}>
-                                    <a
-                                        href={c.donation_url || c.website || "#"}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="flex items-center gap-2 text-sm font-medium text-primary hover:underline"
-                                    >
-                                        <span className="line-clamp-1">{c.name}</span>
-                                        <ExternalLink className="h-3.5 w-3.5 flex-shrink-0" />
-                                    </a>
-                                </li>
-                            ))}
-                        </ul>
-                    )}
-                </div>
-            )}
+            <SupportInitiativeModal
+                opportunityId={supportModalOpportunityId}
+                onClose={() => setSupportModalOpportunityId(null)}
+            />
 
             <div className="bg-primary text-primary-foreground pt-20 pb-28 lg:pb-32 relative overflow-hidden">
                 <div className="absolute inset-0 bg-secondary opacity-50 mix-blend-multiply" />

@@ -33,7 +33,6 @@ interface OpportunityCardProps {
 }
 
 export function OpportunityCard({ data, onSupportClick, highlighted }: OpportunityCardProps) {
-    const orgLink = data.donationUrl || data.organizationWebsite || null;
     const causeFormatted = data.cause ? formatTag(data.cause) : null;
     const causeNorm = normCause(data.cause || "");
     const valuesFormatted = (data.values || [])
@@ -50,9 +49,6 @@ export function OpportunityCard({ data, onSupportClick, highlighted }: Opportuni
     ];
 
     const handleSupport = () => {
-        if (orgLink) {
-            window.open(orgLink, "_blank", "noopener,noreferrer");
-        }
         onSupportClick?.(data.id);
     };
 
