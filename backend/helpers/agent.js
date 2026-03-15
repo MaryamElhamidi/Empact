@@ -146,7 +146,16 @@ function detectNextButton(elements) {
 
 function detectPaymentButton(elements) {
 
-  const keywords = ["donate", "pay", "submit", "complete"];
+  const keywords = [
+    "donate",
+    "pay",
+    "submit",
+    "complete",
+    "give",
+    "confirm",
+    "review donation",
+    "make a donation"
+  ];
 
   for (let e of elements) {
 
@@ -435,7 +444,7 @@ async function agent_donate(donationInfo) {
     console.log("Opening donation page:", charity.donation_url);
     await driver.get(charity.donation_url);
     await driver.wait(until.elementLocated(By.css("body")), 10000);
-    await driver.sleep(2000); // wait for dynamic JS content
+    await driver.sleep(500); // wait for dynamic JS content
 
     // Find all <a> elements
     const links = await driver.findElements(By.css("a"));
@@ -468,6 +477,261 @@ async function agent_donate(donationInfo) {
     return null;
   } finally {
     await driver.quit();
+  }
+}
+
+// ---------- Agentic helpers for donation flow ----------
+
+function scoreDonationLinkCandidate(baseUrl, href, text, cls, aria, role) {
+  if (!href) return 0;
+  // Ignore javascript: and mailto: etc.
+  if (/^(javascript:|mailto:|tel:)/i.test(href)) return 0;
+
+  const lowerText = (text || "").toLowerCase();
+  const lowerCls = (cls || "").toLowerCase();
+  const lowerAria = (aria || "").toLowerCase();
+  const lowerRole = (role || "").toLowerCase();
+
+  let score = 0;
+
+  // Strong donation intent words
+  const strongWords = ["donate now", "give now", "donate today", "complete donation"];
+  const mediumWords = ["donate", "donation", "give", "contribute", "support"];
+
+  for (const w of strongWords) {
+    if (lowerText.includes(w) || lowerAria.includes(w) || lowerCls.includes(w)) {
+      score += 10;
+    }
+  }
+  for (const w of mediumWords) {
+    if (lowerText.includes(w) || lowerAria.includes(w) || lowerCls.includes(w)) {
+      score += 4;
+    }
+  }
+
+  if (lowerRole === "button") score += 2;
+
+  try {
+    const resolved = new URL(href, baseUrl);
+    const base = new URL(baseUrl);
+    if (resolved.origin === base.origin) {
+      score += 1; // prefer same-domain flows
+    }
+    if (resolved.pathname.includes("/donate")) score += 5;
+  } catch {
+    // ignore URL parse errors
+  }
+
+  return score;
+}
+
+async function findBestDonationLink(driver, baseUrl) {
+  const candidates = [];
+  const anchorsAndButtons = await driver.findElements(By.css("a, button"));
+
+  for (const el of anchorsAndButtons) {
+    try {
+      const href = await el.getAttribute("href");
+      const text = (await el.getText()) || "";
+      const cls = (await el.getAttribute("class")) || "";
+      const aria = (await el.getAttribute("aria-label")) || "";
+      const role = (await el.getAttribute("role")) || "";
+
+      const score = scoreDonationLinkCandidate(baseUrl, href, text, cls, aria, role);
+      if (score > 0) {
+        candidates.push({ el, href, score });
+      }
+    } catch {
+      // ignore individual element failures
+    }
+  }
+
+  if (!candidates.length) return null;
+
+  candidates.sort((a, b) => b.score - a.score);
+  const best = candidates[0];
+  if (!best || best.score < 5) return null; // require reasonable confidence
+
+  try {
+    return new URL(best.href, baseUrl).href;
+  } catch {
+    return null;
+  }
+}
+
+async function performMultiStepDonation(driver, donationUrl, user, donation_amount, progress) {
+  let amountSelected = false;
+
+  progress("Entering donation amount $" + donation_amount + "…");
+  console.log("Navigating to:", donationUrl);
+
+  await driver.get(donationUrl);
+  await driver.wait(until.elementLocated(By.css("body")), 10000);
+
+  for (let step = 0; step < 12; step++) {
+
+    console.log("Agent step", step);
+
+    await driver.wait(async () => {
+      const ready = await driver.executeScript(
+        "return document.readyState === 'complete'"
+      );
+      return ready;
+    }, 500).catch(() => { });
+
+    const elements = await scanPage(driver);
+
+    // --------- Amount selection (only once) ---------
+    if (!amountSelected) {
+
+      const amountBtn = detectAmountButton(elements, donation_amount);
+
+      if (amountBtn) {
+        try {
+          await amountBtn.click();
+          amountSelected = true;
+          progress("Donation amount $" + donation_amount + " selected.");
+          console.log("Amount button selected");
+        } catch (err) { }
+      }
+
+      if (!amountSelected) {
+
+        let amountInput = detectAmountInput(elements);
+        // Dynamically detect any input related to donation amount
+        if (!amountInput) {
+          try {
+            const inputs = await driver.findElements(By.css("input, textarea"));
+            let bestCandidate = null;
+            let bestScore = 0;
+
+            for (const input of inputs) {
+              const name = ((await input.getAttribute("name")) || "").toLowerCase();
+              const id = ((await input.getAttribute("id")) || "").toLowerCase();
+              const cls = ((await input.getAttribute("class")) || "").toLowerCase();
+              const placeholder = ((await input.getAttribute("placeholder")) || "").toLowerCase();
+              const aria = ((await input.getAttribute("aria-label")) || "").toLowerCase();
+              const style = ((await input.getAttribute("style")) || "").toLowerCase();
+              const type = ((await input.getAttribute("type")) || "").toLowerCase();
+
+              let score = 0;
+
+              const hasAmount = name.includes("amount") || id.includes("amount") || placeholder.includes("amount");
+              const hasOther = name.includes("other") || id.includes("other") || placeholder.includes("other");
+              const hasDonation = name.includes("donation") || id.includes("donation") || cls.includes("donation");
+
+              if (hasAmount) score += 3;
+              if (hasOther) score += 4; // strongly favor "other" amount-style fields
+              if (hasDonation) score += 3;
+
+              if (placeholder.includes("$")) score += 2;
+              if (type === "number") score += 2;
+
+              if (aria.includes("other") && aria.includes("amount")) score += 3;
+
+              // Slight preference for visibly styled inputs
+              if (style && !style.includes("display:none") && !style.includes("visibility:hidden")) {
+                score += 1;
+              }
+
+              if (score > bestScore) {
+                bestScore = score;
+                bestCandidate = input;
+              }
+            }
+
+            if (bestCandidate && bestScore >= 5) {
+              amountInput = bestCandidate;
+            }
+          } catch { }
+        }
+        if (!amountInput) {
+          try {
+            const iframes = await driver.findElements(By.css("iframe"));
+            for (const frame of iframes) {
+              await driver.switchTo().frame(frame);
+              for (const sel of ["input[name='amount_other']", "input.input-element[type='number']", "input.n3o-input-amount", "input[placeholder*='amount']"]) {
+                const inFrame = await driver.findElements(By.css(sel));
+                if (inFrame && inFrame.length > 0) { amountInput = inFrame[0]; break; }
+              }
+              if (amountInput) break;
+              await driver.switchTo().defaultContent();
+            }
+          } catch (e) { try { await driver.switchTo().defaultContent(); } catch { } }
+        }
+
+        if (amountInput) {
+          try {
+            await amountInput.clear();
+            await amountInput.sendKeys(donation_amount.toString());
+            amountSelected = true;
+            progress("Entered donation amount $" + donation_amount + ".");
+            console.log("Typed donation amount");
+          } catch { }
+        }
+        try { await driver.switchTo().defaultContent(); } catch { }
+
+      }
+
+    }
+    // -----------------------------------------------
+
+    progress("Entering your information…");
+    await fillUserFields(driver, user);
+
+    const nextBtn = detectNextButton(elements);
+
+    if (nextBtn) {
+
+      try {
+
+        progress("Moving to next step…");
+        console.log("Clicking next");
+
+        const prev = await driver.findElement(By.css("body"));
+
+        await nextBtn.click();
+
+        await driver.wait(until.stalenessOf(prev), 5000).catch(() => { });
+
+        continue;
+
+      } catch { }
+
+    }
+
+    const payBtn = detectPaymentButton(elements);
+
+    if (payBtn) {
+
+      progress("Ready for payment. Complete payment in the browser window.");
+      console.log("Reached payment page");
+
+      try {
+        await driver.executeScript(
+          "arguments[0].scrollIntoView({behavior:'smooth'})",
+          payBtn
+        );
+      } catch (e) {
+        console.warn("scrollIntoView payBtn failed (stale?), continuing");
+      }
+
+      break;
+    }
+
+  }
+
+  console.log("Automation finished. Ready for payment.");
+  progress("Close the browser window when you are done with payment.");
+
+  while (true) {
+    try {
+      await driver.getWindowHandle();
+      await driver.sleep(1000);
+    } catch (err) {
+      console.log("Browser window closed.");
+      break;
+    }
   }
 }
 
@@ -617,7 +881,7 @@ async function openVisibleCheckout(url) {
 // }
 
 async function donate(email, url, donation_amount, onProgress) {
-  const progress = typeof onProgress === "function" ? onProgress : () => {};
+  const progress = typeof onProgress === "function" ? onProgress : () => { };
 
   const options = new chrome.Options();
   options.addArguments(
@@ -637,389 +901,28 @@ async function donate(email, url, donation_amount, onProgress) {
     console.log("Opening donation page:", url);
     await driver.get(url);
     await driver.wait(until.elementLocated(By.css("body")), 10000);
-    await driver.sleep(2000); // wait for dynamic JS content
+    await driver.sleep(500); // brief wait for dynamic JS content
 
-    // Find all <a> elements
-    const links = await driver.findElements(By.css("a"));
+    const dbUser = await getUserByEmailFromApi(email);
+    if (!dbUser) {
+      throw new Error("User not found: " + email);
+    }
+    const user = mapDbUserToFormUser(dbUser);
 
-    for (let link of links) {
-      try {
-        const href = await link.getAttribute("href");
-        const text = (await link.getText()).toLowerCase() || "";
-        const cls = (await link.getAttribute("class")) || "";
+    // Agentic link selection: prefer explicit donate links/buttons if present
+    //const bestDonationUrl = await findBestDonationLink(driver, url);
+    const bestDonationUrl = null;
+    const donationUrl = bestDonationUrl || url;
 
-        // Heuristic: href contains /donate OR text/class contains "donate"
-        if (
-          (href && href.includes("/donate")) ||
-          text.includes("donate") ||
-          cls.toLowerCase().includes("donate")
-        ) {
-          // Make absolute URL
-          const donationUrl = new URL(href, url).href;
-          progress("Found donation form, loading…");
-          console.log("Found donation URL:", donationUrl);
-
-          const dbUser = await getUserByEmailFromApi(email);
-            if (!dbUser) {
-              await driver.quit();
-              throw new Error("User not found: " + email);
-            }
-            const user = mapDbUserToFormUser(dbUser);
-
-            let amountSelected = false;
-
-            try {
-
-              progress("Entering donation amount $" + donation_amount + "…");
-              console.log("Navigating to:", donationUrl);
-
-              await driver.get(donationUrl);
-              await driver.wait(until.elementLocated(By.css("body")), 10000);
-
-              for (let step = 0; step < 12; step++) {
-
-                console.log("Agent step", step);
-
-                await driver.wait(async () => {
-                  const ready = await driver.executeScript(
-                    "return document.readyState === 'complete'"
-                  );
-                  return ready;
-                }, 500).catch(()=>{});
-
-                const elements = await scanPage(driver);
-
-                // --------- Amount selection (only once) ---------
-                if (!amountSelected) {
-
-                  const amountBtn = detectAmountButton(elements, donation_amount);
-
-                  if (amountBtn) {
-                    try {
-                      await amountBtn.click();
-                      amountSelected = true;
-                      progress("Donation amount $" + donation_amount + " selected.");
-                      console.log("Amount button selected");
-                    } catch (err) {}
-                  }
-
-                  if (!amountSelected) {
-
-                    let amountInput = detectAmountInput(elements);
-                    // Dynamically detect any input related to donation amount
-                    if (!amountInput) {
-                      try {
-
-                        const inputs = await driver.findElements(By.css("input, textarea"));
-
-                        for (const input of inputs) {
-
-                          const name = ((await input.getAttribute("name")) || "").toLowerCase();
-                          const id = ((await input.getAttribute("id")) || "").toLowerCase();
-                          const cls = ((await input.getAttribute("class")) || "").toLowerCase();
-                          const placeholder = ((await input.getAttribute("placeholder")) || "").toLowerCase();
-                          const aria = ((await input.getAttribute("aria-label")) || "").toLowerCase();
-                          const style = ((await input.getAttribute("style")) || "").toLowerCase();
-                          const type = ((await input.getAttribute("type")) || "").toLowerCase();
-
-                          const combined = `${name} ${id} ${cls} ${placeholder} ${aria} ${style}`;
-
-                          if (
-                            combined.includes("amount") ||
-                            combined.includes("other") ||
-                            combined.includes("donation") ||
-                            placeholder.includes("$") ||
-                            type === "number"
-                          ) {
-                            amountInput = input;
-                            break;
-                          }
-
-                        }
-
-                      } catch {}
-                    }
-                    if (!amountInput) {
-                      try {
-                        const iframes = await driver.findElements(By.css("iframe"));
-                        for (const frame of iframes) {
-                          await driver.switchTo().frame(frame);
-                          for (const sel of ["input[name='amount_other']", "input.input-element[type='number']", "input.n3o-input-amount", "input[placeholder*='amount']"]) {
-                            const inFrame = await driver.findElements(By.css(sel));
-                            if (inFrame && inFrame.length > 0) { amountInput = inFrame[0]; break; }
-                          }
-                          if (amountInput) break;
-                          await driver.switchTo().defaultContent();
-                        }
-                      } catch (e) { try { await driver.switchTo().defaultContent(); } catch {} }
-                    }
-
-                    if (amountInput) {
-                      try {
-                        await amountInput.clear();
-                        await amountInput.sendKeys(donation_amount.toString());
-                        amountSelected = true;
-                        progress("Entered donation amount $" + donation_amount + ".");
-                        console.log("Typed donation amount");
-                      } catch {}
-                    }
-                    try { await driver.switchTo().defaultContent(); } catch {}
-
-                  }
-
-                }
-                // -----------------------------------------------
-
-                progress("Entering your information…");
-                await fillUserFields(driver, user);
-
-                const nextBtn = detectNextButton(elements);
-
-                if (nextBtn) {
-
-                  try {
-
-                    progress("Moving to next step…");
-                    console.log("Clicking next");
-
-                    const prev = await driver.findElement(By.css("body"));
-
-                    await nextBtn.click();
-
-                    await driver.wait(until.stalenessOf(prev), 5000).catch(()=>{});
-
-                    continue;
-
-                  } catch {}
-
-                }
-
-                const payBtn = detectPaymentButton(elements);
-
-                if (payBtn) {
-
-                  progress("Ready for payment. Complete payment in the browser window.");
-                  console.log("Reached payment page");
-
-                  try {
-                    await driver.executeScript(
-                      "arguments[0].scrollIntoView({behavior:'smooth'})",
-                      payBtn
-                    );
-                  } catch (e) {
-                    console.warn("scrollIntoView payBtn failed (stale?), continuing");
-                  }
-
-                  break;
-                }
-
-              }
-
-              console.log("Automation finished. Ready for payment.");
-              progress("Close the browser window when you are done with payment.");
-
-              while (true) {
-                try {
-                  await driver.getWindowHandle();
-                  await driver.sleep(1000);
-                } catch (err) {
-                  console.log("Browser window closed.");
-                  break;
-                }
-              }
-
-              return null;
-
-            } catch (err) {
-
-              console.error("agent_fill_multistep failed:", err);
-              await driver.quit();
-              return null;
-
-            }
-        }
-      } catch {}
+    if (bestDonationUrl) {
+      progress("Found donation form, loading…");
+      console.log("Resolved donation URL via agentic heuristics:", donationUrl);
+    } else {
+      progress("Using this page directly as the donation form…");
+      console.log("No dedicated donation link detected, staying on:", donationUrl);
     }
 
-    progress("No donation link detected on this page.");
-    console.log("No donation link detected.");
-
-    const donationUrl = url;
-          console.log("Found donation URL:", donationUrl);
-          
-          const dbUser = await getUserByEmailFromApi(email);
-            if (!dbUser) {
-              await driver.quit();
-              throw new Error("User not found: " + email);
-            }
-            const user = mapDbUserToFormUser(dbUser);
-
-            let amountSelected = false;
-
-            try {
-
-              console.log("Navigating to:", donationUrl);
-
-              await driver.wait(until.elementLocated(By.css("body")), 10000);
-
-              for (let step = 0; step < 12; step++) {
-
-                console.log("Agent step", step);
-
-                await driver.wait(async () => {
-                  const ready = await driver.executeScript(
-                    "return document.readyState === 'complete'"
-                  );
-                  return ready;
-                }, 500).catch(()=>{});
-
-                const elements = await scanPage(driver);
-
-                // --------- Amount selection (only once) ---------
-                if (!amountSelected) {
-
-                  const amountBtn = detectAmountButton(elements, donation_amount);
-
-                  if (amountBtn) {
-                    try {
-                      await amountBtn.click();
-                      amountSelected = true;
-                      console.log("Amount button selected");
-                    } catch {}
-                  }
-
-                  if (!amountSelected) {
-
-                    let amountInput = detectAmountInput(elements);
-                    // Dynamically detect any input related to donation amount
-                    if (!amountInput) {
-                      try {
-
-                        const inputs = await driver.findElements(By.css("input, textarea"));
-
-                        for (const input of inputs) {
-
-                          const name = ((await input.getAttribute("name")) || "").toLowerCase();
-                          const id = ((await input.getAttribute("id")) || "").toLowerCase();
-                          const cls = ((await input.getAttribute("class")) || "").toLowerCase();
-                          const placeholder = ((await input.getAttribute("placeholder")) || "").toLowerCase();
-                          const aria = ((await input.getAttribute("aria-label")) || "").toLowerCase();
-                          const style = ((await input.getAttribute("style")) || "").toLowerCase();
-                          const type = ((await input.getAttribute("type")) || "").toLowerCase();
-
-                          const combined = `${name} ${id} ${cls} ${placeholder} ${aria} ${style}`;
-
-                          if (
-                            combined.includes("amount") ||
-                            combined.includes("other") ||
-                            combined.includes("donation") ||
-                            placeholder.includes("$") ||
-                            type === "number"
-                          ) {
-                            amountInput = input;
-                            break;
-                          }
-
-                        }
-
-                      } catch {}
-                    }
-                        
-                    if (!amountInput) {
-                      try {
-                        const iframes = await driver.findElements(By.css("iframe"));
-                        for (const frame of iframes) {
-                          await driver.switchTo().frame(frame);
-                          for (const sel of ["input[name='amount_other']", "input.input-element[type='number']", "input.n3o-input-amount", "input[placeholder*='amount']"]) {
-                            const inFrame = await driver.findElements(By.css(sel));
-                            if (inFrame && inFrame.length > 0) { amountInput = inFrame[0]; break; }
-                          }
-                          if (amountInput) break;
-                          await driver.switchTo().defaultContent();
-                        }
-                      } catch (e) { try { await driver.switchTo().defaultContent(); } catch {} }
-                    }
-
-                    if (amountInput) {
-                      try {
-                        await amountInput.clear();
-                        await amountInput.sendKeys(donation_amount.toString());
-                        amountSelected = true;
-                        console.log("Typed donation amount");
-                      } catch {}
-                    }
-                    try { await driver.switchTo().defaultContent(); } catch {}
-
-                  }
-
-                }
-                // -----------------------------------------------
-
-                await fillUserFields(driver, user);
-
-                const nextBtn = detectNextButton(elements);
-
-                if (nextBtn) {
-
-                  try {
-
-                    console.log("Clicking next");
-
-                    const prev = await driver.findElement(By.css("body"));
-
-                    await nextBtn.click();
-
-                    await driver.wait(until.stalenessOf(prev), 5000).catch(()=>{});
-
-                    continue;
-
-                  } catch {}
-
-                }
-
-                const payBtn = detectPaymentButton(elements);
-
-                if (payBtn) {
-
-                  console.log("Reached payment page");
-
-                  try {
-                    await driver.executeScript(
-                      "arguments[0].scrollIntoView({behavior:'smooth'})",
-                      payBtn
-                    );
-                  } catch (e) {
-                    console.warn("scrollIntoView payBtn failed (stale?), continuing");
-                  }
-
-                  break;
-                }
-
-              }
-
-              console.log("Automation finished. Ready for payment.");
-              console.log("Close the browser window when you are done with payment.");
-
-              while (true) {
-                try {
-                  await driver.getWindowHandle();
-                  await driver.sleep(1000);
-                } catch (err) {
-                  console.log("Browser window closed.");
-                  break;
-                }
-              }
-
-              return null;
-
-            } catch (err) {
-
-              console.error("agent_fill_multistep failed:", err);
-              await driver.quit();
-              return null;
-
-            }
-
+    await performMultiStepDonation(driver, donationUrl, user, donation_amount, progress);
     return null;
 
   } catch (err) {
