@@ -8,8 +8,8 @@ interface FilterBarProps {
     causes: string[];
     selectedCause: string;
     selectedRegion: string;
-    onCauseChange: (value: string) => void;
-    onRegionChange: (value: string) => void;
+    onCauseChange: (value: string | null) => void;
+    onRegionChange: (value: string | null) => void;
     formatCauseLabel: (cause: string) => string;
 }
 

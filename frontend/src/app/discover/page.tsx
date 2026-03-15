@@ -8,7 +8,9 @@ import { api } from "@/lib/api";
 import { useOpportunities } from "@/context/OpportunitiesContext";
 import { useAuth } from "@/context/AuthContext";
 import type { OpportunityItem } from "@/context/OpportunitiesContext";
-import { Loader2 } from "lucide-react";
+import { Loader2, MapPin, ShieldCheck } from "lucide-react";
+import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 
 const PAGE_SIZE = 9;
 
@@ -30,14 +32,50 @@ function formatCauseLabel(cause: string): string {
     return cause.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
 }
 
+function formatTag(s: string): string {
+    return s.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+}
+
+/** Trend global issues with suggested charity matched to region + cause (from charity_registry). */
+const TREND_ISSUES = [
+    {
+        id: "trend-1",
+        title: "Climate & displacement in East Africa",
+        region: "East Africa",
+        summary: "Drought and flooding are driving displacement and food insecurity across the region. Support emergency relief and long-term resilience.",
+        cause: "climate",
+        values: ["disaster_relief", "food_security"],
+        isVerified: true,
+        suggestedCharityId: "charity_004", // WFP – Sudan, Ethiopia, South Sudan, Somalia; food_security, disaster_relief
+    },
+    {
+        id: "trend-2",
+        title: "Ukraine humanitarian response",
+        region: "Ukraine",
+        summary: "Ongoing conflict continues to displace families. Medical aid, shelter, and food assistance are urgently needed.",
+        cause: "conflict_relief",
+        values: ["disaster_relief", "healthcare"],
+        isVerified: true,
+        suggestedCharityId: "charity_001", // IRC – Ukraine in regions; conflict_relief, healthcare, refugees
+    },
+    {
+        id: "trend-3",
+        title: "Syria and neighbouring countries refugee support",
+        region: "Syria",
+        summary: "Millions remain displaced. Education, health, and protection services need sustained funding.",
+        cause: "refugees",
+        values: ["education", "healthcare"],
+        isVerified: true,
+        suggestedCharityId: "charity_008", // Action For Humanity – Syria, Lebanon, Jordan, Türkiye; education, healthcare
+    },
+];
+
 export default function Discover() {
     const { user, isAuthenticated } = useAuth();
     const { opportunities: rawOpportunities, isLoading: opportunitiesLoading } = useOpportunities();
     const [selectedCause, setSelectedCause] = useState<string>("all");
     const [selectedRegion, setSelectedRegion] = useState<string>("any");
     const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
-    const [topIssues, setTopIssues] = useState<Array<{ name: string; icon: string; count: number }>>([]);
-
     const uniqueRegions = [...new Set(rawOpportunities.map((o) => o.region).filter(Boolean))].sort() as string[];
     const uniqueCauses = [...new Set(rawOpportunities.map((o) => o.cause).filter(Boolean))].sort() as string[];
 
@@ -62,8 +100,15 @@ export default function Discover() {
         return [...filtered].sort((a, b) => parseDate(b.date_discovered) - parseDate(a.date_discovered));
     })();
     const [loadingMore, setLoadingMore] = useState(false);
-    const [issuesLoading, setIssuesLoading] = useState(true);
     const [supportModalOpportunityId, setSupportModalOpportunityId] = useState<string | null>(null);
+    const [supportModalTrendContent, setSupportModalTrendContent] = useState<{
+        title: string;
+        region: string;
+        summary: string;
+        cause: string;
+        values: string[];
+        suggestedCharityId: string;
+    } | null>(null);
     const loadMoreSentinelRef = useRef<HTMLDivElement>(null);
 
     const allOpportunities: OpportunityProps[] = filteredOpportunities.map(mapApiToProps);
@@ -104,13 +149,17 @@ export default function Discover() {
     const hasMore = visibleCount < allOpportunities.length;
     const opportunities = allOpportunities.slice(0, visibleCount);
 
-    const handleCauseChange = (value: string) => {
-        setSelectedCause(value);
-        setVisibleCount(PAGE_SIZE);
+    const handleCauseChange = (value: string | null) => {
+        if (value) {
+            setSelectedCause(value);
+            setVisibleCount(PAGE_SIZE);
+        }
     };
-    const handleRegionChange = (value: string) => {
-        setSelectedRegion(value);
-        setVisibleCount(PAGE_SIZE);
+    const handleRegionChange = (value: string | null) => {
+        if (value) {
+            setSelectedRegion(value);
+            setVisibleCount(PAGE_SIZE);
+        }
     };
 
     const loadMoreTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -142,13 +191,6 @@ export default function Discover() {
         return () => observer.disconnect();
     }, [loadMore, hasMore, loading]);
 
-    useEffect(() => {
-        api.getGlobalIssues()
-            .then(setTopIssues)
-            .catch(() => setTopIssues([]))
-            .finally(() => setIssuesLoading(false));
-    }, []);
-
     const handleSupportClick = (opportunityId: string) => {
         setSupportModalOpportunityId(opportunityId);
     };
@@ -157,7 +199,11 @@ export default function Discover() {
         <div className="flex flex-col min-h-screen bg-background pb-24">
             <SupportInitiativeModal
                 opportunityId={supportModalOpportunityId}
-                onClose={() => setSupportModalOpportunityId(null)}
+                trendContent={supportModalTrendContent}
+                onClose={() => {
+                    setSupportModalOpportunityId(null);
+                    setSupportModalTrendContent(null);
+                }}
             />
 
             <div className="bg-primary text-primary-foreground pt-20 pb-28 lg:pb-32 relative overflow-hidden">
@@ -182,31 +228,73 @@ export default function Discover() {
             </div>
 
             <div className="container mx-auto px-4 lg:px-8 mt-20">
-                <div className="flex items-center justify-between mb-8">
-                    <h2 className="text-2xl md:text-3xl font-bold font-sans">Top Global Issues</h2>
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8 border-b border-border/50 pb-6">
+                    <div>
+                        <h2 className="text-2xl md:text-3xl font-bold font-sans">Trending global issues</h2>
+                        <p className="text-muted-foreground mt-1 text-sm md:text-base">
+                            Same style as your crisis feed—tap Support Initiative to open the modal.
+                        </p>
+                    </div>
                 </div>
-                {issuesLoading ? (
-                    <div className="flex gap-4 overflow-x-auto pb-8 items-center justify-center py-12">
-                        <Loader2 className="w-8 h-8 animate-spin text-primary" />
-                    </div>
-                ) : (
-                    <div className="flex gap-4 overflow-x-auto pb-8 scrollbar-hide snap-x">
-                        {topIssues.length === 0 ? (
-                            <p className="text-muted-foreground font-medium py-8">No issues loaded.</p>
-                        ) : (
-                            topIssues.map((issue) => (
-                                <div key={issue.name} className="flex-shrink-0 w-72 p-8 rounded-3xl border border-border bg-card shadow-sm snap-start hover:-translate-y-2 transition-transform cursor-pointer group">
-                                    <div className="text-5xl mb-6 transition-transform group-hover:scale-110 origin-left">{issue.icon || "📌"}</div>
-                                    <h3 className="font-bold text-xl mb-2">{issue.name}</h3>
-                                    <p className="text-muted-foreground text-sm font-semibold uppercase tracking-wider">{issue.count} Opportunities</p>
-                                </div>
-                            ))
-                        )}
-                    </div>
-                )}
+                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 lg:gap-8">
+                    {TREND_ISSUES.map((block) => {
+                        const tags = [
+                            block.cause ? formatTag(block.cause) : null,
+                            ...(block.values || []).map(formatTag),
+                        ].filter(Boolean) as string[];
+                        const uniqueTags = [...new Set(tags)];
+                        return (
+                            <Card
+                                key={block.id}
+                                className="group overflow-hidden border-border bg-card shadow-sm transition-all duration-300 hover:shadow-xl hover:-translate-y-1 rounded-2xl flex flex-col h-full"
+                            >
+                                <CardHeader className="p-5 pb-2">
+                                    <div className="flex flex-wrap items-center gap-2 mb-2">
+                                        {block.isVerified && (
+                                            <span className="bg-primary/10 text-primary px-2.5 py-1 rounded-full text-[11px] font-bold flex items-center gap-1 border border-primary/20">
+                                                <ShieldCheck className="h-3.5 w-3.5" /> VERIFIED
+                                            </span>
+                                        )}
+                                        {uniqueTags.map((t) => (
+                                            <span key={t} className="bg-muted text-muted-foreground px-2 py-0.5 rounded-md text-[11px] font-medium">
+                                                {t}
+                                            </span>
+                                        ))}
+                                    </div>
+                                    <div className="flex gap-1.5 items-center text-xs text-muted-foreground font-semibold uppercase tracking-wider mb-1.5">
+                                        <MapPin className="h-3.5 w-3.5 text-secondary flex-shrink-0" />
+                                        <span className="line-clamp-1">{block.region}</span>
+                                    </div>
+                                    <h3 className="font-sans font-bold text-xl leading-tight line-clamp-2 text-foreground">{block.title}</h3>
+                                </CardHeader>
+                                <CardContent className="p-5 pt-1 flex-grow">
+                                    <p className="text-sm text-foreground/70 line-clamp-3 leading-relaxed">{block.summary}</p>
+                                </CardContent>
+                                <CardFooter className="p-5 pt-0">
+                                    <Button
+                                        className="w-full h-11 font-bold rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground transition-all shadow-sm"
+                                        onClick={() => {
+                                            setSupportModalOpportunityId(null);
+                                            setSupportModalTrendContent({
+                                                title: block.title,
+                                                region: block.region,
+                                                summary: block.summary,
+                                                cause: block.cause,
+                                                values: block.values,
+                                                suggestedCharityId: block.suggestedCharityId,
+                                            });
+                                        }}
+                                    >
+                                        Support Initiative
+                                    </Button>
+                                </CardFooter>
+                            </Card>
+                        );
+                    })}
+                </div>
             </div>
 
-            <div className="container mx-auto px-4 lg:px-8 mt-20">
+            <div id="crisis-feed" className="container mx-auto px-4 lg:px-8 mt-20">
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8 border-b border-border/50 pb-6">
                     <div>
                         <h2 className="text-3xl md:text-4xl font-bold font-sans">
