@@ -1,0 +1,2597 @@
+[
+  {
+    "opportunity_id": "UNHCR-RCSEE-REPORT-20260313",
+    "title": "UNHCR Regional Representation for Central and South-East Europe Report Update",
+    "summary": "This article serves as a metadata entry for a UNHCR report on Central and South-East Europe. It provides no specific details on a humanitarian crisis, its causes, or urgent needs, preventing a proper crisis summary from this text.",
+    "cause": "Not specified in article.",
+    "region": "Central and South-East Europe",
+    "organization": {
+      "name": "Example Relief Organization",
+      "website": "https://example.org",
+      "verified": true
+    },
+    "donation": {
+      "donation_url": "https://example.org/donate",
+      "suggested_amounts": [
+        10,
+        25,
+        50,
+        100
+      ]
+    },
+    "values": [],
+    "ai_confidence_score": 0.2,
+    "date_discovered": "2026-03-13",
+    "source_url": "https://reliefweb.int/report/world/unhcr-regional-representation-central-and-south-east-europe-rcsee"
+  },
+  {
+    "opportunity_id": "opp_96c51b1e691a",
+    "title": "Flooding in West Java, Indonesia",
+    "summary": "Heavy rain caused severe flooding in West Java, Indonesia, affecting over 700 people in Bandung and Bogor. Three injuries reported, and one house destroyed. Ongoing light rain forecasts suggest continued challenges for affected communities.",
+    "cause": "Heavy rain",
+    "region": "West Java Province, Indonesia",
+    "organization": {
+      "name": "Example Relief Organization",
+      "website": "https://example.org",
+      "verified": true
+    },
+    "donation": {
+      "donation_url": "https://example.org/donate",
+      "suggested_amounts": [
+        10,
+        25,
+        50,
+        100
+      ]
+    },
+    "values": [
+      "disaster_relief",
+      "housing",
+      "medical_aid"
+    ],
+    "ai_confidence_score": 1.0,
+    "date_discovered": "2026-03-13",
+    "source_url": "https://reliefweb.int/report/indonesia/indonesia-floods-bmkg-adinet-echo-daily-flash-13-march-2026"
+  },
+  {
+    "opportunity_id": "ECU-2026-RAINYSEASON",
+    "title": "Ecuador hit by Severe Floods and Landslides",
+    "summary": "Ecuador is experiencing an intense 2026 rainy season with 629 floods and 612 landslides since January 1st. 11 people have died, 24 are injured, and over 46,000 are affected. Thousands of homes are destroyed or damaged, primarily in Guayas, El Oro, Esmeraldas, Los Ríos, and Manabí provinces, necessitating ongoing relief.",
+    "cause": "Severe weather leading to floods and landslides during an intense rainy season.",
+    "region": "Ecuador",
+    "organization": {
+      "name": "Example Relief Organization",
+      "website": "https://example.org",
+      "verified": true
+    },
+    "donation": {
+      "donation_url": "https://example.org/donate",
+      "suggested_amounts": [
+        10,
+        25,
+        50,
+        100
+      ]
+    },
+    "values": [
+      "disaster_relief",
+      "housing",
+      "medical_aid",
+      "climate"
+    ],
+    "ai_confidence_score": 0.98,
+    "date_discovered": "2026-03-13",
+    "source_url": "https://reliefweb.int/report/ecuador/ecuador-severe-weather-update-sngr-copernicus-emsr-noaa-cpc-inamhi-echo-daily-flash-13-march-2026"
+  },
+  {
+    "opportunity_id": "opp_feac2eca4d1c",
+    "title": "Thailand - Severe weather (ADINet, TMD) (ECHO Daily Flash of 13 March 2026)",
+    "summary": "Thailand Thailand - Severe weather (ADINet, TMD) (ECHO Daily Flash of 13 March 2026) Format News and Press Release Source ECHO Posted 13 Mar 2026 Originally published 13 Mar 2026 Origin View original Strong winds, thunderstorms and heavy rainfall have been affecting north-western Thailand (mainly th",
+    "cause": "disaster_relief",
+    "region": "Thailand",
+    "organization": {
+      "name": "Example Relief Organization",
+      "website": "https://example.org",
+      "verified": true
+    },
+    "donation": {
+      "donation_url": "https://example.org/donate",
+      "suggested_amounts": [
+        10,
+        25,
+        50,
+        100
+      ]
+    },
+    "values": [
+      "disaster_relief"
+    ],
+    "ai_confidence_score": 0.0,
+    "date_discovered": "2026-03-15T02:21:28.281667+00:00",
+    "source_url": "https://reliefweb.int/report/thailand/thailand-severe-weather-adinet-tmd-echo-daily-flash-13-march-2026"
+  },
+  {
+    "opportunity_id": "opp_6f5b1df8c2e1",
+    "title": "Malaysia - Floods and landslides, update (ADINet, MET Malaysia) (ECHO Daily Flash of 13 March 2026)",
+    "summary": "Malaysia Malaysia - Floods and landslides, update (ADINet, MET Malaysia) (ECHO Daily Flash of 13 March 2026) Format News and Press Release Source ECHO Posted 13 Mar 2026 Originally published 13 Mar 2026 Origin View original Heavy rainfall continues to affect eastern Malaysia (the Malaysian part of B",
+    "cause": "disaster_relief",
+    "region": "Malaysia",
+    "organization": {
+      "name": "Example Relief Organization",
+      "website": "https://example.org",
+      "verified": true
+    },
+    "donation": {
+      "donation_url": "https://example.org/donate",
+      "suggested_amounts": [
+        10,
+        25,
+        50,
+        100
+      ]
+    },
+    "values": [
+      "disaster_relief"
+    ],
+    "ai_confidence_score": 0.0,
+    "date_discovered": "2026-03-15T02:21:28.574221+00:00",
+    "source_url": "https://reliefweb.int/report/malaysia/malaysia-floods-and-landslides-update-adinet-met-malaysia-echo-daily-flash-13-march-2026"
+  },
+  {
+    "opportunity_id": "opp_431408bffce2",
+    "title": "Ethiopia - Floods and landslides kill dozens (DG ECHO, Ethiopian Red Cross Society) (ECHO Daily Flash of 13 March 2026)",
+    "summary": "Ethiopia Ethiopia - Floods and landslides kill dozens (DG ECHO, Ethiopian Red Cross Society) (ECHO Daily Flash of 13 March 2026) Format News and Press Release Source ECHO Posted 13 Mar 2026 Originally published 13 Mar 2026 Origin View original Torrential rains in the Gammo Zone in South Ethiopia Reg",
+    "cause": "disaster_relief",
+    "region": "Ethiopia",
+    "organization": {
+      "name": "Example Relief Organization",
+      "website": "https://example.org",
+      "verified": true
+    },
+    "donation": {
+      "donation_url": "https://example.org/donate",
+      "suggested_amounts": [
+        10,
+        25,
+        50,
+        100
+      ]
+    },
+    "values": [
+      "disaster_relief"
+    ],
+    "ai_confidence_score": 0.0,
+    "date_discovered": "2026-03-15T02:21:28.882165+00:00",
+    "source_url": "https://reliefweb.int/report/ethiopia/ethiopia-floods-and-landslides-kill-dozens-dg-echo-ethiopian-red-cross-society-echo-daily-flash-13-march-2026"
+  },
+  {
+    "opportunity_id": "opp_f2defbaf4937",
+    "title": "Regional Refugee Response Plan for the Ukraine Situation: 2025 End-of-Year Report",
+    "summary": "Ukraine + 9 more Regional Refugee Response Plan for the Ukraine Situation: 2025 End-of-Year Report Format Evaluation and Lessons Learned Source UNHCR Posted 13 Mar 2026 Originally published 13 Mar 2026 Origin View original",
+    "cause": "disaster_relief",
+    "region": "Ukraine",
+    "organization": {
+      "name": "Example Relief Organization",
+      "website": "https://example.org",
+      "verified": true
+    },
+    "donation": {
+      "donation_url": "https://example.org/donate",
+      "suggested_amounts": [
+        10,
+        25,
+        50,
+        100
+      ]
+    },
+    "values": [
+      "disaster_relief"
+    ],
+    "ai_confidence_score": 0.0,
+    "date_discovered": "2026-03-15T02:21:29.177292+00:00",
+    "source_url": "https://reliefweb.int/report/ukraine/regional-refugee-response-plan-ukraine-situation-2025-end-year-report"
+  },
+  {
+    "opportunity_id": "opp_933baf2930b7",
+    "title": "UNHCR Rwanda - Monthly Returnees Statistics as of 28 February 2026",
+    "summary": "Rwanda UNHCR Rwanda - Monthly Returnees Statistics as of 28 February 2026 Format Infographic Source UNHCR Posted 13 Mar 2026 Originally published 9 Mar 2026 Origin View original",
+    "cause": "disaster_relief",
+    "region": "Rwanda",
+    "organization": {
+      "name": "Example Relief Organization",
+      "website": "https://example.org",
+      "verified": true
+    },
+    "donation": {
+      "donation_url": "https://example.org/donate",
+      "suggested_amounts": [
+        10,
+        25,
+        50,
+        100
+      ]
+    },
+    "values": [
+      "disaster_relief"
+    ],
+    "ai_confidence_score": 0.0,
+    "date_discovered": "2026-03-15T02:21:29.469986+00:00",
+    "source_url": "https://reliefweb.int/report/rwanda/unhcr-rwanda-monthly-returnees-statistics-28-february-2026"
+  },
+  {
+    "opportunity_id": "opp_09dbdab01625",
+    "title": "UNHCR Rwanda - Total Forcibly Displaced Population Figures - 28 February 2026",
+    "summary": "Rwanda + 6 more UNHCR Rwanda - Total Forcibly Displaced Population Figures - 28 February 2026 Format Infographic Source UNHCR Posted 13 Mar 2026 Originally published 6 Mar 2026 Origin View original",
+    "cause": "disaster_relief",
+    "region": "Rwanda",
+    "organization": {
+      "name": "Example Relief Organization",
+      "website": "https://example.org",
+      "verified": true
+    },
+    "donation": {
+      "donation_url": "https://example.org/donate",
+      "suggested_amounts": [
+        10,
+        25,
+        50,
+        100
+      ]
+    },
+    "values": [
+      "disaster_relief"
+    ],
+    "ai_confidence_score": 0.0,
+    "date_discovered": "2026-03-15T02:21:29.752283+00:00",
+    "source_url": "https://reliefweb.int/report/rwanda/unhcr-rwanda-total-forcibly-displaced-population-figures-28-february-2026"
+  },
+  {
+    "opportunity_id": "opp_29b8d3379ed3",
+    "title": "Une école redevient refuge : au Liban, le cauchemar recommence pour les familles qui fuient les violences",
+    "summary": "Lebanon Une école redevient refuge : au Liban, le cauchemar recommence pour les familles qui fuient les violences Format Situation Report Source UNFPA Posted 13 Mar 2026 Originally published 13 Mar 2026 Origin View original BEYROUTH, Liban – « Mariam a eu deux ans il y a quelques jours, et c’est déj",
+    "cause": "disaster_relief",
+    "region": "Lebanon",
+    "organization": {
+      "name": "Example Relief Organization",
+      "website": "https://example.org",
+      "verified": true
+    },
+    "donation": {
+      "donation_url": "https://example.org/donate",
+      "suggested_amounts": [
+        10,
+        25,
+        50,
+        100
+      ]
+    },
+    "values": [
+      "disaster_relief"
+    ],
+    "ai_confidence_score": 0.0,
+    "date_discovered": "2026-03-15T02:21:30.046970+00:00",
+    "source_url": "https://reliefweb.int/report/lebanon/une-ecole-redevient-refuge-au-liban-le-cauchemar-recommence-pour-les-familles-qui-fuient-les-violences"
+  },
+  {
+    "opportunity_id": "opp_c03f7178de7a",
+    "title": "WFP Pakistan Country Brief, March 2026",
+    "summary": "Pakistan WFP Pakistan Country Brief, March 2026 Format Situation Report Source WFP Posted 13 Mar 2026 Originally published 13 Mar 2026",
+    "cause": "disaster_relief",
+    "region": "Pakistan",
+    "organization": {
+      "name": "Example Relief Organization",
+      "website": "https://example.org",
+      "verified": true
+    },
+    "donation": {
+      "donation_url": "https://example.org/donate",
+      "suggested_amounts": [
+        10,
+        25,
+        50,
+        100
+      ]
+    },
+    "values": [
+      "disaster_relief"
+    ],
+    "ai_confidence_score": 0.0,
+    "date_discovered": "2026-03-15T02:21:30.332037+00:00",
+    "source_url": "https://reliefweb.int/report/pakistan/wfp-pakistan-country-brief-march-2026"
+  },
+  {
+    "opportunity_id": "opp_faa7db4317ef",
+    "title": "Regional Iran Escalation Mobility Monitoring (03 - 10 March 2026)",
+    "summary": "Iran + 7 more Regional Iran Escalation Mobility Monitoring (03 - 10 March 2026) Format Assessment Source IOM Posted 13 Mar 2026 Originally published 13 Mar 2026 Origin View original",
+    "cause": "disaster_relief",
+    "region": "Iran (Islamic Republic of)",
+    "organization": {
+      "name": "Example Relief Organization",
+      "website": "https://example.org",
+      "verified": true
+    },
+    "donation": {
+      "donation_url": "https://example.org/donate",
+      "suggested_amounts": [
+        10,
+        25,
+        50,
+        100
+      ]
+    },
+    "values": [
+      "disaster_relief"
+    ],
+    "ai_confidence_score": 0.0,
+    "date_discovered": "2026-03-15T02:21:30.616762+00:00",
+    "source_url": "https://reliefweb.int/report/iran-islamic-republic/regional-iran-escalation-mobility-monitoring-03-10-march-2026"
+  },
+  {
+    "opportunity_id": "opp_6adfb132a394",
+    "title": "Strengthening Disaster Data Systems in the Indian Ocean",
+    "summary": "Seychelles + 2 more Strengthening Disaster Data Systems in the Indian Ocean Format News and Press Release Source UNDRR Posted 13 Mar 2026 Originally published 13 Mar 2026 Origin View original The Indian Ocean region is exposed to recurring climate and disaster risks, including hurricanes, heavy rain",
+    "cause": "disaster_relief",
+    "region": "Seychelles",
+    "organization": {
+      "name": "Example Relief Organization",
+      "website": "https://example.org",
+      "verified": true
+    },
+    "donation": {
+      "donation_url": "https://example.org/donate",
+      "suggested_amounts": [
+        10,
+        25,
+        50,
+        100
+      ]
+    },
+    "values": [
+      "disaster_relief"
+    ],
+    "ai_confidence_score": 0.0,
+    "date_discovered": "2026-03-15T02:21:30.899683+00:00",
+    "source_url": "https://reliefweb.int/report/seychelles/strengthening-disaster-data-systems-indian-ocean"
+  },
+  {
+    "opportunity_id": "opp_064940ee1d87",
+    "title": "NGOs urge de-escalation of conflict in South Sudan, and call for the protection of civilians and full compliance with International Humanitarian Law - 12 March 2026",
+    "summary": "South Sudan + 1 more NGOs urge de-escalation of conflict in South Sudan, and call for the protection of civilians and full compliance with International Humanitarian Law - 12 March 2026 Format News and Press Release Source IAWG East and Central Africa Posted 13 Mar 2026 Originally published 13 Mar 2",
+    "cause": "disaster_relief",
+    "region": "South Sudan",
+    "organization": {
+      "name": "Example Relief Organization",
+      "website": "https://example.org",
+      "verified": true
+    },
+    "donation": {
+      "donation_url": "https://example.org/donate",
+      "suggested_amounts": [
+        10,
+        25,
+        50,
+        100
+      ]
+    },
+    "values": [
+      "disaster_relief"
+    ],
+    "ai_confidence_score": 0.0,
+    "date_discovered": "2026-03-15T02:21:31.189594+00:00",
+    "source_url": "https://reliefweb.int/report/south-sudan/ngos-urge-de-escalation-conflict-south-sudan-and-call-protection-civilians-and-full-compliance-international-humanitarian-law-12-march-2026"
+  },
+  {
+    "opportunity_id": "opp_1d39b6ff4f02",
+    "title": "Lebanon’s Fragile Communities at Breaking Point: NGOs Call for Immediate Action to Protect Civilians and Prevent Further Displacement",
+    "summary": "Lebanon Lebanon’s Fragile Communities at Breaking Point: NGOs Call for Immediate Action to Protect Civilians and Prevent Further Displacement Format News and Press Release Source LHIF Posted 13 Mar 2026 Originally published 13 Mar 2026",
+    "cause": "disaster_relief",
+    "region": "Lebanon",
+    "organization": {
+      "name": "Example Relief Organization",
+      "website": "https://example.org",
+      "verified": true
+    },
+    "donation": {
+      "donation_url": "https://example.org/donate",
+      "suggested_amounts": [
+        10,
+        25,
+        50,
+        100
+      ]
+    },
+    "values": [
+      "disaster_relief"
+    ],
+    "ai_confidence_score": 0.0,
+    "date_discovered": "2026-03-15T02:21:31.462675+00:00",
+    "source_url": "https://reliefweb.int/report/lebanon/lebanons-fragile-communities-breaking-point-ngos-call-immediate-action-protect-civilians-and-prevent-further-displacement"
+  },
+  {
+    "opportunity_id": "opp_7f70d3916c1e",
+    "title": "UNHCR Rwanda - DR Congolese Forcibly Displaced Population Figures - 28 February 2026",
+    "summary": "Rwanda UNHCR Rwanda - DR Congolese Forcibly Displaced Population Figures - 28 February 2026 Format Infographic Source UNHCR Posted 13 Mar 2026 Originally published 6 Mar 2026 Origin View original",
+    "cause": "disaster_relief",
+    "region": "Rwanda",
+    "organization": {
+      "name": "Example Relief Organization",
+      "website": "https://example.org",
+      "verified": true
+    },
+    "donation": {
+      "donation_url": "https://example.org/donate",
+      "suggested_amounts": [
+        10,
+        25,
+        50,
+        100
+      ]
+    },
+    "values": [
+      "disaster_relief"
+    ],
+    "ai_confidence_score": 0.0,
+    "date_discovered": "2026-03-15T02:21:31.747184+00:00",
+    "source_url": "https://reliefweb.int/report/rwanda/unhcr-rwanda-dr-congolese-forcibly-displaced-population-figures-28-february-2026"
+  },
+  {
+    "opportunity_id": "opp_f15e08d41a8e",
+    "title": "UNHCR Rwanda - Burundian Forcibly Displaced Population Figures - 28 February 2026",
+    "summary": "Rwanda UNHCR Rwanda - Burundian Forcibly Displaced Population Figures - 28 February 2026 Format Infographic Source UNHCR Posted 13 Mar 2026 Originally published 6 Mar 2026 Origin View original",
+    "cause": "disaster_relief",
+    "region": "Rwanda",
+    "organization": {
+      "name": "Example Relief Organization",
+      "website": "https://example.org",
+      "verified": true
+    },
+    "donation": {
+      "donation_url": "https://example.org/donate",
+      "suggested_amounts": [
+        10,
+        25,
+        50,
+        100
+      ]
+    },
+    "values": [
+      "disaster_relief"
+    ],
+    "ai_confidence_score": 0.0,
+    "date_discovered": "2026-03-15T02:21:32.021111+00:00",
+    "source_url": "https://reliefweb.int/report/rwanda/unhcr-rwanda-burundian-forcibly-displaced-population-figures-28-february-2026"
+  },
+  {
+    "opportunity_id": "opp_50a983cce19b",
+    "title": "UNHCR Rwanda - Population Statistics Dashboard - 28 February 2026",
+    "summary": "Rwanda + 6 more UNHCR Rwanda - Population Statistics Dashboard - 28 February 2026 Format Infographic Source UNHCR Posted 13 Mar 2026 Originally published 6 Mar 2026 Origin View original",
+    "cause": "disaster_relief",
+    "region": "Rwanda",
+    "organization": {
+      "name": "Example Relief Organization",
+      "website": "https://example.org",
+      "verified": true
+    },
+    "donation": {
+      "donation_url": "https://example.org/donate",
+      "suggested_amounts": [
+        10,
+        25,
+        50,
+        100
+      ]
+    },
+    "values": [
+      "disaster_relief"
+    ],
+    "ai_confidence_score": 0.0,
+    "date_discovered": "2026-03-15T02:21:32.311837+00:00",
+    "source_url": "https://reliefweb.int/report/rwanda/unhcr-rwanda-population-statistics-dashboard-28-february-2026"
+  },
+  {
+    "opportunity_id": "opp_328847dcb77a",
+    "title": "Flash Appeal: Lebanon, March - May 2026 (March 2026)",
+    "summary": "Lebanon + 2 more Flash Appeal: Lebanon, March - May 2026 (March 2026) Format Appeal Source OCHA Posted 13 Mar 2026 Originally published 13 Mar 2026",
+    "cause": "disaster_relief",
+    "region": "Lebanon",
+    "organization": {
+      "name": "Example Relief Organization",
+      "website": "https://example.org",
+      "verified": true
+    },
+    "donation": {
+      "donation_url": "https://example.org/donate",
+      "suggested_amounts": [
+        10,
+        25,
+        50,
+        100
+      ]
+    },
+    "values": [
+      "disaster_relief"
+    ],
+    "ai_confidence_score": 0.0,
+    "date_discovered": "2026-03-15T02:21:32.589973+00:00",
+    "source_url": "https://reliefweb.int/report/lebanon/flash-appeal-lebanon-march-may-2026-march-2026"
+  },
+  {
+    "opportunity_id": "opp_77a5b9113cf8",
+    "title": "Note de plaidoyer: Sécuriser les services vitaux de Santé Sexuelle et Reproductive (SSR) pour les femmes et les filles en République Démocratique du Congo (RDC) (Fevrier 2026)",
+    "summary": "DR Congo Note de plaidoyer: Sécuriser les services vitaux de Santé Sexuelle et Reproductive (SSR) pour les femmes et les filles en République Démocratique du Congo (RDC) (Fevrier 2026) Format News and Press Release Sources Health Cluster UNFPA Posted 13 Mar 2026 Originally published 13 Mar 2026",
+    "cause": "disaster_relief",
+    "region": "Democratic Republic of the Congo",
+    "organization": {
+      "name": "Example Relief Organization",
+      "website": "https://example.org",
+      "verified": true
+    },
+    "donation": {
+      "donation_url": "https://example.org/donate",
+      "suggested_amounts": [
+        10,
+        25,
+        50,
+        100
+      ]
+    },
+    "values": [
+      "disaster_relief"
+    ],
+    "ai_confidence_score": 0.0,
+    "date_discovered": "2026-03-15T02:21:32.873916+00:00",
+    "source_url": "https://reliefweb.int/report/democratic-republic-congo/note-de-plaidoyer-securiser-les-services-vitaux-de-sante-sexuelle-et-reproductive-ssr-pour-les-femmes-et-les-filles-en-republique-democratique-du-congo-rdc-fevrier-2026"
+  },
+  {
+    "opportunity_id": "opp_85147cd328c0",
+    "title": "Advocacy Note: Securing Life-Saving Sexual and Reproductive Health (SRH) Services for Women and Girls in Democratic Republic of the Congo (DRC)",
+    "summary": "DR Congo Advocacy Note: Securing Life-Saving Sexual and Reproductive Health (SRH) Services for Women and Girls in Democratic Republic of the Congo (DRC) Format News and Press Release Sources Health Cluster UNFPA Posted 13 Mar 2026 Originally published 13 Mar 2026",
+    "cause": "disaster_relief",
+    "region": "Democratic Republic of the Congo",
+    "organization": {
+      "name": "Example Relief Organization",
+      "website": "https://example.org",
+      "verified": true
+    },
+    "donation": {
+      "donation_url": "https://example.org/donate",
+      "suggested_amounts": [
+        10,
+        25,
+        50,
+        100
+      ]
+    },
+    "values": [
+      "disaster_relief"
+    ],
+    "ai_confidence_score": 0.0,
+    "date_discovered": "2026-03-15T02:21:33.157512+00:00",
+    "source_url": "https://reliefweb.int/report/democratic-republic-congo/advocacy-note-securing-life-saving-sexual-and-reproductive-health-srh-services-women-and-girls-democratic-republic-congo-drc"
+  },
+  {
+    "opportunity_id": "opp_c35a2223b2b7",
+    "title": "Lebanon Flash Appeal 2026: At a Glance",
+    "summary": "Lebanon Lebanon Flash Appeal 2026: At a Glance Format Infographic Source OCHA Posted 13 Mar 2026 Originally published 13 Mar 2026",
+    "cause": "disaster_relief",
+    "region": "Lebanon",
+    "organization": {
+      "name": "Example Relief Organization",
+      "website": "https://example.org",
+      "verified": true
+    },
+    "donation": {
+      "donation_url": "https://example.org/donate",
+      "suggested_amounts": [
+        10,
+        25,
+        50,
+        100
+      ]
+    },
+    "values": [
+      "disaster_relief"
+    ],
+    "ai_confidence_score": 0.0,
+    "date_discovered": "2026-03-15T02:21:33.439981+00:00",
+    "source_url": "https://reliefweb.int/report/lebanon/lebanon-flash-appeal-2026-glance"
+  },
+  {
+    "opportunity_id": "opp_18e5590d055d",
+    "title": "Children’s Voices Amid the Conflict in Lebanon - A collection of letters and drawings created by orphaned children supported by Muslim Hands France",
+    "summary": "Lebanon Children’s Voices Amid the Conflict in Lebanon - A collection of letters and drawings created by orphaned children supported by Muslim Hands France Format News and Press Release Source MHI Posted 13 Mar 2026 Originally published 13 Mar 2026",
+    "cause": "disaster_relief",
+    "region": "Lebanon",
+    "organization": {
+      "name": "Example Relief Organization",
+      "website": "https://example.org",
+      "verified": true
+    },
+    "donation": {
+      "donation_url": "https://example.org/donate",
+      "suggested_amounts": [
+        10,
+        25,
+        50,
+        100
+      ]
+    },
+    "values": [
+      "disaster_relief"
+    ],
+    "ai_confidence_score": 0.0,
+    "date_discovered": "2026-03-15T02:21:33.719813+00:00",
+    "source_url": "https://reliefweb.int/report/lebanon/childrens-voices-amid-conflict-lebanon-collection-letters-and-drawings-created-orphaned-children-supported-muslim-hands-france"
+  },
+  {
+    "opportunity_id": "opp_d0cb0057dae8",
+    "title": "Lebanon: One in seven displaced, 1,500 square kilometres under evacuation orders | NRC",
+    "summary": "Lebanon Lebanon: One in seven displaced, 1,500 square kilometres under evacuation orders | NRC Format News and Press Release Source NRC Posted 13 Mar 2026 Originally published 13 Mar 2026 Origin View original Lebanon is approaching a breaking point as displacement accelerates, with one in every seve",
+    "cause": "disaster_relief",
+    "region": "Lebanon",
+    "organization": {
+      "name": "Example Relief Organization",
+      "website": "https://example.org",
+      "verified": true
+    },
+    "donation": {
+      "donation_url": "https://example.org/donate",
+      "suggested_amounts": [
+        10,
+        25,
+        50,
+        100
+      ]
+    },
+    "values": [
+      "disaster_relief"
+    ],
+    "ai_confidence_score": 0.0,
+    "date_discovered": "2026-03-15T02:21:34.009678+00:00",
+    "source_url": "https://reliefweb.int/report/lebanon/lebanon-one-seven-displaced-1500-square-kilometres-under-evacuation-orders-nrc"
+  },
+  {
+    "opportunity_id": "opp_6d64cd6b9591",
+    "title": "Cebu quake survivors rebuild homes with Croatia, EU support through ACCESS",
+    "summary": "Philippines + 1 more Cebu quake survivors rebuild homes with Croatia, EU support through ACCESS Format News and Press Release Sources ACCORD Action Against Hunger CARE 5 more Posted 13 Mar 2026 Originally published 13 Mar 2026",
+    "cause": "disaster_relief",
+    "region": "Philippines",
+    "organization": {
+      "name": "Example Relief Organization",
+      "website": "https://example.org",
+      "verified": true
+    },
+    "donation": {
+      "donation_url": "https://example.org/donate",
+      "suggested_amounts": [
+        10,
+        25,
+        50,
+        100
+      ]
+    },
+    "values": [
+      "disaster_relief"
+    ],
+    "ai_confidence_score": 0.0,
+    "date_discovered": "2026-03-15T02:21:34.278863+00:00",
+    "source_url": "https://reliefweb.int/report/philippines/cebu-quake-survivors-rebuild-homes-croatia-eu-support-through-access"
+  },
+  {
+    "opportunity_id": "opp_ffbcaf06a10d",
+    "title": "Civilian Perspectives on Humanitarian Needs and Recovery Priorities in Syria",
+    "summary": "Syria Civilian Perspectives on Humanitarian Needs and Recovery Priorities in Syria Format Analysis Source Action for Humanity Posted 13 Mar 2026 Originally published 13 Mar 2026",
+    "cause": "disaster_relief",
+    "region": "Syrian Arab Republic",
+    "organization": {
+      "name": "Example Relief Organization",
+      "website": "https://example.org",
+      "verified": true
+    },
+    "donation": {
+      "donation_url": "https://example.org/donate",
+      "suggested_amounts": [
+        10,
+        25,
+        50,
+        100
+      ]
+    },
+    "values": [
+      "disaster_relief"
+    ],
+    "ai_confidence_score": 0.0,
+    "date_discovered": "2026-03-15T02:21:34.561855+00:00",
+    "source_url": "https://reliefweb.int/report/syrian-arab-republic/civilian-perspectives-humanitarian-needs-and-recovery-priorities-syria"
+  },
+  {
+    "opportunity_id": "opp_f509e0644ece",
+    "title": "Radio Ergo Weekly Feedback Report, Issued: 13 Mar 2026",
+    "summary": "Somalia Radio Ergo Weekly Feedback Report, Issued: 13 Mar 2026 Format News and Press Release Source Radio Ergo Posted 13 Mar 2026 Originally published 13 Mar 2026",
+    "cause": "disaster_relief",
+    "region": "Somalia",
+    "organization": {
+      "name": "Example Relief Organization",
+      "website": "https://example.org",
+      "verified": true
+    },
+    "donation": {
+      "donation_url": "https://example.org/donate",
+      "suggested_amounts": [
+        10,
+        25,
+        50,
+        100
+      ]
+    },
+    "values": [
+      "disaster_relief"
+    ],
+    "ai_confidence_score": 0.0,
+    "date_discovered": "2026-03-15T02:21:34.822740+00:00",
+    "source_url": "https://reliefweb.int/report/somalia/radio-ergo-weekly-feedback-report-issued-13-mar-2026"
+  },
+  {
+    "opportunity_id": "opp_a41109891d22",
+    "title": "Sudan Humanitarian Update (January - February 2026)",
+    "summary": "Sudan Sudan Humanitarian Update (January - February 2026) Format Situation Report Source OCHA Posted 13 Mar 2026 Originally published 13 Mar 2026",
+    "cause": "disaster_relief",
+    "region": "Sudan",
+    "organization": {
+      "name": "Example Relief Organization",
+      "website": "https://example.org",
+      "verified": true
+    },
+    "donation": {
+      "donation_url": "https://example.org/donate",
+      "suggested_amounts": [
+        10,
+        25,
+        50,
+        100
+      ]
+    },
+    "values": [
+      "disaster_relief"
+    ],
+    "ai_confidence_score": 0.0,
+    "date_discovered": "2026-03-15T02:21:35.112277+00:00",
+    "source_url": "https://reliefweb.int/report/sudan/sudan-humanitarian-update-january-february-2026"
+  },
+  {
+    "opportunity_id": "opp_21dee2fc6a47",
+    "title": "UNHCR-IOM Pakistan Flash update # 85 on Arrest and Detention/Flow Monitoring, 15 Sep 2023 to 7 March 2026",
+    "summary": "Pakistan + 1 more UNHCR-IOM Pakistan Flash update # 85 on Arrest and Detention/Flow Monitoring, 15 Sep 2023 to 7 March 2026 Format Infographic Source UNHCR Posted 13 Mar 2026 Originally published 13 Mar 2026 Origin View original",
+    "cause": "disaster_relief",
+    "region": "Pakistan",
+    "organization": {
+      "name": "Example Relief Organization",
+      "website": "https://example.org",
+      "verified": true
+    },
+    "donation": {
+      "donation_url": "https://example.org/donate",
+      "suggested_amounts": [
+        10,
+        25,
+        50,
+        100
+      ]
+    },
+    "values": [
+      "disaster_relief"
+    ],
+    "ai_confidence_score": 0.0,
+    "date_discovered": "2026-03-15T02:21:35.401471+00:00",
+    "source_url": "https://reliefweb.int/report/pakistan/unhcr-iom-pakistan-flash-update-85-arrest-and-detentionflow-monitoring-15-sep-2023-7-march-2026"
+  },
+  {
+    "opportunity_id": "opp_e03ad834ea8e",
+    "title": "Revitalizing Integrated Tactical Units to Combat West Africa’s Irregular Militant Groups",
+    "summary": "World + 5 more Revitalizing Integrated Tactical Units to Combat West Africa’s Irregular Militant Groups Format Analysis Source African Centre for Justice and Peace Studies Posted 13 Mar 2026 Originally published 9 Feb 2026 Origin View original",
+    "cause": "disaster_relief",
+    "region": "World",
+    "organization": {
+      "name": "Example Relief Organization",
+      "website": "https://example.org",
+      "verified": true
+    },
+    "donation": {
+      "donation_url": "https://example.org/donate",
+      "suggested_amounts": [
+        10,
+        25,
+        50,
+        100
+      ]
+    },
+    "values": [
+      "disaster_relief"
+    ],
+    "ai_confidence_score": 0.0,
+    "date_discovered": "2026-03-15T02:21:35.683332+00:00",
+    "source_url": "https://reliefweb.int/report/world/revitalizing-integrated-tactical-units-combat-west-africas-irregular-militant-groups"
+  },
+  {
+    "opportunity_id": "opp_fb06764db148",
+    "title": "Lebanon: Flash Update #7 - Escalation of hostilities in Lebanon, as of 11 March 2026",
+    "summary": "Lebanon + 2 more Lebanon: Flash Update #7 - Escalation of hostilities in Lebanon, as of 11 March 2026 Format Situation Report Source OCHA Posted 13 Mar 2026 Originally published 13 Mar 2026",
+    "cause": "disaster_relief",
+    "region": "Lebanon",
+    "organization": {
+      "name": "Example Relief Organization",
+      "website": "https://example.org",
+      "verified": true
+    },
+    "donation": {
+      "donation_url": "https://example.org/donate",
+      "suggested_amounts": [
+        10,
+        25,
+        50,
+        100
+      ]
+    },
+    "values": [
+      "disaster_relief"
+    ],
+    "ai_confidence_score": 0.0,
+    "date_discovered": "2026-03-15T02:21:35.973643+00:00",
+    "source_url": "https://reliefweb.int/report/lebanon/lebanon-flash-update-7-escalation-hostilities-lebanon-11-march-2026"
+  },
+  {
+    "opportunity_id": "opp_f201494a45cc",
+    "title": "Flood Response in Central and Southern Mozambique - Situation Report #3 - 12 March 2026",
+    "summary": "Mozambique Flood Response in Central and Southern Mozambique - Situation Report #3 - 12 March 2026 Format Situation Report Source IOM Posted 13 Mar 2026 Originally published 13 Mar 2026 Origin View original",
+    "cause": "disaster_relief",
+    "region": "Mozambique",
+    "organization": {
+      "name": "Example Relief Organization",
+      "website": "https://example.org",
+      "verified": true
+    },
+    "donation": {
+      "donation_url": "https://example.org/donate",
+      "suggested_amounts": [
+        10,
+        25,
+        50,
+        100
+      ]
+    },
+    "values": [
+      "disaster_relief"
+    ],
+    "ai_confidence_score": 0.0,
+    "date_discovered": "2026-03-15T02:21:36.241716+00:00",
+    "source_url": "https://reliefweb.int/report/mozambique/flood-response-central-and-southern-mozambique-situation-report-3-12-march-2026"
+  },
+  {
+    "opportunity_id": "opp_1bef83b55022",
+    "title": "Conflicts in the Middle East, South Asia and beyond: the protection of civilians must remain a priority",
+    "summary": "World + 9 more Conflicts in the Middle East, South Asia and beyond: the protection of civilians must remain a priority Format News and Press Release Source MHI Posted 13 Mar 2026 Originally published 13 Mar 2026",
+    "cause": "disaster_relief",
+    "region": "World",
+    "organization": {
+      "name": "Example Relief Organization",
+      "website": "https://example.org",
+      "verified": true
+    },
+    "donation": {
+      "donation_url": "https://example.org/donate",
+      "suggested_amounts": [
+        10,
+        25,
+        50,
+        100
+      ]
+    },
+    "values": [
+      "disaster_relief"
+    ],
+    "ai_confidence_score": 0.0,
+    "date_discovered": "2026-03-15T02:21:36.504295+00:00",
+    "source_url": "https://reliefweb.int/report/world/conflicts-middle-east-south-asia-and-beyond-protection-civilians-must-remain-priority"
+  },
+  {
+    "opportunity_id": "opp_78461771ae73",
+    "title": "Le Forum des ONGI en RDC condamne fermement la frappe ayant tué une travailleuse humanitaire de l’UNICEF à Goma (mars 2026)",
+    "summary": "DR Congo Le Forum des ONGI en RDC condamne fermement la frappe ayant tué une travailleuse humanitaire de l’UNICEF à Goma (mars 2026) Format News and Press Release Source Forum ONGI RDC Posted 13 Mar 2026 Originally published 13 Mar 2026",
+    "cause": "disaster_relief",
+    "region": "Democratic Republic of the Congo",
+    "organization": {
+      "name": "Example Relief Organization",
+      "website": "https://example.org",
+      "verified": true
+    },
+    "donation": {
+      "donation_url": "https://example.org/donate",
+      "suggested_amounts": [
+        10,
+        25,
+        50,
+        100
+      ]
+    },
+    "values": [
+      "disaster_relief"
+    ],
+    "ai_confidence_score": 0.0,
+    "date_discovered": "2026-03-15T02:21:36.772705+00:00",
+    "source_url": "https://reliefweb.int/report/democratic-republic-congo/le-forum-des-ongi-en-rdc-condamne-fermement-la-frappe-ayant-tue-une-travailleuse-humanitaire-de-lunicef-goma-mars-2026"
+  },
+  {
+    "opportunity_id": "opp_3d0c94c2b176",
+    "title": "Regional crisis - Global Logistics Coordination Call, 10 March 2026",
+    "summary": "Iran + 9 more Regional crisis - Global Logistics Coordination Call, 10 March 2026 Format Other Sources Logistics Cluster WFP Posted 13 Mar 2026 Originally published 10 Mar 2026 Origin View original",
+    "cause": "disaster_relief",
+    "region": "Iran (Islamic Republic of)",
+    "organization": {
+      "name": "Example Relief Organization",
+      "website": "https://example.org",
+      "verified": true
+    },
+    "donation": {
+      "donation_url": "https://example.org/donate",
+      "suggested_amounts": [
+        10,
+        25,
+        50,
+        100
+      ]
+    },
+    "values": [
+      "disaster_relief"
+    ],
+    "ai_confidence_score": 0.0,
+    "date_discovered": "2026-03-15T02:21:37.054578+00:00",
+    "source_url": "https://reliefweb.int/report/iran-islamic-republic/regional-crisis-global-logistics-coordination-call-10-march-2026"
+  },
+  {
+    "opportunity_id": "opp_9dec337973de",
+    "title": "The INGO Forum in the DRC strongly condemns the strike that killed a UNICEF aid worker in Goma_march 2026",
+    "summary": "DR Congo The INGO Forum in the DRC strongly condemns the strike that killed a UNICEF aid worker in Goma_march 2026 Format News and Press Release Source Forum ONGI RDC Posted 13 Mar 2026 Originally published 13 Mar 2026",
+    "cause": "disaster_relief",
+    "region": "Democratic Republic of the Congo",
+    "organization": {
+      "name": "Example Relief Organization",
+      "website": "https://example.org",
+      "verified": true
+    },
+    "donation": {
+      "donation_url": "https://example.org/donate",
+      "suggested_amounts": [
+        10,
+        25,
+        50,
+        100
+      ]
+    },
+    "values": [
+      "disaster_relief"
+    ],
+    "ai_confidence_score": 0.0,
+    "date_discovered": "2026-03-15T02:21:37.337433+00:00",
+    "source_url": "https://reliefweb.int/report/democratic-republic-congo/ingo-forum-drc-strongly-condemns-strike-killed-unicef-aid-worker-gomamarch-2026"
+  },
+  {
+    "opportunity_id": "opp_893e2715e0b3",
+    "title": "WFP Tanzania Country Brief February 2026",
+    "summary": "Tanzania WFP Tanzania Country Brief February 2026 Format Situation Report Source WFP Posted 13 Mar 2026 Originally published 13 Mar 2026",
+    "cause": "disaster_relief",
+    "region": "United Republic of Tanzania",
+    "organization": {
+      "name": "Example Relief Organization",
+      "website": "https://example.org",
+      "verified": true
+    },
+    "donation": {
+      "donation_url": "https://example.org/donate",
+      "suggested_amounts": [
+        10,
+        25,
+        50,
+        100
+      ]
+    },
+    "values": [
+      "disaster_relief"
+    ],
+    "ai_confidence_score": 0.0,
+    "date_discovered": "2026-03-15T02:21:37.612835+00:00",
+    "source_url": "https://reliefweb.int/report/united-republic-tanzania/wfp-tanzania-country-brief-february-2026"
+  },
+  {
+    "opportunity_id": "opp_0692248dd20d",
+    "title": "Red Education Initiative Protecting Children in Schools | IFRC",
+    "summary": "Lebanon Red Education Initiative Protecting Children in Schools | IFRC Format Assessment Source IFRC Posted 13 Mar 2026 Originally published 13 Mar 2026 Origin View original",
+    "cause": "disaster_relief",
+    "region": "Lebanon",
+    "organization": {
+      "name": "Example Relief Organization",
+      "website": "https://example.org",
+      "verified": true
+    },
+    "donation": {
+      "donation_url": "https://example.org/donate",
+      "suggested_amounts": [
+        10,
+        25,
+        50,
+        100
+      ]
+    },
+    "values": [
+      "disaster_relief"
+    ],
+    "ai_confidence_score": 0.0,
+    "date_discovered": "2026-03-15T02:21:37.953392+00:00",
+    "source_url": "https://reliefweb.int/report/lebanon/red-education-initiative-protecting-children-schools-ifrc"
+  },
+  {
+    "opportunity_id": "opp_e31d97e51022",
+    "title": "Age Assessment Practices in EU+ Countries",
+    "summary": "World Age Assessment Practices in EU+ Countries Format Assessment Source EUAA Posted 13 Mar 2026 Originally published 13 Mar 2026 Origin View original",
+    "cause": "disaster_relief",
+    "region": "World",
+    "organization": {
+      "name": "Example Relief Organization",
+      "website": "https://example.org",
+      "verified": true
+    },
+    "donation": {
+      "donation_url": "https://example.org/donate",
+      "suggested_amounts": [
+        10,
+        25,
+        50,
+        100
+      ]
+    },
+    "values": [
+      "disaster_relief"
+    ],
+    "ai_confidence_score": 0.0,
+    "date_discovered": "2026-03-15T02:21:38.233581+00:00",
+    "source_url": "https://reliefweb.int/report/world/age-assessment-practices-eu-countries"
+  },
+  {
+    "opportunity_id": "opp_06c279aa213b",
+    "title": "WFP Tanzania Country Brief March 2026",
+    "summary": "Tanzania WFP Tanzania Country Brief March 2026 Format Situation Report Source WFP Posted 13 Mar 2026 Originally published 13 Mar 2026",
+    "cause": "disaster_relief",
+    "region": "United Republic of Tanzania",
+    "organization": {
+      "name": "Example Relief Organization",
+      "website": "https://example.org",
+      "verified": true
+    },
+    "donation": {
+      "donation_url": "https://example.org/donate",
+      "suggested_amounts": [
+        10,
+        25,
+        50,
+        100
+      ]
+    },
+    "values": [
+      "disaster_relief"
+    ],
+    "ai_confidence_score": 0.0,
+    "date_discovered": "2026-03-15T02:21:38.513327+00:00",
+    "source_url": "https://reliefweb.int/report/united-republic-tanzania/wfp-tanzania-country-brief-march-2026"
+  },
+  {
+    "opportunity_id": "opp_251f0e31d716",
+    "title": "NGOs warn Lebanon’s fragile communities at breaking point",
+    "summary": "Lebanon NGOs warn Lebanon’s fragile communities at breaking point Format News and Press Release Source Islamic Relief Posted 13 Mar 2026 Originally published 12 Mar 2026 Origin View original NGOs Call for Immediate Action to Protect Civilians and Prevent Further Displacement Beirut: As Lebanon has j",
+    "cause": "disaster_relief",
+    "region": "Lebanon",
+    "organization": {
+      "name": "Example Relief Organization",
+      "website": "https://example.org",
+      "verified": true
+    },
+    "donation": {
+      "donation_url": "https://example.org/donate",
+      "suggested_amounts": [
+        10,
+        25,
+        50,
+        100
+      ]
+    },
+    "values": [
+      "disaster_relief"
+    ],
+    "ai_confidence_score": 0.0,
+    "date_discovered": "2026-03-15T02:21:38.777689+00:00",
+    "source_url": "https://reliefweb.int/report/lebanon/ngos-warn-lebanons-fragile-communities-breaking-point"
+  },
+  {
+    "opportunity_id": "opp_d0be66224946",
+    "title": "Health and climate change country profile 2025 - Trinidad and Tobago",
+    "summary": "Trinidad and Tobago Health and climate change country profile 2025 - Trinidad and Tobago Format Analysis Sources PAHO UNFCCC WHO Posted 13 Mar 2026 Originally published 10 Mar 2026 Origin View original",
+    "cause": "disaster_relief",
+    "region": "Trinidad and Tobago",
+    "organization": {
+      "name": "Example Relief Organization",
+      "website": "https://example.org",
+      "verified": true
+    },
+    "donation": {
+      "donation_url": "https://example.org/donate",
+      "suggested_amounts": [
+        10,
+        25,
+        50,
+        100
+      ]
+    },
+    "values": [
+      "disaster_relief"
+    ],
+    "ai_confidence_score": 0.0,
+    "date_discovered": "2026-03-15T02:21:39.048583+00:00",
+    "source_url": "https://reliefweb.int/report/trinidad-and-tobago/health-and-climate-change-country-profile-2025-trinidad-and-tobago"
+  },
+  {
+    "opportunity_id": "opp_3fc47ae15081",
+    "title": "Groupe de Travail Santé Sexuelle et Reproductive & VIH au Tchad (janvier et février)",
+    "summary": "Chad Groupe de Travail Santé Sexuelle et Reproductive & VIH au Tchad (janvier et février) Format Other Sources Health Cluster UNFPA WHO Posted 13 Mar 2026 Originally published 27 Feb 2026",
+    "cause": "disaster_relief",
+    "region": "Chad",
+    "organization": {
+      "name": "Example Relief Organization",
+      "website": "https://example.org",
+      "verified": true
+    },
+    "donation": {
+      "donation_url": "https://example.org/donate",
+      "suggested_amounts": [
+        10,
+        25,
+        50,
+        100
+      ]
+    },
+    "values": [
+      "disaster_relief"
+    ],
+    "ai_confidence_score": 0.0,
+    "date_discovered": "2026-03-15T02:21:39.319033+00:00",
+    "source_url": "https://reliefweb.int/report/chad/groupe-de-travail-sante-sexuelle-et-reproductive-vih-au-tchad-janvier-et-fevrier"
+  },
+  {
+    "opportunity_id": "opp_d7c456795b82",
+    "title": "Health and climate change country profile 2025 - Belize",
+    "summary": "Belize Health and climate change country profile 2025 - Belize Format Analysis Sources PAHO UNFCCC WHO Posted 13 Mar 2026 Originally published 10 Mar 2026 Origin View original",
+    "cause": "disaster_relief",
+    "region": "Belize",
+    "organization": {
+      "name": "Example Relief Organization",
+      "website": "https://example.org",
+      "verified": true
+    },
+    "donation": {
+      "donation_url": "https://example.org/donate",
+      "suggested_amounts": [
+        10,
+        25,
+        50,
+        100
+      ]
+    },
+    "values": [
+      "disaster_relief"
+    ],
+    "ai_confidence_score": 0.0,
+    "date_discovered": "2026-03-15T02:21:39.587570+00:00",
+    "source_url": "https://reliefweb.int/report/belize/health-and-climate-change-country-profile-2025-belize"
+  },
+  {
+    "opportunity_id": "opp_872e1db943b3",
+    "title": "Afghanistan-Pakistan: Civilians paying highest price for escalating conflict | NRC",
+    "summary": "Afghanistan + 1 more Afghanistan-Pakistan: Civilians paying highest price for escalating conflict | NRC Format News and Press Release Source NRC Posted 13 Mar 2026 Originally published 13 Mar 2026 Origin View original Escalating conflict along the Afghanistan–Pakistan border is having a devastating ",
+    "cause": "disaster_relief",
+    "region": "Afghanistan",
+    "organization": {
+      "name": "Example Relief Organization",
+      "website": "https://example.org",
+      "verified": true
+    },
+    "donation": {
+      "donation_url": "https://example.org/donate",
+      "suggested_amounts": [
+        10,
+        25,
+        50,
+        100
+      ]
+    },
+    "values": [
+      "disaster_relief"
+    ],
+    "ai_confidence_score": 0.0,
+    "date_discovered": "2026-03-15T02:21:39.861429+00:00",
+    "source_url": "https://reliefweb.int/report/afghanistan/afghanistan-pakistan-civilians-paying-highest-price-escalating-conflict-nrc"
+  },
+  {
+    "opportunity_id": "opp_81e3cd3206d2",
+    "title": "WFP South Sudan Country Brief February 2026",
+    "summary": "South Sudan + 1 more WFP South Sudan Country Brief February 2026 Format Situation Report Source WFP Posted 13 Mar 2026 Originally published 13 Mar 2026",
+    "cause": "disaster_relief",
+    "region": "South Sudan",
+    "organization": {
+      "name": "Example Relief Organization",
+      "website": "https://example.org",
+      "verified": true
+    },
+    "donation": {
+      "donation_url": "https://example.org/donate",
+      "suggested_amounts": [
+        10,
+        25,
+        50,
+        100
+      ]
+    },
+    "values": [
+      "disaster_relief"
+    ],
+    "ai_confidence_score": 0.0,
+    "date_discovered": "2026-03-15T02:21:40.124762+00:00",
+    "source_url": "https://reliefweb.int/report/south-sudan/wfp-south-sudan-country-brief-february-2026"
+  },
+  {
+    "opportunity_id": "opp_d6ff902345ed",
+    "title": "WFP Kenya Country Brief February 2026",
+    "summary": "Kenya + 1 more WFP Kenya Country Brief February 2026 Format Situation Report Source WFP Posted 13 Mar 2026 Originally published 13 Mar 2026",
+    "cause": "disaster_relief",
+    "region": "Kenya",
+    "organization": {
+      "name": "Example Relief Organization",
+      "website": "https://example.org",
+      "verified": true
+    },
+    "donation": {
+      "donation_url": "https://example.org/donate",
+      "suggested_amounts": [
+        10,
+        25,
+        50,
+        100
+      ]
+    },
+    "values": [
+      "disaster_relief"
+    ],
+    "ai_confidence_score": 0.0,
+    "date_discovered": "2026-03-15T02:21:40.387857+00:00",
+    "source_url": "https://reliefweb.int/report/kenya/wfp-kenya-country-brief-february-2026"
+  },
+  {
+    "opportunity_id": "opp_5a02765c8683",
+    "title": "UNICEF Lebanon Humanitarian Flash Update No. 3 (Escalation of Hostilities), 12 March 2026",
+    "summary": "Lebanon + 1 more UNICEF Lebanon Humanitarian Flash Update No. 3 (Escalation of Hostilities), 12 March 2026 Format Situation Report Source UNICEF Posted 13 Mar 2026 Originally published 13 Mar 2026",
+    "cause": "disaster_relief",
+    "region": "Lebanon",
+    "organization": {
+      "name": "Example Relief Organization",
+      "website": "https://example.org",
+      "verified": true
+    },
+    "donation": {
+      "donation_url": "https://example.org/donate",
+      "suggested_amounts": [
+        10,
+        25,
+        50,
+        100
+      ]
+    },
+    "values": [
+      "disaster_relief"
+    ],
+    "ai_confidence_score": 0.0,
+    "date_discovered": "2026-03-15T02:21:40.648542+00:00",
+    "source_url": "https://reliefweb.int/report/lebanon/unicef-lebanon-humanitarian-flash-update-no-3-escalation-hostilities-12-march-2026"
+  },
+  {
+    "opportunity_id": "opp_41112db5e810",
+    "title": "GIEWS Country Brief: Kazakhstan - Reference Date: 12-March-2026",
+    "summary": "Kazakhstan GIEWS Country Brief: Kazakhstan - Reference Date: 12-March-2026 Format News and Press Release Source FAO Posted 13 Mar 2026 Originally published 12 Mar 2026 Origin View original",
+    "cause": "disaster_relief",
+    "region": "Kazakhstan",
+    "organization": {
+      "name": "Example Relief Organization",
+      "website": "https://example.org",
+      "verified": true
+    },
+    "donation": {
+      "donation_url": "https://example.org/donate",
+      "suggested_amounts": [
+        10,
+        25,
+        50,
+        100
+      ]
+    },
+    "values": [
+      "disaster_relief"
+    ],
+    "ai_confidence_score": 0.0,
+    "date_discovered": "2026-03-15T02:21:40.912549+00:00",
+    "source_url": "https://reliefweb.int/report/kazakhstan/giews-country-brief-kazakhstan-reference-date-12-march-2026"
+  },
+  {
+    "opportunity_id": "opp_1a40d851bb79",
+    "title": "Situation report on the escalating crisis in Colombia (25 Nov 2025 - 28 Feb 2026)",
+    "summary": "Colombia Situation report on the escalating crisis in Colombia (25 Nov 2025 - 28 Feb 2026) Format Situation Report Source UNFPA Posted 13 Mar 2026 Originally published 12 Mar 2026 Origin View original",
+    "cause": "disaster_relief",
+    "region": "Colombia",
+    "organization": {
+      "name": "Example Relief Organization",
+      "website": "https://example.org",
+      "verified": true
+    },
+    "donation": {
+      "donation_url": "https://example.org/donate",
+      "suggested_amounts": [
+        10,
+        25,
+        50,
+        100
+      ]
+    },
+    "values": [
+      "disaster_relief"
+    ],
+    "ai_confidence_score": 0.0,
+    "date_discovered": "2026-03-15T02:21:41.184049+00:00",
+    "source_url": "https://reliefweb.int/report/colombia/situation-report-escalating-crisis-colombia-25-nov-2025-28-feb-2026"
+  },
+  {
+    "opportunity_id": "opp_906e4f275fc9",
+    "title": "Flash Appeal for the Emergency Response in Lebanon (March-May 2026)",
+    "summary": "Lebanon Flash Appeal for the Emergency Response in Lebanon (March-May 2026) Format Appeal Source UNFPA Posted 13 Mar 2026 Originally published 12 Mar 2026 Origin View original",
+    "cause": "disaster_relief",
+    "region": "Lebanon",
+    "organization": {
+      "name": "Example Relief Organization",
+      "website": "https://example.org",
+      "verified": true
+    },
+    "donation": {
+      "donation_url": "https://example.org/donate",
+      "suggested_amounts": [
+        10,
+        25,
+        50,
+        100
+      ]
+    },
+    "values": [
+      "disaster_relief"
+    ],
+    "ai_confidence_score": 0.0,
+    "date_discovered": "2026-03-15T02:21:41.463343+00:00",
+    "source_url": "https://reliefweb.int/report/lebanon/flash-appeal-emergency-response-lebanon-march-may-2026"
+  },
+  {
+    "opportunity_id": "opp_89424599a46c",
+    "title": "Statement on the Escalating Violence and the Impact on Children in Lebanon and the Middle East (12 March 2026)",
+    "summary": "Lebanon Statement on the Escalating Violence and the Impact on Children in Lebanon and the Middle East (12 March 2026) Format News and Press Release Source OSRSG Children and Armed Conflict Posted 13 Mar 2026 Originally published 12 Mar 2026 Origin View original Joint Statement by the Special Repres",
+    "cause": "disaster_relief",
+    "region": "Lebanon",
+    "organization": {
+      "name": "Example Relief Organization",
+      "website": "https://example.org",
+      "verified": true
+    },
+    "donation": {
+      "donation_url": "https://example.org/donate",
+      "suggested_amounts": [
+        10,
+        25,
+        50,
+        100
+      ]
+    },
+    "values": [
+      "disaster_relief"
+    ],
+    "ai_confidence_score": 0.0,
+    "date_discovered": "2026-03-15T02:21:41.756365+00:00",
+    "source_url": "https://reliefweb.int/report/lebanon/statement-escalating-violence-and-impact-children-lebanon-and-middle-east-12-march-2026"
+  },
+  {
+    "opportunity_id": "opp_57dc9944ac08",
+    "title": "UNFPA Humanitarian Appeal for the Refugee Response in Jordan (2026)",
+    "summary": "Jordan + 1 more UNFPA Humanitarian Appeal for the Refugee Response in Jordan (2026) Format Appeal Source UNFPA Posted 13 Mar 2026 Originally published 12 Mar 2026 Origin View original",
+    "cause": "disaster_relief",
+    "region": "Jordan",
+    "organization": {
+      "name": "Example Relief Organization",
+      "website": "https://example.org",
+      "verified": true
+    },
+    "donation": {
+      "donation_url": "https://example.org/donate",
+      "suggested_amounts": [
+        10,
+        25,
+        50,
+        100
+      ]
+    },
+    "values": [
+      "disaster_relief"
+    ],
+    "ai_confidence_score": 0.0,
+    "date_discovered": "2026-03-15T02:21:42.052609+00:00",
+    "source_url": "https://reliefweb.int/report/jordan/unfpa-humanitarian-appeal-refugee-response-jordan-2026"
+  },
+  {
+    "opportunity_id": "opp_3feef5be00bf",
+    "title": "Beyond the 72 hours: Strengthening Care for Survivors of Violence to Secure a Better Future for Eastern Democratic Republic of Congo",
+    "summary": "DR Congo Beyond the 72 hours: Strengthening Care for Survivors of Violence to Secure a Better Future for Eastern Democratic Republic of Congo Format News and Press Release Source World Bank Posted 13 Mar 2026 Originally published 12 Mar 2026 Origin View original In eastern Democratic Republic of Con",
+    "cause": "disaster_relief",
+    "region": "Democratic Republic of the Congo",
+    "organization": {
+      "name": "Example Relief Organization",
+      "website": "https://example.org",
+      "verified": true
+    },
+    "donation": {
+      "donation_url": "https://example.org/donate",
+      "suggested_amounts": [
+        10,
+        25,
+        50,
+        100
+      ]
+    },
+    "values": [
+      "disaster_relief"
+    ],
+    "ai_confidence_score": 0.0,
+    "date_discovered": "2026-03-15T02:21:42.310952+00:00",
+    "source_url": "https://reliefweb.int/report/democratic-republic-congo/beyond-72-hours-strengthening-care-survivors-violence-secure-better-future-eastern-democratic-republic-congo"
+  },
+  {
+    "opportunity_id": "opp_1d5fa24a7851",
+    "title": "Situation Report: Lebanon Crisis (2-9 March 2026)",
+    "summary": "Lebanon Situation Report: Lebanon Crisis (2-9 March 2026) Format Situation Report Source UNFPA Posted 13 Mar 2026 Originally published 12 Mar 2026 Origin View original",
+    "cause": "disaster_relief",
+    "region": "Lebanon",
+    "organization": {
+      "name": "Example Relief Organization",
+      "website": "https://example.org",
+      "verified": true
+    },
+    "donation": {
+      "donation_url": "https://example.org/donate",
+      "suggested_amounts": [
+        10,
+        25,
+        50,
+        100
+      ]
+    },
+    "values": [
+      "disaster_relief"
+    ],
+    "ai_confidence_score": 0.0,
+    "date_discovered": "2026-03-15T02:21:42.581506+00:00",
+    "source_url": "https://reliefweb.int/report/lebanon/situation-report-lebanon-crisis-2-9-march-2026"
+  },
+  {
+    "opportunity_id": "opp_2e2828b05450",
+    "title": "Afghanistan: Monthly Market Report Issue 69: February 2026",
+    "summary": "Afghanistan Afghanistan: Monthly Market Report Issue 69: February 2026 Format Situation Report Source WFP Posted 13 Mar 2026 Originally published 12 Mar 2026",
+    "cause": "disaster_relief",
+    "region": "Afghanistan",
+    "organization": {
+      "name": "Example Relief Organization",
+      "website": "https://example.org",
+      "verified": true
+    },
+    "donation": {
+      "donation_url": "https://example.org/donate",
+      "suggested_amounts": [
+        10,
+        25,
+        50,
+        100
+      ]
+    },
+    "values": [
+      "disaster_relief"
+    ],
+    "ai_confidence_score": 0.0,
+    "date_discovered": "2026-03-15T02:21:42.854063+00:00",
+    "source_url": "https://reliefweb.int/report/afghanistan/afghanistan-monthly-market-report-issue-69-february-2026"
+  },
+  {
+    "opportunity_id": "opp_cbfe262c257c",
+    "title": "La Directrice générale de l'OIM condamne l'attaque qui a tué des civils déplacés à Beyrouth",
+    "summary": "Lebanon La Directrice générale de l'OIM condamne l'attaque qui a tué des civils déplacés à Beyrouth Format News and Press Release Source IOM Posted 13 Mar 2026 Originally published 12 Mar 2026 Origin View original Genève, le 12 mars 2026 – La Directrice générale de l'Organisation internationale pour",
+    "cause": "disaster_relief",
+    "region": "Lebanon",
+    "organization": {
+      "name": "Example Relief Organization",
+      "website": "https://example.org",
+      "verified": true
+    },
+    "donation": {
+      "donation_url": "https://example.org/donate",
+      "suggested_amounts": [
+        10,
+        25,
+        50,
+        100
+      ]
+    },
+    "values": [
+      "disaster_relief"
+    ],
+    "ai_confidence_score": 0.0,
+    "date_discovered": "2026-03-15T02:21:43.124012+00:00",
+    "source_url": "https://reliefweb.int/report/lebanon/la-directrice-generale-de-loim-condamne-lattaque-qui-tue-des-civils-deplaces-beyrouth"
+  },
+  {
+    "opportunity_id": "opp_68c73609e8da",
+    "title": "WFP Lao PDR Country Brief, March 2026",
+    "summary": "Lao PDR WFP Lao PDR Country Brief, March 2026 Format Situation Report Source WFP Posted 13 Mar 2026 Originally published 13 Mar 2026",
+    "cause": "disaster_relief",
+    "region": "Lao People's Democratic Republic (the)",
+    "organization": {
+      "name": "Example Relief Organization",
+      "website": "https://example.org",
+      "verified": true
+    },
+    "donation": {
+      "donation_url": "https://example.org/donate",
+      "suggested_amounts": [
+        10,
+        25,
+        50,
+        100
+      ]
+    },
+    "values": [
+      "disaster_relief"
+    ],
+    "ai_confidence_score": 0.0,
+    "date_discovered": "2026-03-15T02:21:43.426759+00:00",
+    "source_url": "https://reliefweb.int/report/lao-peoples-democratic-republic/wfp-lao-pdr-country-brief-march-2026"
+  },
+  {
+    "opportunity_id": "opp_c908c6834f48",
+    "title": "Syrian Arab Republic: Emergency Mobility Tracking Situation Report - Aleppo/North East Syria (NES) Conflict, Round 15 (11 March 2026)",
+    "summary": "Syria Syrian Arab Republic: Emergency Mobility Tracking Situation Report - Aleppo/North East Syria (NES) Conflict, Round 15 (11 March 2026) Format Situation Report Source IOM Posted 13 Mar 2026 Originally published 12 Mar 2026 Origin View original",
+    "cause": "disaster_relief",
+    "region": "Syrian Arab Republic",
+    "organization": {
+      "name": "Example Relief Organization",
+      "website": "https://example.org",
+      "verified": true
+    },
+    "donation": {
+      "donation_url": "https://example.org/donate",
+      "suggested_amounts": [
+        10,
+        25,
+        50,
+        100
+      ]
+    },
+    "values": [
+      "disaster_relief"
+    ],
+    "ai_confidence_score": 0.0,
+    "date_discovered": "2026-03-15T02:21:43.686273+00:00",
+    "source_url": "https://reliefweb.int/report/syrian-arab-republic/syrian-arab-republic-emergency-mobility-tracking-situation-report-alepponorth-east-syria-nes-conflict-round-15-11-march-2026"
+  },
+  {
+    "opportunity_id": "opp_421a4ddd8728",
+    "title": "IOM Chad: Sudan Crisis Response Situation Update No. 62 | February 2026",
+    "summary": "Chad + 1 more IOM Chad: Sudan Crisis Response Situation Update No. 62 | February 2026 Format Situation Report Source IOM Posted 13 Mar 2026 Originally published 13 Mar 2026 Origin View original",
+    "cause": "disaster_relief",
+    "region": "Chad",
+    "organization": {
+      "name": "Example Relief Organization",
+      "website": "https://example.org",
+      "verified": true
+    },
+    "donation": {
+      "donation_url": "https://example.org/donate",
+      "suggested_amounts": [
+        10,
+        25,
+        50,
+        100
+      ]
+    },
+    "values": [
+      "disaster_relief"
+    ],
+    "ai_confidence_score": 0.0,
+    "date_discovered": "2026-03-15T02:21:43.964157+00:00",
+    "source_url": "https://reliefweb.int/report/chad/iom-chad-sudan-crisis-response-situation-update-no-62-february-2026"
+  },
+  {
+    "opportunity_id": "opp_74933955da43",
+    "title": "OIM Tchad - Réponse à la crise au Soudan : Bulletin d'informations No. 62 | février 2026",
+    "summary": "Chad + 1 more OIM Tchad - Réponse à la crise au Soudan : Bulletin d'informations No. 62 | février 2026 Format Situation Report Source IOM Posted 13 Mar 2026 Originally published 13 Mar 2026 Origin View original",
+    "cause": "disaster_relief",
+    "region": "Chad",
+    "organization": {
+      "name": "Example Relief Organization",
+      "website": "https://example.org",
+      "verified": true
+    },
+    "donation": {
+      "donation_url": "https://example.org/donate",
+      "suggested_amounts": [
+        10,
+        25,
+        50,
+        100
+      ]
+    },
+    "values": [
+      "disaster_relief"
+    ],
+    "ai_confidence_score": 0.0,
+    "date_discovered": "2026-03-15T02:21:44.240071+00:00",
+    "source_url": "https://reliefweb.int/report/chad/oim-tchad-reponse-la-crise-au-soudan-bulletin-dinformations-no-62-fevrier-2026"
+  },
+  {
+    "opportunity_id": "opp_ad543e167719",
+    "title": "WHO Situation Report No.1: Middle East Escalation of Conflict (11 March 2026)",
+    "summary": "Lebanon + 9 more WHO Situation Report No.1: Middle East Escalation of Conflict (11 March 2026) Format Situation Report Source WHO Posted 13 Mar 2026 Originally published 12 Mar 2026 Origin View original",
+    "cause": "disaster_relief",
+    "region": "Lebanon",
+    "organization": {
+      "name": "Example Relief Organization",
+      "website": "https://example.org",
+      "verified": true
+    },
+    "donation": {
+      "donation_url": "https://example.org/donate",
+      "suggested_amounts": [
+        10,
+        25,
+        50,
+        100
+      ]
+    },
+    "values": [
+      "disaster_relief"
+    ],
+    "ai_confidence_score": 0.0,
+    "date_discovered": "2026-03-15T02:21:44.508997+00:00",
+    "source_url": "https://reliefweb.int/report/lebanon/who-situation-report-no1-middle-east-escalation-conflict-11-march-2026"
+  },
+  {
+    "opportunity_id": "opp_61c86078e86c",
+    "title": "Canada providing aid to help address growing humanitarian needs in Lebanon (12 March 2026)",
+    "summary": "Lebanon + 1 more Canada providing aid to help address growing humanitarian needs in Lebanon (12 March 2026) Format News and Press Release Source Govt. Canada Posted 13 Mar 2026 Originally published 12 Mar 2026 Origin View original March 12, 2026 - Ottawa, Ontario - Global Affairs Canada The Lebanese",
+    "cause": "disaster_relief",
+    "region": "Lebanon",
+    "organization": {
+      "name": "Example Relief Organization",
+      "website": "https://example.org",
+      "verified": true
+    },
+    "donation": {
+      "donation_url": "https://example.org/donate",
+      "suggested_amounts": [
+        10,
+        25,
+        50,
+        100
+      ]
+    },
+    "values": [
+      "disaster_relief"
+    ],
+    "ai_confidence_score": 0.0,
+    "date_discovered": "2026-03-15T02:21:44.804846+00:00",
+    "source_url": "https://reliefweb.int/report/lebanon/canada-providing-aid-help-address-growing-humanitarian-needs-lebanon-12-march-2026"
+  },
+  {
+    "opportunity_id": "opp_57855e6e2c25",
+    "title": "Venezuela - Food Security Outlook (February - September 2026): Widespread Stressed (IPC Phase 2) outcomes as high inflation constrains food access",
+    "summary": "Venezuela Venezuela - Food Security Outlook (February - September 2026): Widespread Stressed (IPC Phase 2) outcomes as high inflation constrains food access Format Analysis Source FEWS NET Posted 13 Mar 2026 Originally published 12 Mar 2026 Origin View original",
+    "cause": "disaster_relief",
+    "region": "Venezuela (Bolivarian Republic of)",
+    "organization": {
+      "name": "Example Relief Organization",
+      "website": "https://example.org",
+      "verified": true
+    },
+    "donation": {
+      "donation_url": "https://example.org/donate",
+      "suggested_amounts": [
+        10,
+        25,
+        50,
+        100
+      ]
+    },
+    "values": [
+      "disaster_relief"
+    ],
+    "ai_confidence_score": 0.0,
+    "date_discovered": "2026-03-15T02:21:45.084441+00:00",
+    "source_url": "https://reliefweb.int/report/venezuela-bolivarian-republic/venezuela-food-security-outlook-february-september-2026-widespread-stressed-ipc-phase-2-outcomes-high-inflation-constrains-food-access"
+  },
+  {
+    "opportunity_id": "opp_28ea9bde3c0b",
+    "title": "Global platform aims to make education more climate resilient",
+    "summary": "World Global platform aims to make education more climate resilient Format News and Press Release Source Save the Children Posted 13 Mar 2026 Originally published 12 Mar 2026 Origin View original Climateandeducation.org launches to close the gap between the climate change and education sectors. LOND",
+    "cause": "disaster_relief",
+    "region": "World",
+    "organization": {
+      "name": "Example Relief Organization",
+      "website": "https://example.org",
+      "verified": true
+    },
+    "donation": {
+      "donation_url": "https://example.org/donate",
+      "suggested_amounts": [
+        10,
+        25,
+        50,
+        100
+      ]
+    },
+    "values": [
+      "disaster_relief"
+    ],
+    "ai_confidence_score": 0.0,
+    "date_discovered": "2026-03-15T02:21:45.330062+00:00",
+    "source_url": "https://reliefweb.int/report/world/global-platform-aims-make-education-more-climate-resilient"
+  },
+  {
+    "opportunity_id": "opp_f3dc45810f7f",
+    "title": "Mayon Volcano Summary of 24Hr Observation 13 March 2026 12:00 AM [EN/TL]",
+    "summary": "Philippines Mayon Volcano Summary of 24Hr Observation 13 March 2026 12:00 AM [EN/TL] Format Infographic Source PHIVOLCS Posted 12 Mar 2026 Originally published 13 Mar 2026 Origin View original",
+    "cause": "disaster_relief",
+    "region": "Philippines",
+    "organization": {
+      "name": "Example Relief Organization",
+      "website": "https://example.org",
+      "verified": true
+    },
+    "donation": {
+      "donation_url": "https://example.org/donate",
+      "suggested_amounts": [
+        10,
+        25,
+        50,
+        100
+      ]
+    },
+    "values": [
+      "disaster_relief"
+    ],
+    "ai_confidence_score": 0.0,
+    "date_discovered": "2026-03-15T02:21:45.660599+00:00",
+    "source_url": "https://reliefweb.int/report/philippines/mayon-volcano-summary-24hr-observation-13-march-2026-1200-am-entl"
+  },
+  {
+    "opportunity_id": "opp_57a3156c6e38",
+    "title": "Venezuela 5W - Humanitarian Operational Presence 2026 - Who does What Where When & for Whom? as of 31 January 2026",
+    "summary": "Venezuela Venezuela 5W - Humanitarian Operational Presence 2026 - Who does What Where When & for Whom? as of 31 January 2026 Format Infographic Source OCHA Posted 12 Mar 2026 Originally published 12 Mar 2026",
+    "cause": "disaster_relief",
+    "region": "Venezuela (Bolivarian Republic of)",
+    "organization": {
+      "name": "Example Relief Organization",
+      "website": "https://example.org",
+      "verified": true
+    },
+    "donation": {
+      "donation_url": "https://example.org/donate",
+      "suggested_amounts": [
+        10,
+        25,
+        50,
+        100
+      ]
+    },
+    "values": [
+      "disaster_relief"
+    ],
+    "ai_confidence_score": 0.0,
+    "date_discovered": "2026-03-15T02:21:45.935200+00:00",
+    "source_url": "https://reliefweb.int/report/venezuela-bolivarian-republic/venezuela-5w-humanitarian-operational-presence-2026-who-does-what-where-when-whom-31-january-2026"
+  },
+  {
+    "opportunity_id": "opp_3db18242d6bb",
+    "title": "Venezuela 5W - Presencia Operativa Humanitaria 2026 - ¿Quién hace qué, dónde, cuándo y para quién? hasta el 31 de enero de 2026",
+    "summary": "Venezuela Venezuela 5W - Presencia Operativa Humanitaria 2026 - ¿Quién hace qué, dónde, cuándo y para quién? hasta el 31 de enero de 2026 Format Infographic Source OCHA Posted 12 Mar 2026 Originally published 12 Mar 2026",
+    "cause": "disaster_relief",
+    "region": "Venezuela (Bolivarian Republic of)",
+    "organization": {
+      "name": "Example Relief Organization",
+      "website": "https://example.org",
+      "verified": true
+    },
+    "donation": {
+      "donation_url": "https://example.org/donate",
+      "suggested_amounts": [
+        10,
+        25,
+        50,
+        100
+      ]
+    },
+    "values": [
+      "disaster_relief"
+    ],
+    "ai_confidence_score": 0.0,
+    "date_discovered": "2026-03-15T02:21:46.197854+00:00",
+    "source_url": "https://reliefweb.int/report/venezuela-bolivarian-republic/venezuela-5w-presencia-operativa-humanitaria-2026-quien-hace-que-donde-cuando-y-para-quien-hasta-el-31-de-enero-de-2026"
+  },
+  {
+    "opportunity_id": "opp_7a6e9fbfb62e",
+    "title": "At least 8 students and a health worker reportedly killed in attack on a school compound in Sudan’s White Nile State",
+    "summary": "Sudan At least 8 students and a health worker reportedly killed in attack on a school compound in Sudan’s White Nile State Format News and Press Release Source UNICEF Posted 12 Mar 2026 Originally published 12 Mar 2026 Origin View original PORT SUDAN, 12 March 2025 – Reported drone attacks struck a ",
+    "cause": "disaster_relief",
+    "region": "Sudan",
+    "organization": {
+      "name": "Example Relief Organization",
+      "website": "https://example.org",
+      "verified": true
+    },
+    "donation": {
+      "donation_url": "https://example.org/donate",
+      "suggested_amounts": [
+        10,
+        25,
+        50,
+        100
+      ]
+    },
+    "values": [
+      "disaster_relief"
+    ],
+    "ai_confidence_score": 0.0,
+    "date_discovered": "2026-03-15T02:21:46.463490+00:00",
+    "source_url": "https://reliefweb.int/report/sudan/least-8-students-and-health-worker-reportedly-killed-attack-school-compound-sudans-white-nile-state"
+  },
+  {
+    "opportunity_id": "opp_2da43bf116c5",
+    "title": "Palestine - Logistics Cluster Meeting Minutes, Jerusalem, 5 March 2026",
+    "summary": "oPt Palestine - Logistics Cluster Meeting Minutes, Jerusalem, 5 March 2026 Format Other Sources Logistics Cluster WFP Posted 12 Mar 2026 Originally published 5 Mar 2026 Origin View original",
+    "cause": "disaster_relief",
+    "region": "occupied Palestinian territory",
+    "organization": {
+      "name": "Example Relief Organization",
+      "website": "https://example.org",
+      "verified": true
+    },
+    "donation": {
+      "donation_url": "https://example.org/donate",
+      "suggested_amounts": [
+        10,
+        25,
+        50,
+        100
+      ]
+    },
+    "values": [
+      "disaster_relief"
+    ],
+    "ai_confidence_score": 0.0,
+    "date_discovered": "2026-03-15T02:21:46.744402+00:00",
+    "source_url": "https://reliefweb.int/report/occupied-palestinian-territory/palestine-logistics-cluster-meeting-minutes-jerusalem-5-march-2026"
+  },
+  {
+    "opportunity_id": "opp_253bc1980df8",
+    "title": "Romper el silencio: las niñas somalíes denuncian la violencia",
+    "summary": "Somalia Romper el silencio: las niñas somalíes denuncian la violencia Format News and Press Release Source Caritas Posted 12 Mar 2026 Originally published 11 Mar 2026 Origin View original En la ciudad ribereña de Buloburte, en el centro de Somalia, más de 1000 mujeres y niñas se reunieron a finales ",
+    "cause": "disaster_relief",
+    "region": "Somalia",
+    "organization": {
+      "name": "Example Relief Organization",
+      "website": "https://example.org",
+      "verified": true
+    },
+    "donation": {
+      "donation_url": "https://example.org/donate",
+      "suggested_amounts": [
+        10,
+        25,
+        50,
+        100
+      ]
+    },
+    "values": [
+      "disaster_relief"
+    ],
+    "ai_confidence_score": 0.0,
+    "date_discovered": "2026-03-15T02:21:47.035664+00:00",
+    "source_url": "https://reliefweb.int/report/somalia/romper-el-silencio-las-ninas-somalies-denuncian-la-violencia"
+  },
+  {
+    "opportunity_id": "opp_3435b516a887",
+    "title": "IOM Chief Condemns Beirut Strike Killing Displaced Civilians",
+    "summary": "Lebanon IOM Chief Condemns Beirut Strike Killing Displaced Civilians Format News and Press Release Source IOM Posted 12 Mar 2026 Originally published 12 Mar 2026 Origin View original Geneva, 12 March 2026 – The Director General of the International Organization for Migration (IOM), Amy Pope, is grav",
+    "cause": "disaster_relief",
+    "region": "Lebanon",
+    "organization": {
+      "name": "Example Relief Organization",
+      "website": "https://example.org",
+      "verified": true
+    },
+    "donation": {
+      "donation_url": "https://example.org/donate",
+      "suggested_amounts": [
+        10,
+        25,
+        50,
+        100
+      ]
+    },
+    "values": [
+      "disaster_relief"
+    ],
+    "ai_confidence_score": 0.0,
+    "date_discovered": "2026-03-15T02:21:47.303401+00:00",
+    "source_url": "https://reliefweb.int/report/lebanon/iom-chief-condemns-beirut-strike-killing-displaced-civilians"
+  },
+  {
+    "opportunity_id": "opp_db3d6f78eb79",
+    "title": "UNHCR Türki̇ye Operational Updates (February 2026)",
+    "summary": "Türkiye + 1 more UNHCR Türki̇ye Operational Updates (February 2026) Format Situation Report Source UNHCR Posted 12 Mar 2026 Originally published 12 Mar 2026 Origin View original",
+    "cause": "disaster_relief",
+    "region": "Türkiye",
+    "organization": {
+      "name": "Example Relief Organization",
+      "website": "https://example.org",
+      "verified": true
+    },
+    "donation": {
+      "donation_url": "https://example.org/donate",
+      "suggested_amounts": [
+        10,
+        25,
+        50,
+        100
+      ]
+    },
+    "values": [
+      "disaster_relief"
+    ],
+    "ai_confidence_score": 0.0,
+    "date_discovered": "2026-03-15T02:21:47.587304+00:00",
+    "source_url": "https://reliefweb.int/report/turkiye/unhcr-turkiye-operational-updates-february-2026"
+  },
+  {
+    "opportunity_id": "opp_f32c26006671",
+    "title": "South Sudan: Humanitarian Access Snapshot (February 2026)",
+    "summary": "South Sudan South Sudan: Humanitarian Access Snapshot (February 2026) Format Infographic Source OCHA Posted 12 Mar 2026 Originally published 12 Mar 2026",
+    "cause": "disaster_relief",
+    "region": "South Sudan",
+    "organization": {
+      "name": "Example Relief Organization",
+      "website": "https://example.org",
+      "verified": true
+    },
+    "donation": {
+      "donation_url": "https://example.org/donate",
+      "suggested_amounts": [
+        10,
+        25,
+        50,
+        100
+      ]
+    },
+    "values": [
+      "disaster_relief"
+    ],
+    "ai_confidence_score": 0.0,
+    "date_discovered": "2026-03-15T02:21:47.866493+00:00",
+    "source_url": "https://reliefweb.int/report/south-sudan/south-sudan-humanitarian-access-snapshot-february-2026"
+  },
+  {
+    "opportunity_id": "opp_406c8066a6d9",
+    "title": "Call To Action to Member States: Imminent Forcible Displacement of Palestinian Families in Silwan | March 2026",
+    "summary": "oPt Call To Action to Member States: Imminent Forcible Displacement of Palestinian Families in Silwan | March 2026 Format Situation Report Sources OHCHR Protection Cluster Posted 12 Mar 2026 Originally published 12 Mar 2026",
+    "cause": "disaster_relief",
+    "region": "occupied Palestinian territory",
+    "organization": {
+      "name": "Example Relief Organization",
+      "website": "https://example.org",
+      "verified": true
+    },
+    "donation": {
+      "donation_url": "https://example.org/donate",
+      "suggested_amounts": [
+        10,
+        25,
+        50,
+        100
+      ]
+    },
+    "values": [
+      "disaster_relief"
+    ],
+    "ai_confidence_score": 0.0,
+    "date_discovered": "2026-03-15T02:21:48.162226+00:00",
+    "source_url": "https://reliefweb.int/report/occupied-palestinian-territory/call-action-member-states-imminent-forcible-displacement-palestinian-families-silwan-march-2026"
+  },
+  {
+    "opportunity_id": "opp_41887d094725",
+    "title": "La DG de la OIM condena el ataque en Beirut en el que murieron civiles desplazados",
+    "summary": "Lebanon La DG de la OIM condena el ataque en Beirut en el que murieron civiles desplazados Format News and Press Release Source IOM Posted 12 Mar 2026 Originally published 12 Mar 2026 Origin View original Ginebra, 12 de marzo de 2026 – La Directora General de la Organización Internacional para las M",
+    "cause": "disaster_relief",
+    "region": "Lebanon",
+    "organization": {
+      "name": "Example Relief Organization",
+      "website": "https://example.org",
+      "verified": true
+    },
+    "donation": {
+      "donation_url": "https://example.org/donate",
+      "suggested_amounts": [
+        10,
+        25,
+        50,
+        100
+      ]
+    },
+    "values": [
+      "disaster_relief"
+    ],
+    "ai_confidence_score": 0.0,
+    "date_discovered": "2026-03-15T02:21:48.433878+00:00",
+    "source_url": "https://reliefweb.int/report/lebanon/la-dg-de-la-oim-condena-el-ataque-en-beirut-en-el-que-murieron-civiles-desplazados"
+  },
+  {
+    "opportunity_id": "opp_d72067d09f7d",
+    "title": "Deadly drone attack on school in Sudan’s White Nile state",
+    "summary": "Sudan Deadly drone attack on school in Sudan’s White Nile state Format News and Press Release Source Plan International Posted 12 Mar 2026 Originally published 12 Mar 2026 Origin View original Plan International condemns the deadly drone attack on a school in Sudan's White Nile state. 12 March 2026 ",
+    "cause": "disaster_relief",
+    "region": "Sudan",
+    "organization": {
+      "name": "Example Relief Organization",
+      "website": "https://example.org",
+      "verified": true
+    },
+    "donation": {
+      "donation_url": "https://example.org/donate",
+      "suggested_amounts": [
+        10,
+        25,
+        50,
+        100
+      ]
+    },
+    "values": [
+      "disaster_relief"
+    ],
+    "ai_confidence_score": 0.0,
+    "date_discovered": "2026-03-15T02:21:48.723185+00:00",
+    "source_url": "https://reliefweb.int/report/sudan/deadly-drone-attack-school-sudans-white-nile-state"
+  },
+  {
+    "opportunity_id": "opp_15423f85ef8b",
+    "title": "MSF concludes emergency response to cyclone Ditwah",
+    "summary": "Sri Lanka MSF concludes emergency response to cyclone Ditwah Format News and Press Release Source MSF Posted 12 Mar 2026 Originally published 12 Mar 2026 Origin View original Médecins Sans Frontières (MSF) has completed our emergency response to cyclone Ditwah in Sri Lanka . The worst natural hazard",
+    "cause": "disaster_relief",
+    "region": "Sri Lanka",
+    "organization": {
+      "name": "Example Relief Organization",
+      "website": "https://example.org",
+      "verified": true
+    },
+    "donation": {
+      "donation_url": "https://example.org/donate",
+      "suggested_amounts": [
+        10,
+        25,
+        50,
+        100
+      ]
+    },
+    "values": [
+      "disaster_relief"
+    ],
+    "ai_confidence_score": 0.0,
+    "date_discovered": "2026-03-15T02:21:49.002818+00:00",
+    "source_url": "https://reliefweb.int/report/sri-lanka/msf-concludes-emergency-response-cyclone-ditwah"
+  },
+  {
+    "opportunity_id": "opp_6acd316db5ef",
+    "title": "MSF hands over Cross River project after three years of lifesaving care",
+    "summary": "Nigeria MSF hands over Cross River project after three years of lifesaving care Format News and Press Release Source MSF Posted 12 Mar 2026 Originally published 12 Mar 2026 Origin View original In September 2025, Médecins Sans Frontières (MSF) concluded our project in Cross River state, Nigeria , af",
+    "cause": "disaster_relief",
+    "region": "Nigeria",
+    "organization": {
+      "name": "Example Relief Organization",
+      "website": "https://example.org",
+      "verified": true
+    },
+    "donation": {
+      "donation_url": "https://example.org/donate",
+      "suggested_amounts": [
+        10,
+        25,
+        50,
+        100
+      ]
+    },
+    "values": [
+      "disaster_relief"
+    ],
+    "ai_confidence_score": 0.0,
+    "date_discovered": "2026-03-15T02:21:49.298330+00:00",
+    "source_url": "https://reliefweb.int/report/nigeria/msf-hands-over-cross-river-project-after-three-years-lifesaving-care"
+  },
+  {
+    "opportunity_id": "opp_c9c869dd19ea",
+    "title": "Research report on the Oleksiivska rural territorial community Lozivskyi district, Kharkiv region, Ukraine - Analysis of infrastructure, social and economic needs",
+    "summary": "Ukraine Research report on the Oleksiivska rural territorial community Lozivskyi district, Kharkiv region, Ukraine - Analysis of infrastructure, social and economic needs Format Analysis Source RCC Posted 12 Mar 2026 Originally published 12 Mar 2026",
+    "cause": "disaster_relief",
+    "region": "Ukraine",
+    "organization": {
+      "name": "Example Relief Organization",
+      "website": "https://example.org",
+      "verified": true
+    },
+    "donation": {
+      "donation_url": "https://example.org/donate",
+      "suggested_amounts": [
+        10,
+        25,
+        50,
+        100
+      ]
+    },
+    "values": [
+      "disaster_relief"
+    ],
+    "ai_confidence_score": 0.0,
+    "date_discovered": "2026-03-15T02:21:49.587226+00:00",
+    "source_url": "https://reliefweb.int/report/ukraine/research-report-oleksiivska-rural-territorial-community-lozivskyi-district-kharkiv-region-ukraine-analysis-infrastructure-social-and-economic-needs"
+  },
+  {
+    "opportunity_id": "opp_bf052536758d",
+    "title": "Aumenta el número de víctimas entre la población infantil a medida que se recrudece el conflicto en Oriente Medio",
+    "summary": "Iran + 3 more Aumenta el número de víctimas entre la población infantil a medida que se recrudece el conflicto en Oriente Medio Format News and Press Release Source UNICEF Posted 12 Mar 2026 Originally published 12 Mar 2026 Origin View original NUEVA YORK, 11 de marzo de 2026 – “Transcurridos diez d",
+    "cause": "disaster_relief",
+    "region": "Iran (Islamic Republic of)",
+    "organization": {
+      "name": "Example Relief Organization",
+      "website": "https://example.org",
+      "verified": true
+    },
+    "donation": {
+      "donation_url": "https://example.org/donate",
+      "suggested_amounts": [
+        10,
+        25,
+        50,
+        100
+      ]
+    },
+    "values": [
+      "disaster_relief"
+    ],
+    "ai_confidence_score": 0.0,
+    "date_discovered": "2026-03-15T02:21:49.871270+00:00",
+    "source_url": "https://reliefweb.int/report/iran-islamic-republic/aumenta-el-numero-de-victimas-entre-la-poblacion-infantil-medida-que-se-recrudece-el-conflicto-en-oriente-medio"
+  },
+  {
+    "opportunity_id": "opp_506a4b6fb8ce",
+    "title": "Occupied Palestinian Territory: Emergency response activity update #53 1 – 28 February 2026",
+    "summary": "oPt Occupied Palestinian Territory: Emergency response activity update #53 1 – 28 February 2026 Format Situation Report Source IOM Posted 12 Mar 2026 Originally published 12 Mar 2026 Origin View original",
+    "cause": "disaster_relief",
+    "region": "occupied Palestinian territory",
+    "organization": {
+      "name": "Example Relief Organization",
+      "website": "https://example.org",
+      "verified": true
+    },
+    "donation": {
+      "donation_url": "https://example.org/donate",
+      "suggested_amounts": [
+        10,
+        25,
+        50,
+        100
+      ]
+    },
+    "values": [
+      "disaster_relief"
+    ],
+    "ai_confidence_score": 0.0,
+    "date_discovered": "2026-03-15T02:21:50.170250+00:00",
+    "source_url": "https://reliefweb.int/report/occupied-palestinian-territory/occupied-palestinian-territory-emergency-response-activity-update-53-1-28-february-2026"
+  },
+  {
+    "opportunity_id": "opp_2ca07690329c",
+    "title": "Indicative unearmarked funding allocations 2025, 31 December 2025",
+    "summary": "World + 9 more Indicative unearmarked funding allocations 2025, 31 December 2025 Format Infographic Source UNHCR Posted 12 Mar 2026 Originally published 12 Mar 2026 Origin View original",
+    "cause": "disaster_relief",
+    "region": "World",
+    "organization": {
+      "name": "Example Relief Organization",
+      "website": "https://example.org",
+      "verified": true
+    },
+    "donation": {
+      "donation_url": "https://example.org/donate",
+      "suggested_amounts": [
+        10,
+        25,
+        50,
+        100
+      ]
+    },
+    "values": [
+      "disaster_relief"
+    ],
+    "ai_confidence_score": 0.0,
+    "date_discovered": "2026-03-15T02:21:50.453877+00:00",
+    "source_url": "https://reliefweb.int/report/world/indicative-unearmarked-funding-allocations-2025-31-december-2025"
+  },
+  {
+    "opportunity_id": "opp_b4dde8dcbbe0",
+    "title": "Indicative flexible funding allocations 2025, 31 December 2025",
+    "summary": "World + 10 more Indicative flexible funding allocations 2025, 31 December 2025 Format Infographic Source UNHCR Posted 12 Mar 2026 Originally published 12 Mar 2026 Origin View original",
+    "cause": "disaster_relief",
+    "region": "World",
+    "organization": {
+      "name": "Example Relief Organization",
+      "website": "https://example.org",
+      "verified": true
+    },
+    "donation": {
+      "donation_url": "https://example.org/donate",
+      "suggested_amounts": [
+        10,
+        25,
+        50,
+        100
+      ]
+    },
+    "values": [
+      "disaster_relief"
+    ],
+    "ai_confidence_score": 0.0,
+    "date_discovered": "2026-03-15T02:21:50.726021+00:00",
+    "source_url": "https://reliefweb.int/report/world/indicative-flexible-funding-allocations-2025-31-december-2025"
+  },
+  {
+    "opportunity_id": "opp_c4bbe4a96a3c",
+    "title": "Lebanon — Cross Border Movement Update (19 February - 09 March 2026)",
+    "summary": "Lebanon + 1 more Lebanon — Cross Border Movement Update (19 February - 09 March 2026) Format Infographic Source IOM Posted 12 Mar 2026 Originally published 12 Mar 2026 Origin View original",
+    "cause": "disaster_relief",
+    "region": "Lebanon",
+    "organization": {
+      "name": "Example Relief Organization",
+      "website": "https://example.org",
+      "verified": true
+    },
+    "donation": {
+      "donation_url": "https://example.org/donate",
+      "suggested_amounts": [
+        10,
+        25,
+        50,
+        100
+      ]
+    },
+    "values": [
+      "disaster_relief"
+    ],
+    "ai_confidence_score": 0.0,
+    "date_discovered": "2026-03-15T02:21:51.012516+00:00",
+    "source_url": "https://reliefweb.int/report/lebanon/lebanon-cross-border-movement-update-19-february-09-march-2026"
+  },
+  {
+    "opportunity_id": "opp_d07bdc2469dd",
+    "title": "Moyen-Orient : Le nombre de victimes chez les enfants continue d’augmenter alors que le conflit s’intensifie",
+    "summary": "Iran + 3 more Moyen-Orient : Le nombre de victimes chez les enfants continue d’augmenter alors que le conflit s’intensifie Format News and Press Release Source UNICEF Posted 12 Mar 2026 Originally published 12 Mar 2026 Origin View original NEW YORK, le 11 mars 2026 – « Dix jours après le début de l’",
+    "cause": "disaster_relief",
+    "region": "Iran (Islamic Republic of)",
+    "organization": {
+      "name": "Example Relief Organization",
+      "website": "https://example.org",
+      "verified": true
+    },
+    "donation": {
+      "donation_url": "https://example.org/donate",
+      "suggested_amounts": [
+        10,
+        25,
+        50,
+        100
+      ]
+    },
+    "values": [
+      "disaster_relief"
+    ],
+    "ai_confidence_score": 0.0,
+    "date_discovered": "2026-03-15T02:21:51.277968+00:00",
+    "source_url": "https://reliefweb.int/report/iran-islamic-republic/moyen-orient-le-nombre-de-victimes-chez-les-enfants-continue-daugmenter-alors-que-le-conflit-sintensifie"
+  },
+  {
+    "opportunity_id": "opp_7ff0ebfe5e57",
+    "title": "Lebanon: ICRC reiterates urgent call to protect humanitarian and medical workers following the killing of a Lebanese Red Cross volunteer",
+    "summary": "Lebanon Lebanon: ICRC reiterates urgent call to protect humanitarian and medical workers following the killing of a Lebanese Red Cross volunteer Format News and Press Release Source ICRC Posted 12 Mar 2026 Originally published 12 Mar 2026 Origin View original The International Committee of the Red C",
+    "cause": "disaster_relief",
+    "region": "Lebanon",
+    "organization": {
+      "name": "Example Relief Organization",
+      "website": "https://example.org",
+      "verified": true
+    },
+    "donation": {
+      "donation_url": "https://example.org/donate",
+      "suggested_amounts": [
+        10,
+        25,
+        50,
+        100
+      ]
+    },
+    "values": [
+      "disaster_relief"
+    ],
+    "ai_confidence_score": 0.0,
+    "date_discovered": "2026-03-15T02:21:51.545522+00:00",
+    "source_url": "https://reliefweb.int/report/lebanon/lebanon-icrc-reiterates-urgent-call-protect-humanitarian-and-medical-workers-following-killing-lebanese-red-cross-volunteer"
+  },
+  {
+    "opportunity_id": "opp_7e6f0d9b193d",
+    "title": "South Sudan: Escalating violence forces Save the Children to suspend more operations in Jonglei state leaving families without essential aid",
+    "summary": "South Sudan South Sudan: Escalating violence forces Save the Children to suspend more operations in Jonglei state leaving families without essential aid Format News and Press Release Source Save the Children Posted 12 Mar 2026 Originally published 12 Mar 2026 Juba, 12 March 2026 – Escalating violenc",
+    "cause": "disaster_relief",
+    "region": "South Sudan",
+    "organization": {
+      "name": "Example Relief Organization",
+      "website": "https://example.org",
+      "verified": true
+    },
+    "donation": {
+      "donation_url": "https://example.org/donate",
+      "suggested_amounts": [
+        10,
+        25,
+        50,
+        100
+      ]
+    },
+    "values": [
+      "disaster_relief"
+    ],
+    "ai_confidence_score": 0.0,
+    "date_discovered": "2026-03-15T02:21:51.821230+00:00",
+    "source_url": "https://reliefweb.int/report/south-sudan/south-sudan-escalating-violence-forces-save-children-suspend-more-operations-jonglei-state-leaving-families-without-essential-aid"
+  },
+  {
+    "opportunity_id": "opp_c2d8be247a7c",
+    "title": "Cáritas Española moviliza 150.000 euros para atender a la población desplazada en Líbano ante la escalada de violencia",
+    "summary": "Lebanon + 1 more Cáritas Española moviliza 150.000 euros para atender a la población desplazada en Líbano ante la escalada de violencia Format News and Press Release Source Caritas Posted 12 Mar 2026 Originally published 12 Mar 2026 Origin View original Con estos fondos pretende apoyar la respuesta ",
+    "cause": "disaster_relief",
+    "region": "Lebanon",
+    "organization": {
+      "name": "Example Relief Organization",
+      "website": "https://example.org",
+      "verified": true
+    },
+    "donation": {
+      "donation_url": "https://example.org/donate",
+      "suggested_amounts": [
+        10,
+        25,
+        50,
+        100
+      ]
+    },
+    "values": [
+      "disaster_relief"
+    ],
+    "ai_confidence_score": 0.0,
+    "date_discovered": "2026-03-15T02:21:52.115564+00:00",
+    "source_url": "https://reliefweb.int/report/lebanon/caritas-espanola-moviliza-150000-euros-para-atender-la-poblacion-desplazada-en-libano-ante-la-escalada-de-violencia"
+  },
+  {
+    "opportunity_id": "opp_08e0ccf376d0",
+    "title": "Kenya: Climatic shocks drive Extremely Critical acute malnutrition among children and increasing numbers of high acute food insecurity - IPC Acute Food Insecurity and Acute Malnutrition Analysis (January – December 2026), Published on 12 March 2026",
+    "summary": "Kenya Kenya: Climatic shocks drive Extremely Critical acute malnutrition among children and increasing numbers of high acute food insecurity - IPC Acute Food Insecurity and Acute Malnutrition Analysis (January – December 2026), Published on 12 March 2026 Format Analysis Source IPC Posted 12 Mar 2026",
+    "cause": "disaster_relief",
+    "region": "Kenya",
+    "organization": {
+      "name": "Example Relief Organization",
+      "website": "https://example.org",
+      "verified": true
+    },
+    "donation": {
+      "donation_url": "https://example.org/donate",
+      "suggested_amounts": [
+        10,
+        25,
+        50,
+        100
+      ]
+    },
+    "values": [
+      "disaster_relief"
+    ],
+    "ai_confidence_score": 0.0,
+    "date_discovered": "2026-03-15T02:21:52.400136+00:00",
+    "source_url": "https://reliefweb.int/report/kenya/kenya-climatic-shocks-drive-extremely-critical-acute-malnutrition-among-children-and-increasing-numbers-high-acute-food-insecurity-ipc-acute-food-insecurity-and-acute-malnutrition-analysis-january-december-2026-published-12-march-2026"
+  },
+  {
+    "opportunity_id": "opp_b52ecb58b25d",
+    "title": "Ethiopia: Belgium’s contribution through the Special Fund for Emergency and Resilience Activities (SFERA)",
+    "summary": "Ethiopia Ethiopia: Belgium’s contribution through the Special Fund for Emergency and Resilience Activities (SFERA) Format Assessment Source FAO Posted 12 Mar 2026 Originally published 12 Mar 2026 Origin View original",
+    "cause": "disaster_relief",
+    "region": "Ethiopia",
+    "organization": {
+      "name": "Example Relief Organization",
+      "website": "https://example.org",
+      "verified": true
+    },
+    "donation": {
+      "donation_url": "https://example.org/donate",
+      "suggested_amounts": [
+        10,
+        25,
+        50,
+        100
+      ]
+    },
+    "values": [
+      "disaster_relief"
+    ],
+    "ai_confidence_score": 0.0,
+    "date_discovered": "2026-03-15T02:21:52.683884+00:00",
+    "source_url": "https://reliefweb.int/report/ethiopia/ethiopia-belgiums-contribution-through-special-fund-emergency-and-resilience-activities-sfera"
+  },
+  {
+    "opportunity_id": "opp_e5be7b154877",
+    "title": "UNHCR: Up to 3.2 million Iranians temporarily displaced in Iran as conflict intensifies [EN/AR/FR/ES]",
+    "summary": "Iran + 1 more UNHCR: Up to 3.2 million Iranians temporarily displaced in Iran as conflict intensifies [EN/AR/FR/ES] Format News and Press Release Source UNHCR Posted 12 Mar 2026 Originally published 12 Mar 2026 Origin View original",
+    "cause": "disaster_relief",
+    "region": "Iran (Islamic Republic of)",
+    "organization": {
+      "name": "Example Relief Organization",
+      "website": "https://example.org",
+      "verified": true
+    },
+    "donation": {
+      "donation_url": "https://example.org/donate",
+      "suggested_amounts": [
+        10,
+        25,
+        50,
+        100
+      ]
+    },
+    "values": [
+      "disaster_relief"
+    ],
+    "ai_confidence_score": 0.0,
+    "date_discovered": "2026-03-15T02:21:52.960047+00:00",
+    "source_url": "https://reliefweb.int/report/iran-islamic-republic/unhcr-32-million-iranians-temporarily-displaced-iran-conflict-intensifies-enarfres"
+  },
+  {
+    "opportunity_id": "opp_9a2f0a56c452",
+    "title": "UNHCR-Supported Voluntary Repatriation Programme of Syrian Refugees - Lebanon, 28 February 2026",
+    "summary": "Lebanon + 1 more UNHCR-Supported Voluntary Repatriation Programme of Syrian Refugees - Lebanon, 28 February 2026 Format Infographic Source UNHCR Posted 12 Mar 2026 Originally published 12 Mar 2026 Origin View original",
+    "cause": "disaster_relief",
+    "region": "Lebanon",
+    "organization": {
+      "name": "Example Relief Organization",
+      "website": "https://example.org",
+      "verified": true
+    },
+    "donation": {
+      "donation_url": "https://example.org/donate",
+      "suggested_amounts": [
+        10,
+        25,
+        50,
+        100
+      ]
+    },
+    "values": [
+      "disaster_relief"
+    ],
+    "ai_confidence_score": 0.0,
+    "date_discovered": "2026-03-15T02:21:53.243355+00:00",
+    "source_url": "https://reliefweb.int/report/lebanon/unhcr-supported-voluntary-repatriation-programme-syrian-refugees-lebanon-28-february-2026"
+  },
+  {
+    "opportunity_id": "opp_cdb3be537de1",
+    "title": "IRC Protection Monitoring Snapshot January 2026 [EN/UK]",
+    "summary": "Ukraine IRC Protection Monitoring Snapshot January 2026 [EN/UK] Format Infographic Sources IRC Protection Cluster Posted 12 Mar 2026 Originally published 12 Mar 2026",
+    "cause": "disaster_relief",
+    "region": "Ukraine",
+    "organization": {
+      "name": "Example Relief Organization",
+      "website": "https://example.org",
+      "verified": true
+    },
+    "donation": {
+      "donation_url": "https://example.org/donate",
+      "suggested_amounts": [
+        10,
+        25,
+        50,
+        100
+      ]
+    },
+    "values": [
+      "disaster_relief"
+    ],
+    "ai_confidence_score": 0.0,
+    "date_discovered": "2026-03-15T02:21:53.523637+00:00",
+    "source_url": "https://reliefweb.int/report/ukraine/irc-protection-monitoring-snapshot-january-2026-enuk"
+  },
+  {
+    "opportunity_id": "opp_902b1a081a75",
+    "title": "Colombia: Attacks on education continue unabated | NRC",
+    "summary": "Colombia Colombia: Attacks on education continue unabated | NRC Format News and Press Release Source NRC Posted 12 Mar 2026 Originally published 12 Mar 2026 Origin View original Every single hour throughout 2025, the life of a student or teacher in Colombia was placed in jeopardy. These relentless a",
+    "cause": "disaster_relief",
+    "region": "Colombia",
+    "organization": {
+      "name": "Example Relief Organization",
+      "website": "https://example.org",
+      "verified": true
+    },
+    "donation": {
+      "donation_url": "https://example.org/donate",
+      "suggested_amounts": [
+        10,
+        25,
+        50,
+        100
+      ]
+    },
+    "values": [
+      "disaster_relief"
+    ],
+    "ai_confidence_score": 0.0,
+    "date_discovered": "2026-03-15T02:21:53.809976+00:00",
+    "source_url": "https://reliefweb.int/report/colombia/colombia-attacks-education-continue-unabated-nrc"
+  },
+  {
+    "opportunity_id": "opp_1944e42de98e",
+    "title": "Ecuador - Severe weather, update (SNGR, IFRC, Copernicus EMSR, NOAA-CPC, INHAMI Ecuador) (ECHO Daily Flash of 12 March 2026)",
+    "summary": "Ecuador Ecuador - Severe weather, update (SNGR, IFRC, Copernicus EMSR, NOAA-CPC, INHAMI Ecuador) (ECHO Daily Flash of 12 March 2026) Format News and Press Release Source ECHO Posted 12 Mar 2026 Originally published 12 Mar 2026 Origin View original The rainy season continues to affect most of Ecuador",
+    "cause": "disaster_relief",
+    "region": "Ecuador",
+    "organization": {
+      "name": "Example Relief Organization",
+      "website": "https://example.org",
+      "verified": true
+    },
+    "donation": {
+      "donation_url": "https://example.org/donate",
+      "suggested_amounts": [
+        10,
+        25,
+        50,
+        100
+      ]
+    },
+    "values": [
+      "disaster_relief"
+    ],
+    "ai_confidence_score": 0.0,
+    "date_discovered": "2026-03-15T02:21:54.081730+00:00",
+    "source_url": "https://reliefweb.int/report/ecuador/ecuador-severe-weather-update-sngr-ifrc-copernicus-emsr-noaa-cpc-inhami-ecuador-echo-daily-flash-12-march-2026"
+  }
+]

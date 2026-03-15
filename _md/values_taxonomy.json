@@ -1,0 +1,17 @@
+{
+    "values": [
+      "children",
+      "education",
+      "healthcare",
+      "food_security",
+      "refugees",
+      "poverty",
+      "climate",
+      "disaster_relief",
+      "conflict_relief",
+      "women_support",
+      "water_access",
+      "housing",
+      "medical_aid"
+    ]
+  }
