@@ -12,6 +12,8 @@ export interface UserProfile {
     name: string;
     email: string;
     avatar?: string;
+    locations: string[];
+    causes: string[];
 }
 
 export interface UserData {
@@ -26,6 +28,8 @@ export const defaultUserData: UserData = {
         id: "user_1",
         name: "Elena Rostova",
         email: "elena.r@example.com",
+        locations: ["Global", "Kenya"],
+        causes: ["water_access", "healthcare"],
     },
     preferences: {
         emailNotifications: true,

@@ -8,7 +8,7 @@ interface AuthContextType {
     isAuthenticated: boolean;
     isLoading: boolean;
     login: (email: string, password: string) => Promise<void>;
-    register: (name: string, email: string, password: string) => Promise<void>;
+    register: (name: string, email: string, password: string, locations: string[], causes: string[]) => Promise<void>;
     logout: () => void;
     updateUser: (data: UserData) => void;
 }
@@ -37,7 +37,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setIsLoading(false);
     };
 
-    const register = async (name: string, email: string, password: string) => {
+    const register = async (name: string, email: string, password: string, locations: string[], causes: string[]) => {
         setIsLoading(true);
         await new Promise(resolve => setTimeout(resolve, 1000));
 
@@ -47,6 +47,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                 id: Math.random().toString(36).substr(2, 9),
                 name,
                 email,
+                locations,
+                causes,
             }
         };
         userStore.saveUserData(newUser);
