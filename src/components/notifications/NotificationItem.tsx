@@ -38,7 +38,7 @@ export function NotificationItem({ type, title, message, timestamp, isRead = fal
             </div>
             {!isRead && (
                 <div className="shrink-0 flex items-center justify-center pl-2">
-                    <div className="w-2.5 h-2.5 bg-secondary rounded-full animate-pulse shadow-[0_0_8px_rgba(251,100,21,0.6)]" />
+                    <div className="w-2.5 h-2.5 bg-primary rounded-full animate-pulse shadow-[0_0_8px_rgba(225,28,35,0.6)]" />
                 </div>
             )}
         </div>

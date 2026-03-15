@@ -86,7 +86,7 @@ export default function DonateFlow() {
                             >
                                 <div className="relative">
                                     <div className="w-32 h-32 border-[6px] border-muted rounded-full" />
-                                    <div className="absolute top-0 left-0 w-32 h-32 border-[6px] border-primary rounded-full border-t-transparent animate-spin" />
+                                    <div className="absolute top-0 left-0 w-32 h-32 border-[6px] border-primary rounded-full border-t-transparent animate-spin ring-secondary ring-offset-2" />
                                 </div>
                                 <div className="text-center">
                                     <h2 className="text-3xl font-bold font-sans mb-3">Processing...</h2>
@@ -108,7 +108,7 @@ export default function DonateFlow() {
                                 </div>
 
                                 <h2 className="text-5xl md:text-6xl font-bold font-sans mb-6 text-foreground tracking-tight">Impact Confirmed</h2>
-                                <div className="bg-gradient-to-br from-primary/10 to-transparent border border-primary/20 rounded-3xl p-8 mb-12 w-full max-w-lg shadow-inner">
+                                <div className="bg-gradient-to-br from-primary/5 to-transparent border border-primary/10 rounded-3xl p-8 mb-12 w-full max-w-lg shadow-inner">
                                     <p className="text-xl text-primary font-medium leading-relaxed">
                                         Your <span className="font-bold text-2xl">${amount}</span> donation provided emergency support for <span className="font-bold text-2xl underline decoration-secondary decoration-4 underline-offset-4">{Math.floor(amount / 6.25) || 1} families</span>.
                                     </p>
