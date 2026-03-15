@@ -1,36 +1,70 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Empact: AI-Powered Humanitarian Impact Platform
+
+**Empact** is an intelligent platform designed to bridge the gap between global humanitarian crises and collective action. By utilizing Generative AI and automation agents, we make finding and supporting verified causes effortless, personalized, and impactful.
+
+---
+
+## Features
+
+- **AI Discovery**: Continuously monitors global news and ReliefWeb for urgent humanitarian needs.
+- **Smart Summarization**: Gemini-powered reports that distill complex situations into actionable insights.
+- **Personalized Matching**: Crises are ranked based on your individual causes (e.g., Education, Disaster Relief) and preferred regions.
+- **Automation Agents**: Headless Selenium agents that navigate donation forms, autofilling information to ensure help reaches its destination faster.
+- **Interactive Globe**: Visualize real-time crises and your global impact through a 3D Earth visualization.
+
+## Tech Stack
+
+- **Frontend**: [Next.js](https://nextjs.org/) (React 19), [Tailwind CSS](https://tailwindcss.com/), [Framer Motion](https://www.framer.com/motion/), [Cobe](https://github.com/shuding/cobe).
+- **Backend (API)**: [FastAPI](https://fastapi.tiangolo.com/) (Python) & [Node.js](https://nodejs.org/) (Express).
+- **AI**: [Google Gemini Flash](https://deepmind.google/technologies/gemini/).
+- **Automation**: [Selenium WebDriver](https://www.selenium.dev/).
+- **Data**: [ReliefWeb API](https://reliefweb.int/help/api).
+
+---
 
 ## Getting Started
 
-First, run the development server:
+### 1. Prerequisites
+- Node.js & npm
+- Python 3.10+
+- Google Gemini API Key
 
+### 2. Backend Setup
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+cd backend
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+```
+Update a `.env` file with `GEMINI_API_KEY`.
+
+### 3. Pipeline & API
+```bash
+# Run the AI pipeline to fetch and process crises
+python run_pipeline.py 20
+
+# Start the API server
+uvicorn api.main:app --reload --port 8000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 4. Frontend Setup
+```bash
+cd frontend
+npm install
+npm run dev
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🏗️ Architecture
 
-## Learn More
+1. **ReliefWeb Fetcher**: Pulls raw humanitarian situational reports.
+2. **Gemini Processor**: Processes text to extract structured "Opportunities."
+3. **Charity Matcher**: Connects crises to verified partner organizations.
+4. **Empact Agent**: Automates the donation UX, reducing friction in the final mile of giving.
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## License
+This project is for the **GenAI Genesis Hackathon 2026**.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
