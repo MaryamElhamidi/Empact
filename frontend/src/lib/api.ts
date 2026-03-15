@@ -126,20 +126,21 @@ export const api = {
     return data as { totalDonated: number; peopleHelped: number; countriesSupported: number };
   },
 
-  /** GET /api/opportunities */
-  async getOpportunities(params?: { urgency?: string; country?: string; issue_id?: string }) {
+  /** GET /api/opportunities - pass causes and regions for relevance-ordered list (e.g. after login) */
+  async getOpportunities(params?: { urgency?: string; country?: string; issue_id?: string; causes?: string; regions?: string }) {
     const q = new URLSearchParams();
     if (params) {
       if (params.urgency) q.set("urgency", params.urgency);
       if (params.country) q.set("country", params.country);
       if (params.issue_id) q.set("issue_id", params.issue_id);
+      if (params.causes) q.set("causes", params.causes);
+      if (params.regions) q.set("regions", params.regions);
     }
     const query = q.toString();
-    const url = `${getBaseUrl()}/api/opportunities${query ? `?${query}` : ""}`;
-    const res = await fetch(url);
+    const res = await fetch(`${getBaseUrl()}/api/opportunities${query ? `?${query}` : ""}`);
     const data = await res.json();
     if (!res.ok) throw new Error(data.error || "Failed to load opportunities");
-    return data;
+    return Array.isArray(data) ? data : (data.opportunities ?? data);
   },
 
   /** GET /api/opportunities/featured */

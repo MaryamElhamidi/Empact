@@ -1,0 +1,24 @@
+{
+  "Global": ["World"],
+  "Africa": [
+    "Algeria", "Angola", "Benin", "Botswana", "Burkina Faso", "Burundi", "Cabo Verde", "Cameroon", "Central African Republic", "Chad", "Comoros", "Congo", "Côte d'Ivoire", "Democratic Republic of the Congo", "Djibouti", "Egypt", "Equatorial Guinea", "Eritrea", "Eswatini", "Ethiopia", "Gabon", "Gambia", "Ghana", "Guinea", "Guinea-Bissau", "Kenya", "Lesotho", "Liberia", "Libya", "Madagascar", "Malawi", "Mali", "Mauritania", "Mauritius", "Morocco", "Mozambique", "Namibia", "Niger", "Nigeria", "Rwanda", "Sao Tome and Principe", "Senegal", "Seychelles", "Sierra Leone", "Somalia", "South Africa", "South Sudan", "Sudan", "United Republic of Tanzania", "Tanzania", "Togo", "Tunisia", "Uganda", "Zambia", "Zimbabwe"
+  ],
+  "Middle East": [
+    "Bahrain", "Cyprus", "Egypt", "Iran", "Iran (Islamic Republic of)", "Iraq", "Israel", "Jordan", "Kuwait", "Lebanon", "occupied Palestinian territory", "Palestine", "Oman", "Qatar", "Saudi Arabia", "Syria", "Syrian Arab Republic", "Türkiye", "Turkey", "United Arab Emirates", "Yemen"
+  ],
+  "South Asia": [
+    "Afghanistan", "Bangladesh", "Bhutan", "India", "Maldives", "Nepal", "Pakistan", "Sri Lanka"
+  ],
+  "Southeast Asia": [
+    "Brunei", "Cambodia", "Indonesia", "Lao People's Democratic Republic (the)", "Laos", "Malaysia", "Myanmar", "Philippines", "Singapore", "Thailand", "Timor-Leste", "Viet Nam", "Vietnam", "West Java Province, Indonesia"
+  ],
+  "Latin America": [
+    "Argentina", "Belize", "Bolivia", "Brazil", "Chile", "Colombia", "Costa Rica", "Cuba", "Dominican Republic", "Ecuador", "El Salvador", "Guatemala", "Guyana", "Haiti", "Honduras", "Jamaica", "Mexico", "Nicaragua", "Panama", "Paraguay", "Peru", "Suriname", "Trinidad and Tobago", "Uruguay", "Venezuela", "Venezuela (Bolivarian Republic of)"
+  ],
+  "Eastern Europe": [
+    "Albania", "Belarus", "Bosnia and Herzegovina", "Bulgaria", "Central and South-East Europe", "Croatia", "Czech Republic", "Estonia", "Hungary", "Kosovo", "Latvia", "Lithuania", "Moldova", "Montenegro", "North Macedonia", "Poland", "Romania", "Russia", "Russian Federation", "Serbia", "Slovakia", "Slovenia", "Ukraine"
+  ],
+  "Central Asia": [
+    "Kazakhstan", "Kyrgyzstan", "Tajikistan", "Turkmenistan", "Uzbekistan"
+  ]
+}

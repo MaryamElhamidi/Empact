@@ -1,4 +1,100 @@
+const path = require("path");
+const fs = require("fs");
 const db = require("./db_conn");
+
+/** Normalize for matching */
+function norm(s) {
+  return (s || "").toString().trim().toLowerCase();
+}
+
+let regionToCountries = null;
+function loadRegionCountries() {
+  if (regionToCountries != null) return regionToCountries;
+  try {
+    const p = path.join(__dirname, "../../data/region_countries.json");
+    regionToCountries = JSON.parse(fs.readFileSync(p, "utf8"));
+  } catch (_) {
+    regionToCountries = {};
+  }
+  return regionToCountries;
+}
+
+/** Expand user signup regions (e.g. Africa, Eastern Europe) to set of country names for matching. */
+function expandRegionsToCountries(userRegionNames) {
+  const mapping = loadRegionCountries();
+  const countries = new Set();
+  let hasGlobal = false;
+  for (const r of userRegionNames || []) {
+    const name = (r || "").toString().trim();
+    if (!name) continue;
+    const n = norm(name);
+    if (n === "global") {
+      hasGlobal = true;
+      continue;
+    }
+    const key = Object.keys(mapping).find((k) => k.toLowerCase() === n);
+    if (key && mapping[key]) {
+      for (const c of mapping[key]) {
+        if (c) countries.add(norm(c));
+      }
+    } else {
+      countries.add(n);
+    }
+  }
+  return { countries, hasGlobal };
+}
+
+/** Relevancy sort: region + cause match first, then most recent date. User regions (e.g. Africa) matched to opportunity country via region_countries.json. */
+function sortByRelevancy(opportunities, userCauses, userRegions) {
+  const causesSet = new Set((userCauses || []).map(norm).filter(Boolean));
+  const { countries: expandedCountries, hasGlobal } = expandRegionsToCountries(userRegions);
+
+  function regionMatches(oppRegion) {
+    if (hasGlobal) return true;
+    if (!oppRegion || expandedCountries.size === 0) return false;
+    const o = norm(oppRegion);
+    if (expandedCountries.has(o)) return true;
+    for (const c of expandedCountries) {
+      if (o.includes(c) || c.includes(o)) return true;
+    }
+    return false;
+  }
+  function causeMatches(oppCause) {
+    if (!oppCause || causesSet.size === 0) return false;
+    return causesSet.has(norm(oppCause));
+  }
+  function valueScore(opp) {
+    const ov = new Set((opp.values || []).map(norm).filter(Boolean));
+    let n = 0;
+    for (const c of causesSet) {
+      if (ov.has(c)) n++;
+    }
+    return n;
+  }
+  function dateTs(opp) {
+    const d = opp.date_discovered;
+    if (!d) return 0;
+    try {
+      return new Date(d.replace("Z", "+00:00")).getTime();
+    } catch (_) {
+      return 0;
+    }
+  }
+
+  return [...opportunities].sort((a, b) => {
+    const regionA = regionMatches(a.region);
+    const regionB = regionMatches(b.region);
+    const causeA = causeMatches(a.cause) || valueScore(a) > 0;
+    const causeB = causeMatches(b.cause) || valueScore(b) > 0;
+    const relA = regionA && causeA ? 3 : regionA ? 2 : causeA ? 1 : 0;
+    const relB = regionB && causeB ? 3 : regionB ? 2 : causeB ? 1 : 0;
+    if (relA !== relB) return relB - relA;
+    const valA = valueScore(a);
+    const valB = valueScore(b);
+    if (valA !== valB) return valB - valA;
+    return dateTs(b) - dateTs(a);
+  });
+}
 
 /** Map DB row to opportunities.json shape */
 function rowToJson(r) {
@@ -32,17 +128,21 @@ function rowToJson(r) {
 
 async function getOpportunities(filters) {
   filters = filters || {};
+  const userCauses = filters.causes ? (typeof filters.causes === "string" ? filters.causes.split(",").map((s) => s.trim()).filter(Boolean) : filters.causes) : [];
+  const userRegions = filters.regions ? (typeof filters.regions === "string" ? filters.regions.split(",").map((s) => s.trim()).filter(Boolean) : filters.regions) : [];
+  const useRelevancy = userCauses.length > 0 || userRegions.length > 0;
+
   let sql = [
     "SELECT opportunity_id, title, summary, cause, region, org_name, org_website, org_verified,",
     "donation_url, suggested_amounts, `values`, ai_confidence_score, date_discovered, source_url",
     "FROM opportunities WHERE 1=1"
   ].join(" ");
   const params = [];
-  if (filters.region) {
+  if (!useRelevancy && filters.region) {
     sql += " AND region = ?";
     params.push(filters.region);
   }
-  if (filters.cause) {
+  if (!useRelevancy && filters.cause) {
     sql += " AND cause LIKE ?";
     params.push("%" + filters.cause + "%");
   }
@@ -52,7 +152,11 @@ async function getOpportunities(filters) {
   }
   sql += " ORDER BY ai_confidence_score DESC, date_discovered DESC";
   const [rows] = await db.execute(sql, params);
-  return rows.map(rowToJson);
+  const list = rows.map(rowToJson);
+  if (useRelevancy) {
+    return sortByRelevancy(list, userCauses, userRegions);
+  }
+  return list;
 }
 
 async function getFeaturedOpportunity() {
@@ -101,5 +205,6 @@ module.exports = {
   getOpportunities,
   getFeaturedOpportunity,
   getOpportunityById,
-  createOpportunity
+  createOpportunity,
+  sortByRelevancy
 };

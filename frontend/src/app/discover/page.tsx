@@ -4,6 +4,8 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { FilterBar } from "@/components/discover/FilterBar";
 import { OpportunityCard, OpportunityProps } from "@/components/discover/OpportunityCard";
 import { api } from "@/lib/api";
+import { useOpportunities } from "@/context/OpportunitiesContext";
+import { useAuth } from "@/context/AuthContext";
 import { Loader2, X, ExternalLink } from "lucide-react";
 
 const PAGE_SIZE = 9;
@@ -20,7 +22,7 @@ type OpportunityApi = {
 function mapApiToProps(opp: OpportunityApi): OpportunityProps {
     return {
         id: opp.opportunity_id,
-        title: opp.title,
+        title: opp.title ?? "",
         region: opp.region ?? "",
         summary: opp.summary ?? "",
         donationUrl: opp.donation?.donation_url ?? null,
@@ -30,10 +32,10 @@ function mapApiToProps(opp: OpportunityApi): OpportunityProps {
 }
 
 export default function Discover() {
-    const [allOpportunities, setAllOpportunities] = useState<OpportunityProps[]>([]);
+    const { user, isAuthenticated } = useAuth();
+    const { opportunities: rawOpportunities, isLoading: opportunitiesLoading } = useOpportunities();
     const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
     const [topIssues, setTopIssues] = useState<Array<{ name: string; icon: string; count: number }>>([]);
-    const [loading, setLoading] = useState(true);
     const [loadingMore, setLoadingMore] = useState(false);
     const [issuesLoading, setIssuesLoading] = useState(true);
     const [relatedOpportunityId, setRelatedOpportunityId] = useState<string | null>(null);
@@ -41,15 +43,8 @@ export default function Discover() {
     const [relatedLoading, setRelatedLoading] = useState(false);
     const loadMoreSentinelRef = useRef<HTMLDivElement>(null);
 
-    useEffect(() => {
-        api.getOpportunities()
-            .then((rows: OpportunityApi[]) => {
-                setAllOpportunities(rows.map(mapApiToProps));
-            })
-            .catch(() => setAllOpportunities([]))
-            .finally(() => setLoading(false));
-    }, []);
-
+    const allOpportunities: OpportunityProps[] = rawOpportunities.map(mapApiToProps);
+    const loading = opportunitiesLoading;
     const hasMore = visibleCount < allOpportunities.length;
     const opportunities = allOpportunities.slice(0, visibleCount);
 
@@ -186,9 +181,18 @@ export default function Discover() {
             </div>
 
             <div className="container mx-auto px-4 lg:px-8 mt-20">
-                <div className="flex items-center justify-between mb-8 border-b border-border/50 pb-6">
-                    <h2 className="text-3xl md:text-4xl font-bold font-sans">Live Crisis Feed</h2>
-                    <span className="bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-bold flex items-center gap-2 border border-primary/20">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8 border-b border-border/50 pb-6">
+                    <div>
+                        <h2 className="text-3xl md:text-4xl font-bold font-sans">
+                            {isAuthenticated && user ? "Your Crisis Feed" : "Live Crisis Feed"}
+                        </h2>
+                        <p className="text-muted-foreground mt-1 text-sm md:text-base">
+                            {isAuthenticated && user
+                                ? "Crises matched to your causes and regions—most relevant first."
+                                : "Sign in to see crises tailored to your causes and regions."}
+                        </p>
+                    </div>
+                    <span className="bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-bold flex items-center gap-2 border border-primary/20 w-fit">
                         <span className="w-2.5 h-2.5 bg-primary rounded-full animate-pulse shadow-[0_0_8px_rgba(225,28,35,0.6)]" /> Live Updates
                     </span>
                 </div>

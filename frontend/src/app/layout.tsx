@@ -4,6 +4,8 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { NotificationsProvider } from "@/context/NotificationsContext";
 import { AuthProvider } from "@/context/AuthContext";
+import { OpportunitiesProvider } from "@/context/OpportunitiesContext";
+import { OpportunitiesFetchOnLogin } from "@/components/OpportunitiesFetchOnLogin";
 import "./globals.css";
 
 const comico = localFont({
@@ -34,13 +36,16 @@ export default function RootLayout({
         className={`${cabinetGrotesk.variable} ${comico.variable} antialiased font-sans flex flex-col min-h-screen selection:bg-primary/20`}
       >
         <AuthProvider>
-          <NotificationsProvider>
-            <Navbar />
-            <main className="flex-grow flex flex-col w-full relative z-0">
-              {children}
-            </main>
-            <Footer />
-          </NotificationsProvider>
+          <OpportunitiesProvider>
+            <OpportunitiesFetchOnLogin />
+            <NotificationsProvider>
+              <Navbar />
+              <main className="flex-grow flex flex-col w-full relative z-0">
+                {children}
+              </main>
+              <Footer />
+            </NotificationsProvider>
+          </OpportunitiesProvider>
         </AuthProvider>
       </body>
     </html>

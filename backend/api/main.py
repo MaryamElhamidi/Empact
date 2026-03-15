@@ -39,7 +39,10 @@ def get_opportunities(
     regions: Optional[str] = Query(None),
 ):
     """
-    Return opportunities. If user_id or preferences provided, rank by value match.
+    Return opportunities ordered by relevancy to the logged-in user.
+    Pass the user's causes and regions (e.g. from profile) as query params:
+    ?causes=disaster_relief,refugees&regions=Kenya,Global
+    Ordering: matching region and cause first, then by value overlap, then most recent date first.
     Response schema must stay unchanged for UI.
     """
     prefs = {"causes": [], "regions": [], "impact_types": []}
