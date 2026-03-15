@@ -164,7 +164,11 @@ CREATE TABLE payment_methods (
   last_four VARCHAR(4) NOT NULL,
   exp_month TINYINT NOT NULL,
   exp_year SMALLINT NOT NULL,
+  cardholder_name VARCHAR(255) NULL,
+  billing_zip VARCHAR(20) NULL,
   stripe_payment_method_id VARCHAR(255),
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
 );
+
+-- If table already exists, run: ALTER TABLE payment_methods ADD COLUMN cardholder_name VARCHAR(255) NULL, ADD COLUMN billing_zip VARCHAR(20) NULL;

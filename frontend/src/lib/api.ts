@@ -251,7 +251,21 @@ export const api = {
   },
 
   /** POST /api/users/:userId/payment-methods */
-  async addPaymentMethod(userId: number, body: { last_four?: string; lastFour?: string; exp_month?: number; expMonth?: number; exp_year?: number; expYear?: number }) {
+  async addPaymentMethod(
+    userId: number,
+    body: {
+      last_four?: string;
+      lastFour?: string;
+      exp_month?: number;
+      expMonth?: number;
+      exp_year?: number;
+      expYear?: number;
+      cardholder_name?: string;
+      cardholderName?: string;
+      billing_zip?: string;
+      billingZip?: string;
+    }
+  ) {
     const res = await fetch(`${getBaseUrl()}/api/users/${userId}/payment-methods`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -261,6 +275,7 @@ export const api = {
     if (!res.ok) throw new Error(data.error || "Failed to add payment method");
     return data as { payment_method_id: number };
   },
+
 
   /** DELETE /api/users/:userId/payment-methods/:id */
   async deletePaymentMethod(userId: number, paymentMethodId: number) {

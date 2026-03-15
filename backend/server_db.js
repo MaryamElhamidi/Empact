@@ -220,11 +220,16 @@ router.get("/users/:userId/payment-methods", async (req, res) => {
 /* Add payment method */
 router.post("/users/:userId/payment-methods", async (req, res) => {
   try {
-    const id = await paymentMethods.add(req.params.userId, req.body);
+    const userId = parseInt(req.params.userId, 10);
+    if (!Number.isInteger(userId) || userId < 1) {
+      return res.status(400).json({ error: "Invalid user ID" });
+    }
+    const id = await paymentMethods.add(userId, req.body);
     res.status(201).json({ payment_method_id: id });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Failed to add payment method" });
+    console.error("Add payment method error:", err);
+    const message = err && err.message ? err.message : "Failed to add payment method";
+    res.status(500).json({ error: message });
   }
 });
 
