@@ -166,7 +166,7 @@ export default function Discover() {
                 ) : (
                     <div className="flex gap-4 overflow-x-auto pb-8 scrollbar-hide snap-x">
                         {topIssues.length === 0 ? (
-                            <p className="text-muted-foreground font-medium py-8">No issues loaded. Run the seed script to add global issues.</p>
+                            <p className="text-muted-foreground font-medium py-8">No issues loaded.</p>
                         ) : (
                             topIssues.map((issue) => (
                                 <div key={issue.name} className="flex-shrink-0 w-72 p-8 rounded-3xl border border-border bg-card shadow-sm snap-start hover:-translate-y-2 transition-transform cursor-pointer group">
@@ -202,7 +202,7 @@ export default function Discover() {
                         <Loader2 className="w-10 h-10 animate-spin text-primary" />
                     </div>
                 ) : opportunities.length === 0 ? (
-                    <p className="text-muted-foreground font-medium py-12">No opportunities yet. Run the seed script to add opportunities.</p>
+                    <p className="text-muted-foreground font-medium py-12">No opportunities yet.</p>
                 ) : (
                     <>
                         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 lg:gap-8">
