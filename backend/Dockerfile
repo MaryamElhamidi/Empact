@@ -9,7 +9,6 @@ RUN apt-get update && apt-get install -y \
     curl \
     lsb-release \
     libnss3 \
-    libgconf-2-4 \
     libfontconfig1 \
     libxrender1 \
     libxtst6 \
